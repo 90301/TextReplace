@@ -24,12 +24,21 @@ namespace ProgramableText
         public const string INT_REPLACE = "Integer Replace";
         public const string LIST_REPLACE = "List Replace";
 
+
+        public List<String> ilstMultiReplace = new List<string>();
         public MainWindow()
         {
             InitializeComponent();
             ilstOperation.Clear();
             ilstOperation.Add(INT_REPLACE);
             ilstOperation.Add(LIST_REPLACE);
+
+            operationComboBox.Items.Clear();
+            foreach (var lstrOp in ilstOperation)
+            {
+                operationComboBox.Items.Add(lstrOp);
+            }
+           
         }
 
         private void textBox_TextChanged(object sender, TextChangedEventArgs e)
@@ -41,13 +50,27 @@ namespace ProgramableText
         {
             String inputText = textBox.Text;
             String replaceStr = replaceCharTextbox.Text;
-            int dupTimes = 7;
+            int dupTimes = (int)repeatSlider.Value;
             String outputText = "";
 
-            for (int i = 1; i < dupTimes; i++)
+            String operation = ilstOperation[operationComboBox.SelectedIndex];
+
+            if (operation.Equals(INT_REPLACE))
             {
-                outputText += inputText.Replace(replaceStr, ""+i);
-                outputText += Environment.NewLine;
+                for (int i = 1; i < dupTimes; i++)
+                {
+                    outputText += inputText.Replace(replaceStr, "" + i);
+                    outputText += Environment.NewLine;
+                }
+
+            }
+            else if (operation.Equals(LIST_REPLACE))
+            {
+                foreach(string lstrItem in ilstMultiReplace)
+                {
+                    outputText += inputText.Replace(replaceStr, lstrItem);
+                    outputText += Environment.NewLine;
+                }
             }
 
             textBox_Output.Text = outputText;
@@ -58,6 +81,30 @@ namespace ProgramableText
         private void comboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             //change avaliable textboxes?
+        }
+
+        private void addT_Click(object sender, RoutedEventArgs e)
+        {
+            ilstMultiReplace.Add(multReplaceTextbox.Text);
+            multReplaceTextbox.Clear();
+            updateListbox();
+
+        }
+
+        private void updateListbox()
+        {
+            listBox.Items.Clear();
+
+            foreach (string lstrItem in ilstMultiReplace)
+            {
+                listBox.Items.Add(lstrItem);
+            }
+        }
+
+        private void clearMultiReplaceBtn_Click(object sender, RoutedEventArgs e)
+        {
+            ilstMultiReplace.Clear();
+            updateListbox();
         }
     }
 }
