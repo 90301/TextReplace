@@ -23,22 +23,27 @@ namespace ProgramableText
         public static List<String> ilstOperation = new List<string>();
         public const string INT_REPLACE = "Integer Replace";
         public const string LIST_REPLACE = "List Replace";
+        public const string MULTI_REPLACE = "Multi Replace";
 
 
         public List<String> ilstMultiReplace = new List<string>();
+
+        public List<replacement> ilstMultiReplacement = new List<replacement>();
         public MainWindow()
         {
             InitializeComponent();
             ilstOperation.Clear();
             ilstOperation.Add(INT_REPLACE);
             ilstOperation.Add(LIST_REPLACE);
+            ilstOperation.Add(MULTI_REPLACE);
 
             operationComboBox.Items.Clear();
             foreach (var lstrOp in ilstOperation)
             {
                 operationComboBox.Items.Add(lstrOp);
             }
-           
+            replacementIteration.ItemsSource = ilstMultiReplacement;
+            replacementIteration.DisplayMemberPath = "replaceText";
         }
 
         private void textBox_TextChanged(object sender, TextChangedEventArgs e)
@@ -69,6 +74,25 @@ namespace ProgramableText
                 foreach(string lstrItem in ilstMultiReplace)
                 {
                     outputText += inputText.Replace(replaceStr, lstrItem);
+                    outputText += Environment.NewLine;
+                }
+            }
+            else if (operation.Equals(MULTI_REPLACE))
+            {
+                for (int i = 0; i < ilstMultiReplacement[0].ilstMultiReplace.Count; i++)
+                {
+                    string lstrLine = inputText;
+                    foreach (var lobjReplace in ilstMultiReplacement)
+                    {
+                        //copy line over
+
+                        string replaceWith = lobjReplace.ilstMultiReplace[i];
+
+                        lstrLine = lstrLine.Replace(lobjReplace.replaceText, replaceWith);
+
+
+                    }
+                    outputText += lstrLine;
                     outputText += Environment.NewLine;
                 }
             }
@@ -106,5 +130,32 @@ namespace ProgramableText
             ilstMultiReplace.Clear();
             updateListbox();
         }
+
+        private void addReplace_Click(object sender, RoutedEventArgs e)
+        {
+        ilstMultiReplacement.Add(new replacement());
+        }
+
+        private void removeReplaceClick(object sender, RoutedEventArgs e)
+        {
+            if (ilstMultiReplacement.Count > 1)
+            {
+                ilstMultiReplacement.Remove(ilstMultiReplacement[replacementIteration.SelectedIndex]);
+            }
+            
+        }
     }
+
+
+    #region SupportClasses
+
+    public class replacement
+    {
+        private static int counter = 0;
+        public string replaceText { get; set; } = "[R" + (counter++) + "]";
+        public List<String> ilstMultiReplace = new List<string>();
+    }
+
+
+#endregion
 }
