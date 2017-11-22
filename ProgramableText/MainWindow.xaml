@@ -11,18 +11,19 @@
                  ,0" Text="" SpellCheck.IsEnabled="True" Background="Black" Foreground="#FF0CFF00" AcceptsTab="True" AcceptsReturn="True" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" Height="135" VerticalAlignment="Top"/>
         <TextBox x:Name="textBox_Output" Margin="10,150,200,40" Text="" SpellCheck.IsEnabled="True" Background="#FF212121" Foreground="#FF00E8FF" AcceptsTab="True" AcceptsReturn="True" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto"/>
         <Button x:Name="performActionBtn" Content="Process" Margin="0,0,10,10" Height="25" VerticalAlignment="Bottom" HorizontalAlignment="Right" Width="75" Background="#FF164613" Foreground="#FF00FF0C" Click="performActionBtn_Click"/>
-        <ComboBox x:Name="operationComboBox" HorizontalAlignment="Left" Margin="596,10,0,0" VerticalAlignment="Top" Width="120" SelectionChanged="comboBox_SelectionChanged"/>
-        <Slider x:Name="repeatSlider" HorizontalAlignment="Left" Margin="596,49,0,0" VerticalAlignment="Top" Width="120" SmallChange="1" LargeChange="5" Maximum="20" Minimum="1" TickPlacement="BottomRight" Value="6" AutoToolTipPlacement="TopLeft"/>
-        <Label x:Name="label" Content="Repeat: " HorizontalAlignment="Left" Margin="535,45,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.51,0.622"/>
-        <TextBox x:Name="multReplaceTextbox" HorizontalAlignment="Left" Height="23" Margin="535,110,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="141"/>
-        <Button x:Name="addT" Content=">>" HorizontalAlignment="Left" Margin="681,112,0,0" VerticalAlignment="Top" Width="35" Click="addT_Click"/>
-        <ListBox x:Name="listBox" HorizontalAlignment="Left" Height="100" Margin="535,139,0,0" VerticalAlignment="Top" Width="141"/>
-        <Button x:Name="removeMultiReplaceBtn" Content="Remove" HorizontalAlignment="Left" Margin="535,244,0,0" VerticalAlignment="Top" Width="52"/>
-        <Button x:Name="clearMultiReplaceBtn" Content="Clear" HorizontalAlignment="Left" Margin="624,244,0,0" VerticalAlignment="Top" Width="52" Click="clearMultiReplaceBtn_Click"/>
-        <TextBox x:Name="replaceCharTextbox" Text="[R]"  HorizontalAlignment="Right" Margin="0,272,50,0" TextWrapping="Wrap" Width="141" Height="23" VerticalAlignment="Top"/>
-        <ComboBox x:Name="replacementIteration" HorizontalAlignment="Right" Margin="0,84,71,0" Width="120" Height="22" VerticalAlignment="Top" ItemsSource="{Binding Path=ilstMultiReplacement}" DisplayMemberPath="replaceText"/>
+        <ComboBox x:Name="operationComboBox" Margin="0,10,10,0" VerticalAlignment="Top" SelectionChanged="comboBox_SelectionChanged" HorizontalAlignment="Right" Width="120"/>
+        <Slider x:Name="repeatSlider" Margin="0,49,10,0" VerticalAlignment="Top" SmallChange="1" LargeChange="5" Maximum="20" Minimum="1" TickPlacement="BottomRight" Value="6" AutoToolTipPlacement="TopLeft" HorizontalAlignment="Right" Width="120"/>
+        <Label x:Name="label" Content="Repeat: " Margin="0,45,139,0" VerticalAlignment="Top" RenderTransformOrigin="0.51,0.622" HorizontalAlignment="Right" Width="52"/>
+        <TextBox x:Name="multReplaceTextbox" Height="23" Margin="0,110,50,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" HorizontalAlignment="Right" Width="141"/>
+        <Button x:Name="addT" Content=">>" Margin="0,112,10,0" VerticalAlignment="Top" Click="addT_Click" HorizontalAlignment="Right" Width="35"/>
+        <ListBox x:Name="listBox" Height="100" Margin="0,139,25,0" VerticalAlignment="Top" HorizontalAlignment="Right" Width="166"/>
+        <Button x:Name="removeMultiReplaceBtn" Content="Remove" Margin="0,244,139,0" VerticalAlignment="Top" HorizontalAlignment="Right" Width="52"/>
+        <Button x:Name="clearMultiReplaceBtn" Content="Clear" Margin="0,244,82,0" VerticalAlignment="Top" Click="clearMultiReplaceBtn_Click" HorizontalAlignment="Right" Width="52"/>
+        <TextBox x:Name="replaceCharTextbox" Text="[R]"  HorizontalAlignment="Right" Margin="0,272,25,0" TextWrapping="Wrap" Width="166" Height="23" VerticalAlignment="Top"/>
+        <ComboBox x:Name="replacementIteration" HorizontalAlignment="Right" Margin="0,84,71,0" Width="120" Height="22" VerticalAlignment="Top" DisplayMemberPath="replaceText" SelectionChanged="replacementIteration_SelectionChanged"/>
         <Button x:Name="addReplace" Content="+" Margin="0,84,32,0" VerticalAlignment="Top" HorizontalAlignment="Right" Width="34" Click="addReplace_Click"/>
         <Button x:Name="removeReplace" Content="X" Margin="0,84,11,0" VerticalAlignment="Top" HorizontalAlignment="Right" Width="16" Click="removeReplaceClick"/>
+        <Button x:Name="toSqlStringBtn" Content="SQL String" HorizontalAlignment="Left" Width="77" Margin="10,0,0,15" Click="toSqlStringBtn_Click" Height="20" VerticalAlignment="Bottom"/>
 
     </Grid>
 </Window>

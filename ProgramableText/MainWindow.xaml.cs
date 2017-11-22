@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -20,13 +21,13 @@ namespace ProgramableText
     /// </summary>
     public partial class MainWindow : Window
     {
-        public static List<String> ilstOperation = new List<string>();
+        public static ObservableCollection<String> ilstOperation = new ObservableCollection<string>();
         public const string INT_REPLACE = "Integer Replace";
         public const string LIST_REPLACE = "List Replace";
         public const string MULTI_REPLACE = "Multi Replace";
 
 
-        public List<String> ilstMultiReplace = new List<string>();
+        public ObservableCollection<String> ilstMultiReplace = new ObservableCollection<string>();
 
         public List<replacement> ilstMultiReplacement = new List<replacement>();
         public MainWindow()
@@ -42,8 +43,8 @@ namespace ProgramableText
             {
                 operationComboBox.Items.Add(lstrOp);
             }
-            replacementIteration.ItemsSource = ilstMultiReplacement;
-            replacementIteration.DisplayMemberPath = "replaceText";
+           // replacementIteration.ItemsSource = ilstMultiReplacement;
+           // replacementIteration.DisplayMemberPath = "replaceText";
         }
 
         private void textBox_TextChanged(object sender, TextChangedEventArgs e)
@@ -134,6 +135,8 @@ namespace ProgramableText
         private void addReplace_Click(object sender, RoutedEventArgs e)
         {
         ilstMultiReplacement.Add(new replacement());
+            //replacementIteration.DisplayMemberPath = "replaceText";
+            replacementIteration.Items.Add(ilstMultiReplacement.Last().replaceText);
         }
 
         private void removeReplaceClick(object sender, RoutedEventArgs e)
@@ -142,9 +145,46 @@ namespace ProgramableText
             {
                 ilstMultiReplacement.Remove(ilstMultiReplacement[replacementIteration.SelectedIndex]);
             }
-            
+            replacementIteration.Items.Remove(replacementIteration.SelectedIndex);
+
+        }
+
+        private void updateReplacement() {
+    replacementIteration.Items.Clear();
+    foreach (var lstrOp in ilstMultiReplacement)
+    {
+        operationComboBox.Items.Add(lstrOp);
+    }
+    }
+
+        private void replacementIteration_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            var lobjReplacement = this.ilstMultiReplacement[replacementIteration.SelectedIndex];
+
+        }
+
+        private void updateMultiReplaceBtn_Click(object sender, RoutedEventArgs e)
+        {
+            var lobjReplacement = this.ilstMultiReplacement[replacementIteration.SelectedIndex];
+            //lobjReplacement.ilstMultiReplace
+
+        }
+
+        private void toSqlStringBtn_Click(object sender, RoutedEventArgs e)
+        {
+            String inputText = textBox.Text;
+            inputText = inputText.Replace("\t", " "); //remove tabs
+            inputText = inputText.Replace(Environment.NewLine, ""); //remove
+            inputText = inputText.Replace("'", "''");//escape single quotes
+            for (int i = 0; i < 10; i++)
+            {
+                inputText = inputText.Replace("  ", " ");//replace double spaces with single spaces.
+            }
+            textBox_Output.Text = inputText;
         }
     }
+
+
 
 
     #region SupportClasses
@@ -153,7 +193,7 @@ namespace ProgramableText
     {
         private static int counter = 0;
         public string replaceText { get; set; } = "[R" + (counter++) + "]";
-        public List<String> ilstMultiReplace = new List<string>();
+        public ObservableCollection<String> ilstMultiReplace = new ObservableCollection<string>();
     }
 
 
