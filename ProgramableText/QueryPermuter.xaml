@@ -32,7 +32,7 @@
                     <Button x:Name="addTableBtn" Content="add" HorizontalAlignment="Left" Margin="205,13,0,0" VerticalAlignment="Top" Width="39" Click="addTableBtn_Click"/>
                     <Button x:Name="addConditionBtn" Content="add" HorizontalAlignment="Left" Margin="205,72,0,0" VerticalAlignment="Top" Width="39" Click="addConditionBtn_Click"/>
                     <Button x:Name="clearQueryButton" Content="Clear" HorizontalAlignment="Left" Margin="10,103,0,0" VerticalAlignment="Top" Width="47"/>
-                    <Button x:Name="runButton" Content="Run" HorizontalAlignment="Left" Margin="65,103,0,0" VerticalAlignment="Top" Width="44"/>
+                    <Button x:Name="runButton" Content="Run" HorizontalAlignment="Left" Margin="65,103,0,0" VerticalAlignment="Top" Width="44" Click="runButton_Click"/>
                     <TextBox x:Name="QueryPreviewTextBox" Height="82" Margin="249,10,10,0" TextWrapping="Wrap" Text="Query Preview" VerticalAlignment="Top"/>
                     <TextBox x:Name="QueryOutputTextbox" Margin="10,0,10,30" TextWrapping="Wrap" Text="Output" Height="296" VerticalAlignment="Bottom"/>
                     <TextBox x:Name="addTableJoinConditionTextBox" HorizontalAlignment="Left" Height="23" Margin="80,44,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="164"/>

@@ -103,5 +103,10 @@ namespace ProgramableText
             //sqlConnection.ConnectionString = connStr;
             sqlConnection.Open();
         }
+
+        private void runButton_Click(object sender, RoutedEventArgs e)
+        {
+            //currently cycle through (IN ORDER) the table joins (with different styles)
+        }
     }
 }
