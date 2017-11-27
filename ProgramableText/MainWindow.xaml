@@ -24,6 +24,7 @@
         <Button x:Name="addReplace" Content="+" Margin="0,84,32,0" VerticalAlignment="Top" HorizontalAlignment="Right" Width="34" Click="addReplace_Click"/>
         <Button x:Name="removeReplace" Content="X" Margin="0,84,11,0" VerticalAlignment="Top" HorizontalAlignment="Right" Width="16" Click="removeReplaceClick"/>
         <Button x:Name="toSqlStringBtn" Content="SQL String" HorizontalAlignment="Left" Width="77" Margin="10,0,0,15" Click="toSqlStringBtn_Click" Height="20" VerticalAlignment="Bottom"/>
+        <Button x:Name="OpenQueryPremuterButton" Content="Query Permuter" HorizontalAlignment="Left" Margin="92,0,0,15" Width="107" Click="OpenQueryPremuterButton_Click" Height="20" VerticalAlignment="Bottom"/>
 
     </Grid>
 </Window>

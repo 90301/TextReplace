@@ -182,6 +182,12 @@ namespace ProgramableText
             }
             textBox_Output.Text = inputText;
         }
+
+        private void OpenQueryPremuterButton_Click(object sender, RoutedEventArgs e)
+        {
+            QueryPermuter qp = new QueryPermuter();
+            qp.Show();
+        }
     }
 
 
