@@ -19,12 +19,13 @@
         <ListBox x:Name="listBox" Height="100" Margin="0,139,25,0" VerticalAlignment="Top" HorizontalAlignment="Right" Width="166"/>
         <Button x:Name="removeMultiReplaceBtn" Content="Remove" Margin="0,244,139,0" VerticalAlignment="Top" HorizontalAlignment="Right" Width="52"/>
         <Button x:Name="clearMultiReplaceBtn" Content="Clear" Margin="0,244,82,0" VerticalAlignment="Top" Click="clearMultiReplaceBtn_Click" HorizontalAlignment="Right" Width="52"/>
-        <TextBox x:Name="replaceCharTextbox" Text="[R]"  HorizontalAlignment="Right" Margin="0,272,25,0" TextWrapping="Wrap" Width="166" Height="23" VerticalAlignment="Top"/>
+        <TextBox x:Name="replaceCharTextbox" Text="[R]"  HorizontalAlignment="Right" Margin="0,269,110,0" TextWrapping="Wrap" Width="81" Height="23" VerticalAlignment="Top"/>
         <ComboBox x:Name="replacementIteration" HorizontalAlignment="Right" Margin="0,84,71,0" Width="120" Height="22" VerticalAlignment="Top" DisplayMemberPath="replaceText" SelectionChanged="replacementIteration_SelectionChanged"/>
         <Button x:Name="addReplace" Content="+" Margin="0,84,32,0" VerticalAlignment="Top" HorizontalAlignment="Right" Width="34" Click="addReplace_Click"/>
         <Button x:Name="removeReplace" Content="X" Margin="0,84,11,0" VerticalAlignment="Top" HorizontalAlignment="Right" Width="16" Click="removeReplaceClick"/>
         <Button x:Name="toSqlStringBtn" Content="SQL String" HorizontalAlignment="Left" Width="77" Margin="10,0,0,15" Click="toSqlStringBtn_Click" Height="20" VerticalAlignment="Bottom"/>
         <Button x:Name="OpenQueryPremuterButton" Content="Query Permuter" HorizontalAlignment="Left" Margin="92,0,0,15" Width="107" Click="OpenQueryPremuterButton_Click" Height="20" VerticalAlignment="Bottom"/>
+        <TextBox x:Name="replaceCharInverseTextbox" Text="[U]"  HorizontalAlignment="Right" Margin="0,269,25,0" TextWrapping="Wrap" Width="80" Height="23" VerticalAlignment="Top"/>
 
     </Grid>
 </Window>

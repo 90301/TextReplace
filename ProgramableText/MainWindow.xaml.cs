@@ -56,16 +56,21 @@ namespace ProgramableText
         {
             String inputText = textBox.Text;
             String replaceStr = replaceCharTextbox.Text;
+            String inverseReplaceStr = replaceCharInverseTextbox.Text;
             int dupTimes = (int)repeatSlider.Value;
             String outputText = "";
 
-            String operation = ilstOperation[operationComboBox.SelectedIndex];
+            String operation = INT_REPLACE;
+            if (operationComboBox.SelectedIndex >= 0)
+            {
+                operation = ilstOperation[operationComboBox.SelectedIndex];
+            }
 
             if (operation.Equals(INT_REPLACE))
             {
-                for (int i = 1; i < dupTimes; i++)
+                for (int i = 1; i <= dupTimes; i++)
                 {
-                    outputText += inputText.Replace(replaceStr, "" + i);
+                    outputText += inputText.Replace(replaceStr, "" + i).Replace(inverseReplaceStr,""+(dupTimes-i+1));
                     outputText += Environment.NewLine;
                 }
 
