@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -192,6 +193,51 @@ namespace ProgramableText
         {
             QueryPermuter qp = new QueryPermuter();
             qp.Show();
+        }
+
+        private void addFeatureButton_Click(object sender, RoutedEventArgs e)
+        {
+            //load in full text (input textbox)
+            String inputText = textBox.Text;
+            String textToAdd = featureTextBoxReplace.Text;
+            String replaceText = replaceCharTextbox.Text;
+
+            String varType = featureTextBox1.Text;//Decimal
+            String varMatch = featureTextBox2.Text;//idec
+            //(Decimal idec[^\s]+)
+            String regexFindVarLines = "(" +varType  + " " + varMatch + "[^\\s]+)";
+            String regexFindLine = "(" + varType + " " + varMatch + "[^\\n]+)";//(Decimal idec[^\n]+)
+            String regexFindVarName = "(" + varMatch + "[^\\s]+)";
+
+            Regex findVarLinesRegex = new Regex(regexFindVarLines);
+            Regex findVarNameRegex = new Regex(regexFindVarName);
+
+            String outputText = "";
+            //split input into lines
+            String[] splitText = inputText.Split(new string[] {Environment.NewLine}, StringSplitOptions.None);
+
+            foreach (String splitLine in splitText)
+            {
+                //TODO add replace functionality
+                outputText += splitLine + Environment.NewLine;
+                //find any matches, do stuff
+                if (findVarLinesRegex.IsMatch(splitLine))
+                {
+                    Match m = findVarNameRegex.Match(splitLine);
+                    Group g = m.Groups[0];
+                    String varName = g.ToString();
+
+                    String textToAddLocal = textToAdd.Replace(replaceText, varName);
+
+                    outputText += textToAddLocal;
+
+
+                }
+                
+                //don't find matches, just add that to the output
+            }
+            this.textBox_Output.Text = outputText;
+
         }
     }
 
