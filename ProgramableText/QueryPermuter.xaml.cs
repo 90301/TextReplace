@@ -25,7 +25,7 @@ namespace ProgramableText
         List<String> tables = new List<string>();//Tables and join conditions
         List<String> conditions = new List<string>();//WHERE CONDITIONS
         List<String> joinList = new List<string>();
-        private String previewQuery = "";
+        private String query = "";
         private SqlConnection sqlConnection;
 
         
@@ -116,15 +116,15 @@ namespace ProgramableText
 
         public void updatePreviewQuery()
         {
-            previewQuery = "Select count(1) from " + Environment.NewLine;
-            previewQuery += tables.Select(x => x).Aggregate((i, j) => i + Environment.NewLine + j);
+            query = "Select count(1) from " + Environment.NewLine;
+            query += tables.Select(x => x).Aggregate((i, j) => i + Environment.NewLine + j);
             if (conditions.Count >= 1)
             {
-                previewQuery += Environment.NewLine + " where " + Environment.NewLine;
-                previewQuery += conditions.Select(x => x).Aggregate((i, j) => i + Environment.NewLine + j);
+                query += Environment.NewLine + " where " + Environment.NewLine;
+                query += conditions.Select(x => x).Aggregate((i, j) => i + Environment.NewLine +"AND " + j);
             }
 
-            QueryPreviewTextBox.Text = previewQuery;
+            QueryPreviewTextBox.Text = query;
         }
 
         public void tableJoinPermute()
@@ -236,6 +236,71 @@ namespace ProgramableText
             updatePreviewQuery();
 
 
+        }
+
+        private void partialQueryAddConditionButton_Click(object sender, RoutedEventArgs e)
+        {
+            String partialQuery = QueryPreviewTextBox.Text;
+            partialQuery = partialQuery.Replace("WHERE", "").Replace("where", "").Replace("and","AND");
+
+            String[] splitCondtions = partialQuery.Split(new String[] {Environment.NewLine + "AND"},StringSplitOptions.None);
+
+            foreach (String condition in splitCondtions)
+            {
+                this.conditions.Add(condition);
+            }
+
+            updatePreviewQuery();
+
+        }
+
+        private void runConditionsButton_Click(object sender, RoutedEventArgs e)
+        {
+            //For now just use standard joins
+            //later permute the joins (but due to condition testing, it must have all tables)
+            string queryWithoutConditions = "Select count(1) from " + Environment.NewLine;
+            queryWithoutConditions += tables.Select(x => x).Aggregate((i, j) => i + Environment.NewLine + j);
+
+            String conditionsSoFar = "";
+            for (int i = -1; i < conditions.Count; i++)
+            {
+                //first run doesn't have conditions
+                String queryToRun = queryWithoutConditions;
+
+
+                if (i >= 0)
+                {
+
+                    queryToRun += Environment.NewLine + " where " + Environment.NewLine;
+                    //query += conditions.Select(x => x).Aggregate((i, j) => i + Environment.NewLine + "AND " + j);
+
+
+                }
+                if (i >= 0)
+                {
+                    if (i >= 1)
+                    {
+                        conditionsSoFar += " And ";
+                    }
+                    conditionsSoFar += conditions[i];
+                }
+                queryToRun += conditionsSoFar;
+
+                SqlCommand sql = new SqlCommand(queryToRun, sqlConnection);
+
+                SqlDataReader reader = sql.ExecuteReader();
+                int count = 0;
+                if (reader.HasRows)
+                {
+                    reader.Read();
+                    count = reader.GetInt32(0);
+                }
+                reader.Close();
+
+                Console.WriteLine(count +"\t" + conditions[i].Replace(Environment.NewLine, " ") + "\t"+ conditionsSoFar.Replace(Environment.NewLine, " ") + "\t"+ queryToRun.Replace(Environment.NewLine," "));
+            }
+
+            //condition testing
         }
     }
 }
