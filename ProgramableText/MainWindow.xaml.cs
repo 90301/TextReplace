@@ -205,8 +205,8 @@ namespace ProgramableText
             String varType = featureTextBox1.Text;//Decimal
             String varMatch = featureTextBox2.Text;//idec
             //(Decimal idec[^\s]+)
-            String regexFindVarLines = "(" +varType  + " " + varMatch + "[^\\s]+)";
-            String regexFindLine = "(" + varType + " " + varMatch + "[^\\n]+)";//(Decimal idec[^\n]+)
+            String regexFindVarLines = "(" +varType + varMatch + "[^\\s]+)";
+            String regexFindLine = "(" + varType + varMatch + "[^\\n]+)";//(Decimal idec[^\n]+)
             String regexFindVarName = "(" + varMatch + "[^\\s]+)";
 
             Regex findVarLinesRegex = new Regex(regexFindVarLines);
