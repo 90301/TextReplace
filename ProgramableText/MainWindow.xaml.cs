@@ -202,12 +202,15 @@ namespace ProgramableText
             String textToAdd = featureTextBoxReplace.Text;
             String replaceText = replaceCharTextbox.Text;
 
+            Boolean replaceFunctionality = replaceFeatureCheckBox.IsChecked.Value;
+
             String varType = featureTextBox1.Text;//Decimal
             String varMatch = featureTextBox2.Text;//idec
             //(Decimal idec[^\s]+)
-            String regexFindVarLines = "(" +varType + varMatch + "[^\\s]+)";
-            String regexFindLine = "(" + varType + varMatch + "[^\\n]+)";//(Decimal idec[^\n]+)
-            String regexFindVarName = "(" + varMatch + "[^\\s]+)";
+            String regexEndChar = featureTextBox3.Text;
+            String regexFindVarLines = "(" +varType + varMatch + "[^"+ regexEndChar+"]+)";
+            //String regexFindLine = "(" + varType + varMatch + "[^\\n]+)";//(Decimal idec[^\n]+)
+            String regexFindVarName = "(" + varMatch + "[^"+ regexEndChar+"]+)";
 
             Regex findVarLinesRegex = new Regex(regexFindVarLines);
             Regex findVarNameRegex = new Regex(regexFindVarName);
@@ -219,19 +222,44 @@ namespace ProgramableText
             foreach (String splitLine in splitText)
             {
                 //TODO add replace functionality
-                outputText += splitLine + Environment.NewLine;
+                if (!replaceFunctionality)
+                {
+                    outputText += splitLine + Environment.NewLine;
+                }
                 //find any matches, do stuff
                 if (findVarLinesRegex.IsMatch(splitLine))
                 {
                     Match m = findVarNameRegex.Match(splitLine);
                     Group g = m.Groups[0];
                     String varName = g.ToString();
+                    Match m2 = findVarLinesRegex.Match(splitLine);
+                    Group g2 = m2.Groups[0];
+                    String varName2 = g2.ToString();
+                    if (varMatch.Length == 0)
+                    {
+                        varName = varName2.Replace(varType, "");
+                    }
 
                     String textToAddLocal = textToAdd.Replace(replaceText, varName);
 
-                    outputText += textToAddLocal;
+                    if (!replaceFunctionality)
+                    {
+                        outputText += textToAddLocal;
+                    }
+                    else
+                    {
+                        
+                        //should turn prop.idecX -> prop.istrX
+                        outputText += splitLine.Replace(varName2, textToAddLocal) + Environment.NewLine;
+                    }
 
-
+                }
+                else
+                {
+                    if (replaceFunctionality)
+                    {
+                        outputText += splitLine + Environment.NewLine;
+                    }
                 }
                 
                 //don't find matches, just add that to the output
