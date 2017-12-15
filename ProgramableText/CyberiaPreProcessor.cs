@@ -29,9 +29,11 @@ namespace ProgramableText
         public const String BLOCK_START = "blockstart";
         public const String BLOCK_END = "blockend";
 
-        public const String DEV_ONLY = "dev only";
+        public const String DEV_ONLY = "devonly";
 
-        public const String PROD_ONLY = "prod only";
+        public const String PROD_ONLY = "prodonly";
+
+        public const String SQL_FLATFILE = "sql flatfile";
 
         static CyberiaPreProcessor()
         {
@@ -62,16 +64,24 @@ namespace ProgramableText
         /// <param name="prodCode"></param>
         public void processText(String input, out String devCode, out String prodCode)
         {
+            string scratchpad = input;
             devCode = "" + devMessage();
             prodCode = "" + devMessage();
 
             //line by line pre-processing
             String devByLines, prodByLines;
 
+            foreach (String block in getBlocksForDirective(input, SQL_FLATFILE))
+            {
+                scratchpad = sqlFlatFile(scratchpad, block);
+            }
+            
+            
 
+            lineByLinePreProcess(scratchpad, out devByLines, out prodByLines);
 
-            lineByLinePreProcess(input, out devByLines, out prodByLines);
-
+            devCode += scratchpad;
+            prodCode += prodByLines;
         }
 
         protected void lineByLinePreProcess(string input, out string devByLines, out string prodByLines)
@@ -124,24 +134,6 @@ namespace ProgramableText
         /// <returns></returns>
         public string sqlFlatFile(string fullText,string block)
         {
-
-            /*
-var csvVar
-tables neosisbase_sc_dev.dbo.sgt_employer_rfa_extract_data
-order EMPLOYER_ACCOUNT_ID
-ssn,14
-wages_amt,15,remove(.)
-first_name,50
-last_name,50
-fein,9
-entity_name,100
-address_1,100
-address_2,100
-city,40
-state_code_value,2
-zip,10,remove(-)
-
-            */
             //remove variables
 
             string varname = getSimpleVarValue("var", block);
@@ -167,8 +159,9 @@ zip,10,remove(-)
                     int length = int.Parse(commaStrings[1]);
                     string padCharacters = "' '";//defaults to space
                     string usedVarName = varName;
+                    Boolean rightPad = true;
 
-                    usedVarName = "isnull(" + usedVarName + "''" + ")"; //default add isNull
+                    usedVarName = "isnull(" + usedVarName + ",''" + ")"; //default add isNull
 
                     if (commaStrings.Length > 2)
                     {
@@ -182,33 +175,40 @@ zip,10,remove(-)
                                 //remove these characters from the text pulled by sql
                                 foreach (String arg in args)
                                 {
-                                    usedVarName = "replace(" + usedVarName + ",\'" + arg + ",\'\')";
+                                    usedVarName = "replace(" + usedVarName + ",\'" + arg + "\',\'\')";
                                 }
                                 
                             }
                             if (extraCommand.Contains("pad"))
                             {
-                                List<String> args = parseFunction("remove", extraCommand);
+                                List<String> args = parseFunction("pad", extraCommand);
                                 padCharacters = args[0];
                             }
+                            if (extraCommand.Contains("leftPad"))
+                            {
+                                rightPad = false;
+                            }
                         }
-
+                     }//end of special conditions
                        
                         
 
                         //run the variables through the process of padding
                         //TODO a bunch of cool SQL generation utilities
-                        string singleVarOutput = "replpicate(" + padCharacters + "," + length + " - Len("+usedVarName+"))";
+                        string padVarOutput = "replicate(" + padCharacters + "," + length + " - Len("+usedVarName+"))";
                         string actualVarOutput = usedVarName;
-                        allOutputVars.Add(singleVarOutput);
+                    if (rightPad)
+                    {
                         allOutputVars.Add(actualVarOutput);
-                        //replicate args
-
-
+                        allOutputVars.Add(padVarOutput);
                     }
-
-
-                   
+                    else
+                    {
+                        allOutputVars.Add(padVarOutput);
+                        allOutputVars.Add(actualVarOutput);
+                        
+                    }
+                    //replicate args
                 }
 
 
@@ -238,10 +238,13 @@ zip,10,remove(-)
         {
             if (block.Contains(var))
             {
-                Regex findVarNameRegex = new Regex(var + "[^\\s]+)");
+                Regex findVarNameRegex = new Regex( "(" + var + "[^\\n]+)");
                 Match m = findVarNameRegex.Match(block);
                 Group g = m.Groups[0];
                 String varName = g.ToString();
+                varName = varName.Trim();
+                varName = varName.Remove(0, var.Length);
+                varName = varName.Trim();
                 return varName;
             }
             else
@@ -265,8 +268,8 @@ zip,10,remove(-)
         public List<String> getBlocksForDirective(String str,String directive)
         {
             List<String> blocks = new List<string>();
-            String directiveStart = directive + BLOCK_START;
-            String directiveEnd = directive + BLOCK_END;
+            String directiveStart = directive +" " + BLOCK_START;
+            String directiveEnd = directive +" "+ BLOCK_END;
 
             string[] splitOnDirectives = str.Split(new [] {directiveStart},StringSplitOptions.None);
 

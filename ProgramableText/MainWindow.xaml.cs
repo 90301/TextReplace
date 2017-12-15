@@ -14,6 +14,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using ProgramableText.Annotations;
 
 namespace ProgramableText
 {
@@ -265,6 +266,19 @@ namespace ProgramableText
                 //don't find matches, just add that to the output
             }
             this.textBox_Output.Text = outputText;
+
+        }
+
+        private void cyberiaPreProcessBtn_Click(object sender, RoutedEventArgs e)
+        {
+            CyberiaPreProcessor cyberia = new CyberiaPreProcessor();
+            cyberia.LanguageUsing = CyberiaPreProcessor.LANGUAGE_SQL;
+            String input = textBox.Text;
+
+            string devOutput, prodOutput;
+            cyberia.processText(input,out devOutput,out prodOutput);
+
+            textBox_Output.Text = devOutput + Environment.NewLine + prodOutput;
 
         }
     }
