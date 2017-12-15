@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace ProgramableText
@@ -65,6 +67,9 @@ namespace ProgramableText
 
             //line by line pre-processing
             String devByLines, prodByLines;
+
+
+
             lineByLinePreProcess(input, out devByLines, out prodByLines);
 
         }
@@ -91,7 +96,7 @@ namespace ProgramableText
                         devByLines += line + Environment.NewLine;
 
                     }
-                    else if (directives.Contains(DEV_ONLY))
+                    else if (directives.Contains(PROD_ONLY))
                     {
                         prodByLines += line + Environment.NewLine;
                     }
@@ -105,6 +110,173 @@ namespace ProgramableText
 
 
             }
+
+        }
+
+        public static readonly string[] NEW_LINE_SPLIT = new[] { "\r\n", "\r", "\n" };
+
+        #region SQL Specific funtions
+
+        /// <summary>
+        /// Returns the result of 
+        /// </summary>
+        /// <param name="block"></param>
+        /// <returns></returns>
+        public string sqlFlatFile(string fullText,string block)
+        {
+
+            /*
+var csvVar
+tables neosisbase_sc_dev.dbo.sgt_employer_rfa_extract_data
+order EMPLOYER_ACCOUNT_ID
+ssn,14
+wages_amt,15,remove(.)
+first_name,50
+last_name,50
+fein,9
+entity_name,100
+address_1,100
+address_2,100
+city,40
+state_code_value,2
+zip,10,remove(-)
+
+            */
+            //remove variables
+
+            string varname = getSimpleVarValue("var", block);
+            string tables = getSimpleVarValue("tables", block);
+            string order = getSimpleVarValue("order", block);
+            //parse acutal code
+
+            String sqlQuery = "Select Concat(";
+
+            List<String> onlySqlVars = block.Split(NEW_LINE_SPLIT, StringSplitOptions.RemoveEmptyEntries).Where(x => x.Contains(",")).ToList();
+
+            List<String> allOutputVars = new List<string>();
+
+            foreach (String sqlVarLine in onlySqlVars)
+            {
+                //split by commas
+                //first two are always the same, anything else is an operation that should be performed
+                String[] commaStrings = sqlVarLine.Split(',');
+
+                if (commaStrings.Length >= 2)
+                {
+                    string varName = commaStrings[0];
+                    int length = int.Parse(commaStrings[1]);
+                    string padCharacters = "' '";//defaults to space
+                    string usedVarName = varName;
+
+                    usedVarName = "isnull(" + usedVarName + "''" + ")"; //default add isNull
+
+                    if (commaStrings.Length > 2)
+                    {
+                        
+                        for (int i = 2; i < commaStrings.Length; i++)
+                        {
+                            string extraCommand = commaStrings[i];
+                            if (extraCommand.Contains("remove"))
+                            {
+                                List<String> args = parseFunction("remove",extraCommand);
+                                //remove these characters from the text pulled by sql
+                                foreach (String arg in args)
+                                {
+                                    usedVarName = "replace(" + usedVarName + ",\'" + arg + ",\'\')";
+                                }
+                                
+                            }
+                            if (extraCommand.Contains("pad"))
+                            {
+                                List<String> args = parseFunction("remove", extraCommand);
+                                padCharacters = args[0];
+                            }
+                        }
+
+                       
+                        
+
+                        //run the variables through the process of padding
+                        //TODO a bunch of cool SQL generation utilities
+                        string singleVarOutput = "replpicate(" + padCharacters + "," + length + " - Len("+usedVarName+"))";
+                        string actualVarOutput = usedVarName;
+                        allOutputVars.Add(singleVarOutput);
+                        allOutputVars.Add(actualVarOutput);
+                        //replicate args
+
+
+                    }
+
+
+                   
+                }
+
+
+            }//end foreach
+
+            sqlQuery += allOutputVars.Aggregate((i, j) => i + "," + j);
+
+            sqlQuery += ")";//END of select
+            if (tables.Length >= 1)
+                sqlQuery += " FROM " + tables;
+            if (order.Length>=1)
+            sqlQuery += " ORDER BY " + order;
+
+
+            fullText = varReplace(fullText,varname,sqlQuery);
+
+            return fullText;
+        }
+
+        private List<string> parseFunction(string functionName, string str)
+        {
+            str = str.Replace(functionName+"(", "").Replace(")", "");
+            return str.Split('|').ToList();
+        }
+
+        private string getSimpleVarValue(string var, string block)
+        {
+            if (block.Contains(var))
+            {
+                Regex findVarNameRegex = new Regex(var + "[^\\s]+)");
+                Match m = findVarNameRegex.Match(block);
+                Group g = m.Groups[0];
+                String varName = g.ToString();
+                return varName;
+            }
+            else
+            {
+                return "";
+            }
+        }
+
+        public static string varReplace(string fullText, String varName, String replaceWith)
+        {
+            return fullText.Replace(varName, replaceWith);
+        }
+
+        #endregion
+
+        /// <summary>
+        /// NESTING NOT SUPPORTED
+        /// </summary>
+        /// <param name="directive"></param>
+        /// <returns></returns>
+        public List<String> getBlocksForDirective(String str,String directive)
+        {
+            List<String> blocks = new List<string>();
+            String directiveStart = directive + BLOCK_START;
+            String directiveEnd = directive + BLOCK_END;
+
+            string[] splitOnDirectives = str.Split(new [] {directiveStart},StringSplitOptions.None);
+
+            foreach (String block in splitOnDirectives.Where(x=>x.Contains(directiveEnd)))
+            {
+                String parsedBlock = block.Remove(block.IndexOf(directiveEnd, 0));
+                blocks.Add(parsedBlock);
+            }
+
+            return blocks;
 
         }
 
