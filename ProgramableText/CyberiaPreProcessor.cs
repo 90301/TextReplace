@@ -26,6 +26,12 @@ namespace ProgramableText
 
         public static List<String> DIRECTIVES = new List<String>();
 
+        public static List<String> VARIABLE_MODS = new List<String>();
+
+        public static List<String> VARIABLE_TYPES = new List<String>();
+
+        public static List<String> VARIABLE_PREFIXES = new List<String>();
+
         public const String BLOCK_START = "blockstart";
         public const String BLOCK_END = "blockend";
 
@@ -35,10 +41,87 @@ namespace ProgramableText
 
         public const String SQL_FLATFILE = "sql flatfile";
 
+        public const String FOR_EACH_VARLIST = "foreach varlist";//This is a list of variable (start / end)
+
+        /// <summary>
+        /// This is going to be repeated for each variable in the var list with the VARNAME being replaced with the variable and
+        /// NO_PREFIX_VARNAME being replaced with the variablename with the prefix being stripped.
+        /// </summary>
+        public const String FOR_EACH_CONTENT = "foreach content";
+
         static CyberiaPreProcessor()
         {
             DIRECTIVES.Add(DEV_ONLY);
             DIRECTIVES.Add(PROD_ONLY);
+
+            VARIABLE_MODS.Add("public");
+            VARIABLE_MODS.Add("private");
+            VARIABLE_MODS.Add("protected");
+            VARIABLE_MODS.Add("static");
+            VARIABLE_MODS.Add("const");
+
+            List<String> modValues = new List<string>();
+            modValues.Add("a");//parameter
+            modValues.Add("l");//local
+            modValues.Add("i");//instance
+            foreach (String modValue in modValues)
+            {
+                VARIABLE_PREFIXES.Add(modValue+"str");//string
+                VARIABLE_PREFIXES.Add(modValue + "int");//int
+                VARIABLE_PREFIXES.Add(modValue + "bol");//boolean
+                VARIABLE_PREFIXES.Add(modValue + "col");//collection
+                VARIABLE_PREFIXES.Add(modValue + "arr");//Array
+                VARIABLE_PREFIXES.Add(modValue + "bus");//buisness class
+                VARIABLE_PREFIXES.Add(modValue + "dt");//date time
+                VARIABLE_PREFIXES.Add(modValue + "obj");//object
+
+            }
+
+            VARIABLE_TYPES.Add("integer");
+            VARIABLE_TYPES.Add("string");
+            VARIABLE_TYPES.Add("boolean");
+            VARIABLE_TYPES.Add("long");
+            VARIABLE_TYPES.Add("datetime");
+        }
+
+        /// <summary>
+        /// Strips a variable name
+        /// </summary>
+        /// <param name="varNameLine"></param>
+        /// <returns></returns>
+        public String variableNameStripping(String varNameLine)
+        {
+            string rtrn = "";
+            //TODO add SQL string capibility to var replacement
+            //TODO don't replace var define with variable.
+            String[] varSplit = varNameLine.Split(new String[] {" "}, StringSplitOptions.RemoveEmptyEntries);
+            //remove public / private / protected
+
+            foreach (string varPart in varSplit)
+            {
+                //contains?
+                if (
+                    !VARIABLE_MODS.Exists(x => x.Equals(varPart.ToLower()))
+                    && !VARIABLE_TYPES.Exists(x => x.Equals(varPart.ToLower()))
+                    && !varPart.Contains("<")// removes any variable types such as List<>
+                    )
+                {
+                    rtrn = varPart.Replace(";", "");
+                    
+                }
+            }
+
+            return rtrn;
+        }
+
+        public String removePrefix(String varName)
+        {
+            String rtrn = varName;
+            foreach (var prefix in VARIABLE_PREFIXES)
+            {
+                rtrn = rtrn.Replace(prefix, "");
+            }
+            return rtrn;
         }
 
         #endregion
