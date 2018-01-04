@@ -66,7 +66,7 @@ namespace ProgramableText
             modValues.Add("i");//instance
             foreach (String modValue in modValues)
             {
-                VARIABLE_PREFIXES.Add(modValue+"str");//string
+                VARIABLE_PREFIXES.Add(modValue + "str");//string
                 VARIABLE_PREFIXES.Add(modValue + "int");//int
                 VARIABLE_PREFIXES.Add(modValue + "bol");//boolean
                 VARIABLE_PREFIXES.Add(modValue + "col");//collection
@@ -208,6 +208,37 @@ namespace ProgramableText
 
         public static readonly string[] NEW_LINE_SPLIT = new[] { "\r\n", "\r", "\n" };
 
+        /// <summary>
+        /// 
+        /// Code inspired by:
+        /// https://stackoverflow.com/questions/1757065/java-splitting-a-comma-separated-string-but-ignoring-commas-in-quotes
+        /// </summary>
+        /// <param name="line">The line to split</param>
+        /// <param name="escape">the escape character</param>
+        /// <returns></returns>
+        public String[] SplitOnCommaWithoutEscape(String input, Char escape1,Char escape2 )
+        {
+            List<String> result = new List<String>();
+            int start = 0;
+            Boolean inQuotes = false;
+            for (int current = 0; current < input.Length; current++)
+            {
+                if (input[current] == escape1) inQuotes = true; // toggle state
+                if (input[current] == escape2) inQuotes = false; // toggle state
+                Boolean atLastChar = (current == input.Length - 1);
+                if (atLastChar)
+                {
+                    result.Add(input.Substring(start));
+                }
+                else if (input[current] == ',' && !inQuotes)
+                {
+                    result.Add(input.Substring(start, current-start));
+                    start = current + 1;
+                }
+            }
+            return result.ToArray();
+        }
+
         #region SQL Specific funtions
 
         /// <summary>
@@ -234,7 +265,7 @@ namespace ProgramableText
             {
                 //split by commas
                 //first two are always the same, anything else is an operation that should be performed
-                String[] commaStrings = sqlVarLine.Split(',');
+                String[] commaStrings = SplitOnCommaWithoutEscape(sqlVarLine, '(', ')');//sqlVarLine.Split(',');
 
                 if (commaStrings.Length >= 2)
                 {
