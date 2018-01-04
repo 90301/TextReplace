@@ -369,7 +369,8 @@ namespace ProgramableText
 
         public static string varReplace(string fullText, String varName, String replaceWith)
         {
-            return fullText.Replace(varName, replaceWith);
+            String rtrn = fullText.Replace("var " + varName, "varDefineTempStr").Replace(varName, replaceWith).Replace("varDefineTempStr","var " + varName);
+            return rtrn;
         }
 
         #endregion
