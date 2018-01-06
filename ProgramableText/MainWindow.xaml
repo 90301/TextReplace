@@ -44,6 +44,7 @@
         </TabControl>
         <Button x:Name="performActionBtn" Content="Process" Margin="0,0,10,10" Height="25" VerticalAlignment="Bottom" HorizontalAlignment="Right" Width="75" Background="#FF164613" Foreground="#FF00FF0C" Click="performActionBtn_Click"/>
         <Button x:Name="cyberiaPreProcessBtn" Content="Cyberia PreProcess" HorizontalAlignment="Left" Width="112" Margin="204,0,0,15" Height="20" VerticalAlignment="Bottom" Click="cyberiaPreProcessBtn_Click"/>
+        <Button x:Name="cyberiaPreProcessDevToggleBtn" Content="Dev" HorizontalAlignment="Left" Margin="321,0,0,15" Width="45" Click="cyberiaPreProcessDevToggleBtn_Click" Height="20" VerticalAlignment="Bottom"/>
 
     </Grid>
 </Window>

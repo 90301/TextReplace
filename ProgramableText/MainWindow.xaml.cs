@@ -28,6 +28,7 @@ namespace ProgramableText
         public const string LIST_REPLACE = "List Replace";
         public const string MULTI_REPLACE = "Multi Replace";
 
+        public Boolean devOutput = true;
 
         public ObservableCollection<String> ilstMultiReplace = new ObservableCollection<string>();
 
@@ -179,15 +180,7 @@ namespace ProgramableText
 
         private void toSqlStringBtn_Click(object sender, RoutedEventArgs e)
         {
-            String inputText = textBox.Text;
-            inputText = inputText.Replace("\t", " "); //remove tabs
-            inputText = inputText.Replace(Environment.NewLine, ""); //remove
-            inputText = inputText.Replace("'", "''");//escape single quotes
-            for (int i = 0; i < 10; i++)
-            {
-                inputText = inputText.Replace("  ", " ");//replace double spaces with single spaces.
-            }
-            textBox_Output.Text = inputText;
+            textBox_Output.Text = CyberiaPreProcessor.StringToSqlString(textBox.Text);
         }
 
         private void OpenQueryPremuterButton_Click(object sender, RoutedEventArgs e)
@@ -269,17 +262,41 @@ namespace ProgramableText
 
         }
 
+        string devOutputText, prodOutputText;
+
         private void cyberiaPreProcessBtn_Click(object sender, RoutedEventArgs e)
         {
             CyberiaPreProcessor cyberia = new CyberiaPreProcessor();
             cyberia.LanguageUsing = CyberiaPreProcessor.LANGUAGE_SQL;
             String input = textBox.Text;
 
-            string devOutput, prodOutput;
-            cyberia.processText(input,out devOutput,out prodOutput);
+            
+            cyberia.processText(input,out devOutputText,out prodOutputText);
 
-            textBox_Output.Text = devOutput + Environment.NewLine + prodOutput;
+            if (devOutput)
+            {
+                textBox_Output.Text = devOutputText;
+            }
+            else
+            {
+                textBox_Output.Text = prodOutputText;
+            }
 
+        }
+
+        private void cyberiaPreProcessDevToggleBtn_Click(object sender, RoutedEventArgs e)
+        {
+            devOutput = !devOutput;
+            if (devOutput)
+            {
+                cyberiaPreProcessDevToggleBtn.Content = "Dev";
+                textBox_Output.Text = devOutputText;
+            }
+            else
+            {
+                cyberiaPreProcessDevToggleBtn.Content = "Prod";
+                textBox_Output.Text = prodOutputText;
+            }
         }
     }
 

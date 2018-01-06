@@ -163,7 +163,7 @@ namespace ProgramableText
 
             lineByLinePreProcess(scratchpad, out devByLines, out prodByLines);
 
-            devCode += scratchpad;
+            devCode += devByLines;
             prodCode += prodByLines;
         }
 
@@ -251,6 +251,7 @@ namespace ProgramableText
             //remove variables
 
             string varname = getSimpleVarValue("var", block);
+            string stringVarName = getSimpleVarValue("sql_string_var", block);
             string tables = getSimpleVarValue("tables", block);
             string order = getSimpleVarValue("order", block);
             //parse acutal code
@@ -338,7 +339,7 @@ namespace ProgramableText
 
 
             fullText = varReplace(fullText,varname,sqlQuery);
-
+            fullText = varReplace(fullText, stringVarName, StringToSqlString(sqlQuery));
             return fullText;
         }
 
@@ -373,14 +374,27 @@ namespace ProgramableText
             return rtrn;
         }
 
+        public static String StringToSqlString(String inputText)
+        {
+            String rtrn = inputText;
+            rtrn = rtrn.Replace("\t", " "); //remove tabs
+            rtrn = rtrn.Replace(Environment.NewLine, ""); //remove
+            rtrn = rtrn.Replace("'", "''"); //escape single quotes
+            for (int i = 0; i < 10; i++)
+            {
+                rtrn = rtrn.Replace("  ", " "); //replace double spaces with single spaces.
+            }
+            return rtrn;
+        }
+
         #endregion
 
-        /// <summary>
-        /// NESTING NOT SUPPORTED
-        /// </summary>
-        /// <param name="directive"></param>
-        /// <returns></returns>
-        public List<String> getBlocksForDirective(String str,String directive)
+    /// <summary>
+    /// NESTING NOT SUPPORTED
+    /// </summary>
+    /// <param name="directive"></param>
+    /// <returns></returns>
+    public List<String> getBlocksForDirective(String str,String directive)
         {
             List<String> blocks = new List<string>();
             String directiveStart = directive +" " + BLOCK_START;
