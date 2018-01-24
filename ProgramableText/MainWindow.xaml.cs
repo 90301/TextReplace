@@ -144,7 +144,8 @@ namespace ProgramableText
         {
         ilstMultiReplacement.Add(new replacement());
             //replacementIteration.DisplayMemberPath = "replaceText";
-            replacementIteration.Items.Add(ilstMultiReplacement.Last().replaceText);
+            //replacementIteration.Items.Add(ilstMultiReplacement.Last().replaceText);
+            updateReplacement();
         }
 
         private void removeReplaceClick(object sender, RoutedEventArgs e)
@@ -154,6 +155,7 @@ namespace ProgramableText
                 ilstMultiReplacement.Remove(ilstMultiReplacement[replacementIteration.SelectedIndex]);
             }
             replacementIteration.Items.Remove(replacementIteration.SelectedIndex);
+            updateReplacement();
 
         }
 

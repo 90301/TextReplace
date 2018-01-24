@@ -41,7 +41,7 @@ namespace ProgramableText
 
         public const String SQL_FLATFILE = "sql flatfile";
 
-        public const String FOR_EACH_VARLIST = "foreach varlist";//This is a list of variable (start / end)
+        public const String FOR_EACH_VARLIST = "foreach varlist";//This is a list of variable (start / end) (CSV seperated for multi-replace)
 
         /// <summary>
         /// This is going to be repeated for each variable in the var list with the VARNAME being replaced with the variable and
@@ -158,7 +158,13 @@ namespace ProgramableText
             {
                 scratchpad = sqlFlatFile(scratchpad, block);
             }
-            
+            foreach (String block in getBlocksForDirective(scratchpad, FOR_EACH_VARLIST))
+            {
+                //for each content is nested in each foreach varlist
+                String listResult = foreachVarList(scratchpad, block);
+                scratchpad += listResult;
+
+            }
             
 
             lineByLinePreProcess(scratchpad, out devByLines, out prodByLines);
@@ -166,6 +172,8 @@ namespace ProgramableText
             devCode += devByLines;
             prodCode += prodByLines;
         }
+
+
 
         protected void lineByLinePreProcess(string input, out string devByLines, out string prodByLines)
         {
@@ -389,12 +397,91 @@ namespace ProgramableText
 
         #endregion
 
-    /// <summary>
-    /// NESTING NOT SUPPORTED
-    /// </summary>
-    /// <param name="directive"></param>
-    /// <returns></returns>
-    public List<String> getBlocksForDirective(String str,String directive)
+
+        #region Advanced Find and Replace
+        public string foreachVarList(string fullText, string block)
+        {
+            String replaceBlockWith = "";// codeComment(block);
+
+            //seperate out content and varlist
+            List<String> blocks = getBlocksForDirective(block, FOR_EACH_CONTENT);
+
+            string metadataOnly = removeDirectives(block, FOR_EACH_CONTENT);
+
+            String[] splitStr = metadataOnly.Split(NEW_LINE_SPLIT,StringSplitOptions.RemoveEmptyEntries);
+            
+            String[] replaceVars;
+            if (splitStr[0].Contains(","))
+            {
+                replaceVars = splitStr[0].Split(new[] {','}, StringSplitOptions.RemoveEmptyEntries);
+            }
+            else
+            {
+                replaceVars = new [] {splitStr[0]};
+            }
+
+            String[] replaceWithVars = splitStr.Skip(1).ToArray();
+            //first line contains find and replace
+
+            List<String> replacedBlocks = new List<string>();
+
+                //blocks -> [block][block]
+                foreach (String contentBlock in blocks)
+                {
+                String blockReplicate = "";
+                      
+                foreach (String replaceWithCSV in replaceWithVars)
+                        {
+                            // x,y,z -> [x][y][z]
+                            String[] replaceWith = replaceWithCSV.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
+                            String tempBlock = contentBlock;
+
+                            for (int i = 0; i < replaceVars.Length; i++)
+                            {
+                                tempBlock = tempBlock.Replace(replaceVars[i], replaceWith[i]);
+                            }
+
+                            blockReplicate += tempBlock + Environment.NewLine;
+                        }
+                        replacedBlocks.Add(blockReplicate);
+            }
+            replaceBlockWith += replacedBlocks.Select(x => x).Aggregate((i, j) => i + Environment.NewLine + j);
+
+
+            return replaceBlockWith;
+
+        }
+
+
+        #endregion
+
+        public string removeDirectives(String str, String directive)
+        {
+            String rtrn = str;
+
+            String directiveStart = directive + " " + BLOCK_START;
+            String directiveEnd = directive + " " + BLOCK_END;
+
+            string[] splitOnDirectives = str.Split(new[] { directiveStart }, StringSplitOptions.None);
+
+            foreach (String block in splitOnDirectives.Where(x => x.Contains(directiveEnd)))
+            {
+                String parsedBlock = block.Remove(block.IndexOf(directiveEnd, 0));
+                rtrn = rtrn.Replace(parsedBlock,"");
+            }
+
+            rtrn = rtrn.Replace(directiveStart, "");
+            rtrn = rtrn.Replace(directiveEnd, "");
+
+            return rtrn;
+        }
+
+        /// <summary>
+        /// NESTING NOT SUPPORTED
+        /// </summary>
+        /// <param name="directive"></param>
+        /// <returns></returns>
+        public List<String> getBlocksForDirective(String str,String directive)
         {
             List<String> blocks = new List<string>();
             String directiveStart = directive +" " + BLOCK_START;
