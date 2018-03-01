@@ -1,10 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using System.Xml;
+using ProgramableText.Structures;
+using ProgramableText.Utils;
 
 namespace ProgramableText
 {
@@ -48,6 +52,11 @@ namespace ProgramableText
         /// NO_PREFIX_VARNAME being replaced with the variablename with the prefix being stripped.
         /// </summary>
         public const String FOR_EACH_CONTENT = "foreach content";
+
+        /// <summary>
+        /// Turns SAS XML Vars to SQL parameters
+        /// </summary>
+        public const String SQL_VARLIST_GEN = "sql varlist gen";
 
         static CyberiaPreProcessor()
         {
@@ -165,7 +174,14 @@ namespace ProgramableText
                 scratchpad += listResult;
 
             }
-            
+            foreach (String block in getBlocksForDirective(scratchpad, SQL_VARLIST_GEN))
+            {
+                //SQL Var List Gen (XML -> var defines)
+                String listResult = sqlVarList(scratchpad, block);
+                scratchpad = listResult;
+
+            }
+
 
             lineByLinePreProcess(scratchpad, out devByLines, out prodByLines);
 
@@ -395,6 +411,56 @@ namespace ProgramableText
             return rtrn;
         }
 
+        public static String sqlVarList(String fullText, String block)
+        {
+            String rtrn = fullText;
+
+            String xmlBlock = TextUtils.removeMultiSpaces(block);
+            /*
+        <parameter ID="@FROM_EMPLOYER_ACCOUNT_ID" sfwDataType="int" />
+        <parameter ID="@TO_EMPLOYER_ACCOUNT_ID" sfwDataType="int" />
+        <parameter ID="@aintNoOfQuarterForDelinquency" sfwDataType="int" />
+        */
+            //step 1 Load in XML
+            List<SQL_Variable> sqlVars = new List<SQL_Variable>();
+            var settings = new XmlReaderSettings { ConformanceLevel = ConformanceLevel.Fragment };
+            using (XmlReader reader = XmlReader.Create(new StringReader(xmlBlock), settings))
+            {
+                while (reader.Read())
+                {
+                    switch (reader.NodeType)
+                    {
+                        case XmlNodeType.Element:
+                            if (reader.AttributeCount >= 2)
+                            {
+                                //Step 2, create objects
+                                String varName = reader.GetAttribute("ID");
+                                String varType = reader.GetAttribute("sfwDataType");
+                                SQL_Variable sqlVar = new SQL_Variable();
+                                sqlVar.varName = varName;
+                                sqlVar.varType = varType;
+                                sqlVar.setDefaultValue();
+                                sqlVars.Add(sqlVar);
+
+
+                            }
+                            break;
+                    }
+                }
+            }
+            
+            
+
+            //step 3, output SQL defines
+            if (sqlVars.Count >= 1)
+            {
+                String sqlVarDefine = sqlVars.Select(x => x.getVarDeclare())
+                    .Aggregate((i, j) => i + Environment.NewLine + j);
+                String replaceFrom = addDirectives(block, SQL_VARLIST_GEN);
+                rtrn = rtrn.Replace(replaceFrom, sqlVarDefine);
+            }
+            return rtrn;
+        }
         #endregion
 
 
@@ -445,7 +511,7 @@ namespace ProgramableText
                         }
                         replacedBlocks.Add(blockReplicate);
             }
-            replaceBlockWith += replacedBlocks.Select(x => x).Aggregate((i, j) => i + Environment.NewLine + j);
+            replaceBlockWith += replacedBlocks.Select(x => x).Aggregate((i, j) => i + j);
 
 
             return replaceBlockWith;
@@ -454,6 +520,14 @@ namespace ProgramableText
 
 
         #endregion
+
+        public static String addDirectives(String block, String directive)
+        {
+            String directiveStart = directive + " " + BLOCK_START;
+            String directiveEnd = directive + " " + BLOCK_END;
+
+            return directiveStart + block + directiveEnd;
+        }
 
         public string removeDirectives(String str, String directive)
         {
