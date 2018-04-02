@@ -31,16 +31,30 @@ namespace ProgramableText.Structures
 
         public void setDefaultValue()
         {
-            if (this.varName.ToLower().Contains("year"))
+            //var type to sql
+            if (this.varType.ToLower().Equals("string"))
             {
-                //it's a year
-                //TODO update it to use the current year
-                this.varValue = "'2017'";
+                this.varType = "varchar(max)";
+                this.varValue = "''";
             }
             if (this.varType.ToLower().Equals("int"))
             {
                 this.varValue = "0";
             }
+            if (this.varName.ToLower().Contains("year"))
+            {
+                //it's a year
+                //TODO update it to use the current year
+                this.varValue = ""+DateTime.Now.Year+"";
+            }
+            if (this.varName.ToLower().Contains("quarter"))
+            {
+                //it's a quarter
+                //TODO update it to use the current year
+                this.varValue = "" + DateTime.Now.Month/3 + "";
+            }
+
+
         }
 
         public String getVarDeclare()

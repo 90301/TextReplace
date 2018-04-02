@@ -60,6 +60,7 @@
       <DependentUpon>QueryPermuter.xaml</DependentUpon>
     </Compile>
     <Compile Include="Structures\SQL_Variable.cs" />
+    <Compile Include="Utils\CyberiaPreProcessorTemplate.cs" />
     <Compile Include="Utils\TextUtils.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>

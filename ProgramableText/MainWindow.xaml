@@ -5,11 +5,11 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ProgramableText"
         mc:Ignorable="d"
-        Title="MainWindow" Height="412.059" Width="733.674">
+        Title="MainWindow" Height="467.059" Width="733.674">
     <Grid>
         <TextBox x:Name="textBox" Margin="10,10,200
-                 ,0" Text="" SpellCheck.IsEnabled="True" Background="Black" Foreground="#FF0CFF00" AcceptsTab="True" AcceptsReturn="True" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" Height="135" VerticalAlignment="Top"/>
-        <TextBox x:Name="textBox_Output" Margin="10,150,200,40" Text="" SpellCheck.IsEnabled="True" Background="#FF212121" Foreground="#FF00E8FF" AcceptsTab="True" AcceptsReturn="True" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto"/>
+                 ,0" Text="" SpellCheck.IsEnabled="True" Background="Black" Foreground="#FF0CFF00" AcceptsTab="True" AcceptsReturn="True" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" Height="182" VerticalAlignment="Top"/>
+        <TextBox x:Name="textBox_Output" Margin="10,197,200,40" Text="" SpellCheck.IsEnabled="True" Background="#FF212121" Foreground="#FF00E8FF" AcceptsTab="True" AcceptsReturn="True" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto"/>
         <ComboBox x:Name="operationComboBox" Margin="0,10,10,0" VerticalAlignment="Top" SelectionChanged="comboBox_SelectionChanged" HorizontalAlignment="Right" Width="185"/>
         <Button x:Name="toSqlStringBtn" Content="SQL String" HorizontalAlignment="Left" Width="77" Margin="10,0,0,15" Click="toSqlStringBtn_Click" Height="20" VerticalAlignment="Bottom"/>
         <Button x:Name="OpenQueryPremuterButton" Content="Query Permuter" HorizontalAlignment="Left" Margin="92,0,0,15" Width="107" Click="OpenQueryPremuterButton_Click" Height="20" VerticalAlignment="Bottom"/>
@@ -39,6 +39,12 @@
                     <Button x:Name="addFeatureButton" Content="Add Feature" Margin="94,0,10,7" Click="addFeatureButton_Click" Height="20" VerticalAlignment="Bottom"/>
                     <CheckBox x:Name="replaceFeatureCheckBox" Content="Replace" HorizontalAlignment="Left" Margin="10,0,0,9" Height="15" VerticalAlignment="Bottom"/>
                     <TextBox x:Name="featureTextBox3" HorizontalAlignment="Left" Height="23" Margin="146,19,0,0" TextWrapping="Wrap" Text="\s" VerticalAlignment="Top" Width="23"/>
+                </Grid>
+            </TabItem>
+            <TabItem Header="Templates">
+                <Grid Background="#FFE5E5E5">
+                    <ComboBox x:Name="templateComboBox" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="120"/>
+                    <Button x:Name="loadTemplateBtn" Content="Load" HorizontalAlignment="Left" Margin="135,10,0,0" VerticalAlignment="Top" Width="38" Click="loadTemplateBtn_Click"/>
                 </Grid>
             </TabItem>
         </TabControl>

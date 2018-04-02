@@ -15,6 +15,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using ProgramableText.Annotations;
+using ProgramableText.Utils;
 
 namespace ProgramableText
 {
@@ -29,10 +30,13 @@ namespace ProgramableText
         public const string MULTI_REPLACE = "Multi Replace";
 
         public Boolean devOutput = true;
+        string devOutputText, prodOutputText;
 
         public ObservableCollection<String> ilstMultiReplace = new ObservableCollection<string>();
 
         public List<replacement> ilstMultiReplacement = new List<replacement>();
+
+        public Dictionary<String,CyberiaPreProcessorTemplate> cyberiaTemplates { get; set; }
         public MainWindow()
         {
             InitializeComponent();
@@ -46,8 +50,15 @@ namespace ProgramableText
             {
                 operationComboBox.Items.Add(lstrOp);
             }
-           // replacementIteration.ItemsSource = ilstMultiReplacement;
-           // replacementIteration.DisplayMemberPath = "replaceText";
+
+            cyberiaTemplates = CyberiaPreProcessorTemplate.getBasicTemplates();
+            foreach (var templateName in cyberiaTemplates.Keys)
+            {
+                templateComboBox.Items.Add(templateName);
+            }
+            
+            // replacementIteration.ItemsSource = ilstMultiReplacement;
+            // replacementIteration.DisplayMemberPath = "replaceText";
         }
 
         private void textBox_TextChanged(object sender, TextChangedEventArgs e)
@@ -264,7 +275,7 @@ namespace ProgramableText
 
         }
 
-        string devOutputText, prodOutputText;
+
 
         private void cyberiaPreProcessBtn_Click(object sender, RoutedEventArgs e)
         {
@@ -284,6 +295,17 @@ namespace ProgramableText
                 textBox_Output.Text = prodOutputText;
             }
 
+        }
+
+        private void loadTemplateBtn_Click(object sender, RoutedEventArgs e)
+        {
+            String templateName = this.templateComboBox.SelectionBoxItem.ToString();
+            //load template text
+            if (templateName != null
+                && this.cyberiaTemplates.ContainsKey(templateName))
+            {
+                this.textBox.Text = this.cyberiaTemplates[templateName].templateText;
+            }
         }
 
         private void cyberiaPreProcessDevToggleBtn_Click(object sender, RoutedEventArgs e)
