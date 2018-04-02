@@ -29,6 +29,16 @@ namespace ProgramableText.Utils
 
             templates[c1.templateName] = (c1);
 
+            CyberiaPreProcessorTemplate c2 = new CyberiaPreProcessorTemplate();
+            c2.templateName = "Foreach Replace";
+            c2.templateText += "foreach varlist blockstart" + Environment.NewLine;
+            c2.templateText += ""+Environment.NewLine;
+            c2.templateText += "foreach content blockstart" + Environment.NewLine;
+            c2.templateText += ""+Environment.NewLine;
+            c2.templateText += "foreach content blockend" + Environment.NewLine;
+            c2.templateText += "foreach varlist blockend" + Environment.NewLine;
+            templates[c2.templateName] = (c2);
+
             return templates;
 
         }
