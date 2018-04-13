@@ -1,0 +1,19 @@
+﻿<Window x:Class="ProgramableText.FlatFileReader"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:ProgramableText"
+        mc:Ignorable="d"
+        Title="FlatFileReader" Height="300" Width="500">
+    <Grid>
+        <Button x:Name="loadFlatFileBtn" Content="Load Flat File" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="75" Click="loadFlatFileBtn_Click"/>
+        <Button x:Name="saveCSVFile" Content="Save CSV File" HorizontalAlignment="Left" Margin="90,10,0,0" VerticalAlignment="Top" Width="75" Click="saveCSVFile_Click"/>
+        <TextBox x:Name="formatPreviewTextbox" HorizontalAlignment="Left" Margin="10,61,0,10" TextWrapping="Wrap" Text="" Width="155" AcceptsReturn="True"/>
+        <Label x:Name="label" Content="Format" HorizontalAlignment="Left" Margin="10,35,0,0" VerticalAlignment="Top"/>
+        <TextBox x:Name="previewTextbox" Margin="0,61,10,10" TextWrapping="Wrap" Text="" HorizontalAlignment="Right" Width="312" AcceptsReturn="True"/>
+        <Label x:Name="label_Copy" Content="Preview" Margin="0,35,265,0" VerticalAlignment="Top" HorizontalAlignment="Right" Width="57"/>
+        <Button x:Name="processBtn" Content="Process" HorizontalAlignment="Left" Margin="170,10,0,0" VerticalAlignment="Top" Width="75" Click="processBtn_Click"/>
+
+    </Grid>
+</Window>

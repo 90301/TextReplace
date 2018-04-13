@@ -1,7 +1,9 @@
 ﻿using System;
+using System.CodeDom;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace ProgramableText.Utils
@@ -21,6 +23,16 @@ namespace ProgramableText.Utils
 
             }
             return rtrn;
+        }
+
+        public static String removeHtmlTags(String astrInput)
+        {
+            return Regex.Replace(astrInput, @"<[^>]*>", String.Empty);
+        }
+
+        public static String[] splitOnNewLine(string astrInput)
+        {
+            return astrInput.Split(new[] {"\r\n", "\r", "\n"}, StringSplitOptions.RemoveEmptyEntries);
         }
     }
 }

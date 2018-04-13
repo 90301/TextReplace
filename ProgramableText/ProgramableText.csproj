@@ -56,12 +56,19 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="CyberiaPreProcessor.cs" />
+    <Compile Include="FlatFileReader.xaml.cs">
+      <DependentUpon>FlatFileReader.xaml</DependentUpon>
+    </Compile>
     <Compile Include="QueryPermuter.xaml.cs">
       <DependentUpon>QueryPermuter.xaml</DependentUpon>
     </Compile>
     <Compile Include="Structures\SQL_Variable.cs" />
     <Compile Include="Utils\CyberiaPreProcessorTemplate.cs" />
     <Compile Include="Utils\TextUtils.cs" />
+    <Page Include="FlatFileReader.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

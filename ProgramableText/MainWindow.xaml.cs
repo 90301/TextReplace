@@ -308,6 +308,17 @@ namespace ProgramableText
             }
         }
 
+        private void testCodeBtn1_Click(object sender, RoutedEventArgs e)
+        {
+            textBox_Output.Text = TextUtils.removeHtmlTags(textBox.Text);
+        }
+
+        private void OpenFlatFileReader_Click(object sender, RoutedEventArgs e)
+        {
+            FlatFileReader ffReader = new FlatFileReader();
+            ffReader.Show();
+        }
+
         private void cyberiaPreProcessDevToggleBtn_Click(object sender, RoutedEventArgs e)
         {
             devOutput = !devOutput;
