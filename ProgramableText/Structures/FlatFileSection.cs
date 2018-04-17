@@ -9,7 +9,6 @@ namespace ProgramableText.Structures
 {
     public class FlatFileSection
     {
-        private string x;
 
         public FlatFileSection(string sectionText)
         {
