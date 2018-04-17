@@ -521,6 +521,12 @@ namespace ProgramableText
 
         #endregion
 
+        /// <summary>
+        /// Adds Directives back to the text. (used after processing)
+        /// </summary>
+        /// <param name="block"></param>
+        /// <param name="directive"></param>
+        /// <returns></returns>
         public static String addDirectives(String block, String directive)
         {
             String directiveStart = directive + " " + BLOCK_START;
@@ -555,7 +561,7 @@ namespace ProgramableText
         /// </summary>
         /// <param name="directive"></param>
         /// <returns></returns>
-        public List<String> getBlocksForDirective(String str,String directive)
+        public static List<String> getBlocksForDirective(String str,String directive)
         {
             List<String> blocks = new List<string>();
             String directiveStart = directive +" " + BLOCK_START;
@@ -587,7 +593,7 @@ namespace ProgramableText
             return directivesFound;
         }
 
-        public bool findDirective(string str, string directive)
+        public static bool findDirective(string str, string directive)
         {
             if (str.ToLower().Contains(directive))
             {

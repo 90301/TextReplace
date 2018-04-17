@@ -13,6 +13,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using Microsoft.Win32;
+using ProgramableText.Structures;
 using ProgramableText.Utils;
 
 namespace ProgramableText
@@ -29,6 +30,11 @@ namespace ProgramableText
         public List<KeyValuePair<String,int>> formatList {get;set;} = new List<KeyValuePair<string, int>>();
 
         public string csvOutput { get; set; } = "";
+
+        //Directives
+        public static String BLOCK_SECTION = "Section";
+        //section blockstart
+        //section blockend
 
         public FlatFileReader()
         {
@@ -47,6 +53,7 @@ namespace ProgramableText
 
         public void parseTextLoaded()
         {
+            //old version, new method is cyberiaParseTextLoaded
             textFormat = formatPreviewTextbox.Text;
             //TODO add section Support (X lines of a particular format)
             if (textFormat.Contains(","))
@@ -99,14 +106,25 @@ namespace ProgramableText
                 this.previewTextbox.Text = csvOutput;
 
             }
-
-
-
         }
+
+        public void cyberiaParseTextLoaded()
+        {
+            textFormat = formatPreviewTextbox.Text;
+            List<String> blocks = CyberiaPreProcessor.getBlocksForDirective(textFormat, BLOCK_SECTION);
+
+            List<FlatFileSection> sections = blocks.Select(x => new FlatFileSection(x)).ToList();
+
+            csvOutput = FlatFileSection.parseSections(textLoaded,sections);
+
+            this.previewTextbox.Text = csvOutput;
+        }
+
 
         private void processBtn_Click(object sender, RoutedEventArgs e)
         {
-            parseTextLoaded();
+            //parseTextLoaded();
+            cyberiaParseTextLoaded();
         }
 
         private void saveCSVFile_Click(object sender, RoutedEventArgs e)
@@ -117,7 +135,8 @@ namespace ProgramableText
             saveFileDialog.Filter = "Comma Seperated Value|*.csv";
             if (saveFileDialog.ShowDialog() == true)
             {
-                parseTextLoaded();
+                //parseTextLoaded();
+                cyberiaParseTextLoaded();
                 if (saveFileDialog.FileName != "")
                 {
                     System.IO.FileStream fs =
