@@ -11,7 +11,7 @@
         <Button x:Name="saveCSVFile" Content="Save CSV File" HorizontalAlignment="Left" Margin="90,10,0,0" VerticalAlignment="Top" Width="75" Click="saveCSVFile_Click"/>
         <TextBox x:Name="formatPreviewTextbox" HorizontalAlignment="Left" Margin="10,61,0,10" TextWrapping="Wrap" Text="" Width="155" AcceptsReturn="True"/>
         <Label x:Name="label" Content="Format" HorizontalAlignment="Left" Margin="10,35,0,0" VerticalAlignment="Top"/>
-        <TextBox x:Name="previewTextbox" Margin="0,61,10,10" TextWrapping="Wrap" Text="" HorizontalAlignment="Right" Width="312" AcceptsReturn="True"/>
+        <TextBox x:Name="previewTextbox" Margin="170,61,10,10" TextWrapping="Wrap" Text="" AcceptsReturn="True"/>
         <Label x:Name="label_Copy" Content="Preview" Margin="0,35,265,0" VerticalAlignment="Top" HorizontalAlignment="Right" Width="57"/>
         <Button x:Name="processBtn" Content="Process" HorizontalAlignment="Left" Margin="170,10,0,0" VerticalAlignment="Top" Width="75" Click="processBtn_Click"/>
 

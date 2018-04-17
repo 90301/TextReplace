@@ -28,13 +28,14 @@ namespace ProgramableText.Structures
                 String[] fields = line.Split(new[] { "," }, StringSplitOptions.None);
                 if (fields.Length >= 2)
                 {
+                    String fieldNameLocal = fields[0].Trim();
                     String fieldTextSize = fields[1].Trim();
                     int fieldSize = Int32.Parse(fieldTextSize);
-                    if (fields[0].Equals(fieldName))
+                    if (fieldNameLocal.Equals(fieldName))
                     {
                         fieldNumber = formatList.Count;
                     }
-                    formatList.Add(new KeyValuePair<string, int>(fields[0], fieldSize));
+                    formatList.Add(new KeyValuePair<string, int>(fieldNameLocal, fieldSize));
                 }
             }
 
