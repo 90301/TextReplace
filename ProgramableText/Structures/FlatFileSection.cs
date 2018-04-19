@@ -54,6 +54,11 @@ namespace ProgramableText.Structures
         public List<KeyValuePair<String, int>> formatList { get; set; } = new List<KeyValuePair<string, int>>();
 
         /// <summary>
+        /// Lines of the CSV file (Used only when group by is enabled)
+        /// </summary>
+        public List<String> contentLines { get; set; } = new List<string>();
+
+        /// <summary>
         /// Retruns parsed line (csv text)
         /// </summary>
         /// <param name="line"></param>
@@ -61,15 +66,33 @@ namespace ProgramableText.Structures
         /// <returns></returns>
         public static String parseSections(String fullFlatFile, List<FlatFileSection> section)
         {
+
             int lastLineSection = -1;
             string outputString = "";
+
+            if (FlatFileReader.groupSections)
+            {
+                foreach (FlatFileSection flatFileSection in section)
+                {
+                    flatFileSection.contentLines.Clear();
+                    
+                }
+            }
+
             foreach (string line in TextUtils.splitOnNewLine(fullFlatFile))
             {
                 String csvLine = "";
                 //if the last section used works, then just use that, if not, try all the sections one by one
                 if (lastLineSection >=0 && section[lastLineSection].parseLine(line, out csvLine))
                 {
-                    outputString += csvLine + Environment.NewLine;
+                    if (FlatFileReader.groupSections)
+                    {
+                        section[lastLineSection].contentLines.Add(csvLine);
+                    }
+                    else
+                    {
+                        outputString += csvLine + Environment.NewLine;
+                    }
                 }
                 else
                 {
@@ -78,9 +101,16 @@ namespace ProgramableText.Structures
                     {
                         if (flatFileSection.parseLine(line, out csvLine))
                         {
-                            //TODO: add header code
-                            outputString += flatFileSection.getHeaderText() + Environment.NewLine;
-                            outputString += csvLine + Environment.NewLine;
+                            if (FlatFileReader.groupSections)
+                            {
+                                flatFileSection.contentLines.Add(csvLine);
+                            }
+                            else
+                            {
+                                outputString += flatFileSection.getHeaderText() + Environment.NewLine;
+                                outputString += csvLine + Environment.NewLine;
+                            }
+                            
                             lastLineSection = sectionNumber;
                             break;
                         }
@@ -88,6 +118,20 @@ namespace ProgramableText.Structures
                     }
                 }
                 
+            }
+
+            //group by output
+            if (FlatFileReader.groupSections)
+            {
+                foreach (FlatFileSection flatFileSection in section)
+                {
+                    if (flatFileSection.contentLines.Count >= 1)
+                    {
+                        outputString += flatFileSection.getHeaderText() + Environment.NewLine;
+                        outputString += flatFileSection.contentLines.Aggregate((i, j) => i + Environment.NewLine + j) + Environment.NewLine;
+                    }
+                }
+
             }
 
             return outputString;

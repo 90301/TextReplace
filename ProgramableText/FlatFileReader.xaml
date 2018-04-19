@@ -5,15 +5,17 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ProgramableText"
         mc:Ignorable="d"
-        Title="FlatFileReader" Height="300" Width="500">
+        Title="FlatFileReader" Height="400" Width="500">
     <Grid>
         <Button x:Name="loadFlatFileBtn" Content="Load Flat File" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="75" Click="loadFlatFileBtn_Click"/>
         <Button x:Name="saveCSVFile" Content="Save CSV File" HorizontalAlignment="Left" Margin="90,10,0,0" VerticalAlignment="Top" Width="75" Click="saveCSVFile_Click"/>
-        <TextBox x:Name="formatPreviewTextbox" HorizontalAlignment="Left" Margin="10,61,0,10" TextWrapping="Wrap" Text="" Width="155" AcceptsReturn="True"/>
-        <Label x:Name="label" Content="Format" HorizontalAlignment="Left" Margin="10,35,0,0" VerticalAlignment="Top"/>
-        <TextBox x:Name="previewTextbox" Margin="170,61,10,10" TextWrapping="Wrap" Text="" AcceptsReturn="True"/>
-        <Label x:Name="label_Copy" Content="Preview" Margin="170,35,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Width="57"/>
+        <TextBox x:Name="formatPreviewTextbox" HorizontalAlignment="Left" Margin="10,85,0,10" TextWrapping="Wrap" Text="" Width="155" AcceptsReturn="True"/>
+        <Label x:Name="label" Content="Format" HorizontalAlignment="Left" Margin="10,54,0,0" VerticalAlignment="Top"/>
+        <TextBox x:Name="previewTextbox" Margin="170,85,10,10" TextWrapping="Wrap" Text="" AcceptsReturn="True"/>
+        <Label x:Name="label_Copy" Content="Preview" Margin="170,54,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Width="57"/>
         <Button x:Name="processBtn" Content="Process" HorizontalAlignment="Left" Margin="170,10,0,0" VerticalAlignment="Top" Width="75" Click="processBtn_Click"/>
+        <Button x:Name="loadFormatBtn" Content="Load Format" HorizontalAlignment="Left" Margin="10,34,0,0" VerticalAlignment="Top" Width="75" Click="loadFormatBtn_Click"/>
+        <CheckBox x:Name="groupSectionsCheckbox" Content="Group Sections" Margin="0,10,10,0" VerticalAlignment="Top" HorizontalAlignment="Right" Width="101" Checked="groupSectionsCheckbox_Checked"/>
 
     </Grid>
 </Window>

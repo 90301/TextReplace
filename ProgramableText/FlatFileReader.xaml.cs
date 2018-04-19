@@ -36,6 +36,8 @@ namespace ProgramableText
         //section blockstart
         //section blockend
 
+        public static Boolean groupSections = false;
+
         public FlatFileReader()
         {
             InitializeComponent();
@@ -147,7 +149,48 @@ namespace ProgramableText
 
                     fs.Close();
 
+                    String fileLocation = saveFileDialog.FileName;
+
+                    openExplorer(fileLocation);
+
                 }
+            }
+        }
+
+        public void openExplorer(String fileLocation)
+        {
+            //string filePath = fileLocation;
+            if (!File.Exists(fileLocation))
+            {
+                return;
+            }
+
+            // combine the arguments together
+            // it doesn't matter if there is a space after ','
+            string argument = "/select, \"" + fileLocation + "\"";
+
+            System.Diagnostics.Process.Start("explorer.exe", argument);
+        }
+
+        private void loadFormatBtn_Click(object sender, RoutedEventArgs e)
+        {
+            OpenFileDialog openFileDialog = new OpenFileDialog();
+            if (openFileDialog.ShowDialog() == true)
+            {
+                textLoaded = File.ReadAllText(openFileDialog.FileName);
+                this.formatPreviewTextbox.Text = textLoaded;//only if the format isn't loaded
+            }
+        }
+
+        private void groupSectionsCheckbox_Checked(object sender, RoutedEventArgs e)
+        {
+            if (groupSectionsCheckbox.IsChecked.HasValue && groupSectionsCheckbox.IsChecked.Value)
+            {
+                FlatFileReader.groupSections = true;
+            }
+            else
+            {
+                FlatFileReader.groupSections = false;
             }
         }
     }
