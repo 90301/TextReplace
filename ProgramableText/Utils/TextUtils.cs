@@ -34,5 +34,15 @@ namespace ProgramableText.Utils
         {
             return astrInput.Split(new[] {"\r\n", "\r", "\n"}, StringSplitOptions.RemoveEmptyEntries);
         }
+
+        public static String[] splitOnTab(string astrInput)
+        {
+            return astrInput.Split(new[] {'\t'}, StringSplitOptions.RemoveEmptyEntries);
+        }
+
+        public static String[] splitOnComma(string astrInput)
+        {
+            return astrInput.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
+        }
     }
 }

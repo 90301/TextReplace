@@ -21,6 +21,7 @@ namespace ProgramableText
     public class CyberiaPreProcessor
     {
         public String LanguageUsing { get; set; }
+        public static bool useTabDelimiter { get; set; } = false;
 
         public const String LANGUAGE_JAVA = "JAVA";
         public const String LANGUAGE_C_SHARP = "CSHARP";
@@ -196,8 +197,7 @@ namespace ProgramableText
             devByLines = "";
             prodByLines = "";
 
-            String[] lines = input.Split(new[] { "\r\n", "\r", "\n" },
-                StringSplitOptions.None);
+            String[] lines = input.Split(NEW_LINE_SPLIT,StringSplitOptions.None);
 
             foreach (String line in lines)
             {
@@ -477,9 +477,16 @@ namespace ProgramableText
             String[] splitStr = metadataOnly.Split(NEW_LINE_SPLIT,StringSplitOptions.RemoveEmptyEntries);
             
             String[] replaceVars;
-            if (splitStr[0].Contains(","))
+            if ((splitStr[0].Contains(",") && !useTabDelimiter) || (splitStr[0].Contains("\t") && useTabDelimiter))
             {
-                replaceVars = splitStr[0].Split(new[] {','}, StringSplitOptions.RemoveEmptyEntries);
+                if (useTabDelimiter)
+                {
+                    replaceVars = TextUtils.splitOnTab(splitStr[0]);
+                }
+                else
+                {
+                    replaceVars = TextUtils.splitOnComma(splitStr[0]);
+                }
             }
             else
             {
@@ -499,15 +506,25 @@ namespace ProgramableText
                 foreach (String replaceWithCSV in replaceWithVars)
                         {
                             // x,y,z -> [x][y][z]
-                            String[] replaceWith = replaceWithCSV.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
-                            String tempBlock = contentBlock;
+                        String[] replaceWith;
 
-                            for (int i = 0; i < replaceVars.Length; i++)
-                            {
-                                tempBlock = tempBlock.Replace(replaceVars[i], replaceWith[i]);
-                            }
+                        if (useTabDelimiter)
+                        {
+                            replaceWith = TextUtils.splitOnTab(replaceWithCSV);
+                        }
+                        else
+                        {
+                            replaceWith = TextUtils.splitOnComma(replaceWithCSV);
+                        }
 
-                            blockReplicate += tempBlock + Environment.NewLine;
+                        String tempBlock = contentBlock;
+
+                        for (int i = 0; i < replaceVars.Length; i++)
+                        {
+                            tempBlock = tempBlock.Replace(replaceVars[i], replaceWith[i]);
+                        }
+
+                            blockReplicate += tempBlock; // + Environment.NewLine;
                         }
                         replacedBlocks.Add(blockReplicate);
             }

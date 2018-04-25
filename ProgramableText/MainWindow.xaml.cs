@@ -319,6 +319,11 @@ namespace ProgramableText
             ffReader.Show();
         }
 
+        private void TabDelimiterSettingCheckBox_Checked(object sender, RoutedEventArgs e)
+        {
+            CyberiaPreProcessor.useTabDelimiter = TabDelimiterSettingCheckBox.IsChecked.Value;
+        }
+
         private void cyberiaPreProcessDevToggleBtn_Click(object sender, RoutedEventArgs e)
         {
             devOutput = !devOutput;
