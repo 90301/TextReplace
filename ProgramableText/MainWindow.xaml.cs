@@ -324,7 +324,13 @@ namespace ProgramableText
             CyberiaPreProcessor.useTabDelimiter = TabDelimiterSettingCheckBox.IsChecked.Value;
         }
 
-        private void cyberiaPreProcessDevToggleBtn_Click(object sender, RoutedEventArgs e)
+		private void ToLogParser_Click(object sender, RoutedEventArgs e)
+		{
+			LogProcessorWindow logProcessor = new LogProcessorWindow();
+			logProcessor.Show();
+		}
+
+		private void cyberiaPreProcessDevToggleBtn_Click(object sender, RoutedEventArgs e)
         {
             devOutput = !devOutput;
             if (devOutput)

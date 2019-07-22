@@ -5,8 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ProgramableText"
         mc:Ignorable="d"
-        Title="MainWindow" Height="467.059" Width="733.674">
-    <Grid>
+        Title="MainWindow" Height="491.559" Width="733.674">
+    <Grid Margin="0,0,0,13">
         <TextBox x:Name="textBox" Margin="10,10,200
                  ,0" Text="" SpellCheck.IsEnabled="True" Background="Black" Foreground="#FF0CFF00" AcceptsTab="True" AcceptsReturn="True" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" Height="182" VerticalAlignment="Top"/>
         <TextBox x:Name="textBox_Output" Margin="10,197,200,40" Text="" SpellCheck.IsEnabled="True" Background="#FF212121" Foreground="#FF00E8FF" AcceptsTab="True" AcceptsReturn="True" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto"/>
@@ -59,6 +59,7 @@
         <Button x:Name="cyberiaPreProcessDevToggleBtn" Content="Dev" HorizontalAlignment="Left" Margin="321,0,0,15" Width="45" Click="cyberiaPreProcessDevToggleBtn_Click" Height="20" VerticalAlignment="Bottom"/>
         <Button x:Name="testCodeBtn1" Content="Remove HTML Tags" Margin="0,0,90,13" Height="20" VerticalAlignment="Bottom" HorizontalAlignment="Right" Width="125" Click="testCodeBtn1_Click"/>
         <Button x:Name="OpenFlatFileReader" Content="Flat File Reader" HorizontalAlignment="Left" Margin="371,0,0,15" Width="97" Height="20" VerticalAlignment="Bottom" Click="OpenFlatFileReader_Click"/>
+		<Button x:Name="toLogParser" Content="Log Parser" HorizontalAlignment="Left" Width="77" Margin="10,0,0,-10" Click="ToLogParser_Click" Height="20" VerticalAlignment="Bottom"/>
 
-    </Grid>
+	</Grid>
 </Window>
