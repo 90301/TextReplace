@@ -16,7 +16,7 @@ namespace ProgramableText.LogProcessor
             String output = "";
             foreach (String line in input.Split(ProgramNode.NEWLINE, StringSplitOptions.RemoveEmptyEntries))
             {
-                if (line.Contains(filterText))
+                if (line.ToLower().Contains(filterText.ToLower()))
                 {
                     output += line + Environment.NewLine;
                 }
