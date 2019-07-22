@@ -1,4 +1,5 @@
 ﻿
+using ProgramableText.LogProcessor;
 using System;
 using System.Collections.Generic;
 using System.Windows;
@@ -17,25 +18,29 @@ namespace ProgramableText
         /// <summary>
         /// Lookup data structure
         /// </summary>
-        Dictionary<String, ProgramableText.LogProcessor.ProgramNode> allNodes;
+        Dictionary<String, ProgramNode> allNodes;
 
-        List<ProgramableText.LogProcessor.ProgramNode> nodes ;
+        List<ProgramNode> nodes ;
 
-        ProgramableText.LogProcessor.InnerReadNode argReader = new ProgramableText.LogProcessor.InnerReadNode();
+        InnerReadNode argReader = new InnerReadNode();
 
         public LogProcessorWindow()
 		{
 			InitializeComponent();
 
+            InnerReadNode.setupEscapeChars();
+
             argReader.parseArgs(new String[] { "(", ")" });
 
-            allNodes = new Dictionary<string, ProgramableText.LogProcessor.ProgramNode>();
-            addAllNode(new ProgramableText.LogProcessor.InnerReadNode());
-            addAllNode(new ProgramableText.LogProcessor.FilterNode());
+            allNodes = new Dictionary<string, ProgramNode>();
+            addAllNode(new InnerReadNode());
+            addAllNode(new FilterNode());
+
+            this.AllOpList.ItemsSource = allNodes.Values;
 
         }
 
-        public void addAllNode(ProgramableText.LogProcessor.ProgramNode node)
+        public void addAllNode(ProgramNode node)
         {
             allNodes.Add(node.getOpName(), node);
         } 
@@ -50,8 +55,16 @@ namespace ProgramableText
                 String lineClean = line.Trim();
 
                 String op = lineClean.Split(NAME_SPLIT,StringSplitOptions.RemoveEmptyEntries)[0];
+                ProgramNode node;
 
-                ProgramableText.LogProcessor.ProgramNode node = (allNodes[op]).createInstance();
+                if (allNodes.ContainsKey(op))
+                {
+                    node = (allNodes[op]).createInstance();
+                } else
+                {
+                    this.OutputBox.Text = "Failed to find OP: " + op;
+                    return;
+                }
 
                 //Load the arguments of the method, comma seperated (arg1,arg2)
                 node.parseArgs(
@@ -59,6 +72,18 @@ namespace ProgramableText
                     );
                 nodes.Add(node);
             }
+            // Process Text
+            String processedText = this.LogText.Text;
+            String nodeToString = "";
+            foreach (ProgramNode node in nodes)
+            {
+                processedText = node.calculate(processedText);
+                nodeToString += node.ToString() + Environment.NewLine;
+            }
+
+            this.ProgramReader.Text = nodeToString;
+
+            this.OutputBox.Text = processedText;
         }
     }
 }

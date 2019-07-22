@@ -18,6 +18,16 @@ namespace ProgramableText.LogProcessor
     {
         string start, end;
         Boolean multiMatch;
+
+        static List<String> escapeChars = new List<string>();
+
+        public static void setupEscapeChars()
+        {
+            escapeChars.Add("(");
+            escapeChars.Add(")");
+            escapeChars.Add("[");
+            escapeChars.Add("]");
+        }
         public override string calculate(string input)
         {
             return coreFilter(input).Aggregate((x, y) => x + Environment.NewLine + y);
@@ -36,7 +46,7 @@ namespace ProgramableText.LogProcessor
             //List<string> halfMatches = input.Split(start, StringSplitOptions.None).ToList();
 
             //multiple matches
-            String regex = start + "([^\"]*)" + end;
+            String regex = start + "(.*?)" + end;
             //from Match match in Regex.Matches(input,regex)
             //select match.ToString();
 
@@ -44,7 +54,7 @@ namespace ProgramableText.LogProcessor
 
             foreach (Match match in matchesRegex)
             {
-                matches.Add(match.ToString());
+                matches.Add(match.Groups[1].Value);
             }
             return matches;
         }
@@ -61,13 +71,34 @@ namespace ProgramableText.LogProcessor
 
         public override void parseArgs(string[] args)
         {
-            start = args[0];
-            end = args[1];
+            if (args.Length >=2) {
+            start = Escape(args[0]);
+            end = Escape(args[1]);
+            } else
+            {
+                if (args[0].Equals("("))
+                {
+                    start = Escape("(");
+                    end = Escape(")");
+                }
+            }
+
 
             if (args.Length > 2)
             {
                 Boolean.TryParse(args[2],out multiMatch);
             }
+        }
+
+        private string Escape(string v)
+        {
+            String escapeV = v;
+            foreach (String escape in escapeChars) {
+                escapeV = escapeV.Replace(escape, "\\" + escape);
+            }
+
+            return escapeV;
+
         }
 
         public override string ToString()

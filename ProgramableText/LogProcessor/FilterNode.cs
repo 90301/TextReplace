@@ -13,13 +13,21 @@ namespace ProgramableText.LogProcessor
 
         public override string calculate(string input)
         {
-            if (input.Contains(filterText))
+            String output = "";
+            foreach (String line in input.Split(ProgramNode.NEWLINE, StringSplitOptions.RemoveEmptyEntries))
             {
-                return input;
-            } else
-            {
-                return null;
+                if (line.Contains(filterText))
+                {
+                    output += line + Environment.NewLine;
+                }
+                else
+                {
+
+                }
+
             }
+
+            return output;
         }
 
         public override ProgramNode createInstance()

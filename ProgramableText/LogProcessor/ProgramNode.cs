@@ -11,7 +11,7 @@ namespace ProgramableText.LogProcessor
 {
 	public abstract class ProgramNode
 	{
-		private static readonly String[] NEWLINE = new string[] { Environment.NewLine };
+		public static readonly String[] NEWLINE = new string[] { Environment.NewLine };
 
 		/// <summary>
 		/// Calculates a given functional node

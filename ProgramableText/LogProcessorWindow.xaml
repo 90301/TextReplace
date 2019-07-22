@@ -6,13 +6,14 @@
         xmlns:local="clr-namespace:ProgramableText"
         mc:Ignorable="d"
         Title="LogProcessor" Height="450" Width="800">
-	<Grid>
-        <TextBox x:Name="ProgramReader" HorizontalAlignment="Left" Height="399" Margin="10,10,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="147"/>
-        <TextBox x:Name="FilterProgram" HorizontalAlignment="Left" Height="76" Margin="162,94,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="421"/>
-		<TextBox x:Name="LogText" HorizontalAlignment="Left" Height="90" Margin="162,175,0,0" TextWrapping="Wrap" Text="Log" VerticalAlignment="Top" Width="421"/>
-        <TextBox x:Name="OutputBox" HorizontalAlignment="Left" Height="139" Margin="162,270,0,0" TextWrapping="Wrap" Text="Output" VerticalAlignment="Top" Width="421"/>
-        
-		<Button x:Name="ProcessBtn" Content="Process" HorizontalAlignment="Left" Margin="508,69,0,0" VerticalAlignment="Top" Width="75" Click="ProcessBtn_Click"/>
+    <Grid>
+        <TextBox x:Name="ProgramReader" HorizontalAlignment="Left" Height="399" Margin="10,10,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="147" AcceptsReturn="True" />
+        <TextBox x:Name="FilterProgram" HorizontalAlignment="Left" Height="76" Margin="162,94,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="421" AcceptsReturn="True"/>
+        <TextBox x:Name="LogText" HorizontalAlignment="Left" Height="90" Margin="162,175,0,0" TextWrapping="Wrap" Text="Log" VerticalAlignment="Top" Width="421" AcceptsReturn="True"/>
+        <TextBox x:Name="OutputBox" HorizontalAlignment="Left" Height="139" Margin="162,270,0,0" TextWrapping="Wrap" Text="Output" VerticalAlignment="Top" Width="421" AcceptsReturn="True"/>
 
-	</Grid>
+        <Button x:Name="ProcessBtn" Content="Process" HorizontalAlignment="Left" Margin="508,69,0,0" VerticalAlignment="Top" Width="75" Click="ProcessBtn_Click"/>
+        <ListBox x:Name="AllOpList" HorizontalAlignment="Left" Height="315" Margin="588,94,0,0" VerticalAlignment="Top" Width="194"/>
+
+    </Grid>
 </Window>
