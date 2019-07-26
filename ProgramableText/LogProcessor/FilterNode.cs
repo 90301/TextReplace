@@ -9,20 +9,16 @@ namespace ProgramableText.LogProcessor
     class FilterNode : ProgramNode
     {
 
-        String filterText;
+        String[] filterText;
 
         public override string calculate(string input)
         {
             String output = "";
             foreach (String line in input.Split(ProgramNode.NEWLINE, StringSplitOptions.RemoveEmptyEntries))
             {
-                if (line.ToLower().Contains(filterText.ToLower()))
+                if (filterText.Any(x => line.ToLower().Contains(x.ToLower())))
                 {
                     output += line + Environment.NewLine;
-                }
-                else
-                {
-
                 }
 
             }
@@ -42,12 +38,20 @@ namespace ProgramableText.LogProcessor
 
         public override void parseArgs(string[] args)
         {
-            this.filterText = args[0];
+            this.filterText = args;
         }
 
         public override string ToString()
         {
-            return getOpName() + "( " + this.filterText +" )";
+            String argsToString;
+            if (filterText != null && filterText.Length >= 1)
+            {
+                argsToString = this.filterText.Select(x => x.ToLower()).Aggregate((x, y) => (x + "," + y));
+            } else
+            {
+                argsToString = "";
+            }
+            return getOpName() + "( " + argsToString + " )";
         }
     }
 }
