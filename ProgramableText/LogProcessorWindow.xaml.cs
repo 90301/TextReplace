@@ -85,5 +85,13 @@ namespace ProgramableText
 
             this.OutputBox.Text = processedText;
         }
+
+        public void AllOpsClick(object sender, RoutedEventArgs e)
+        {
+            if (AllOpList.SelectedItem != null)
+            {
+                this.FilterProgram.Text += AllOpList.SelectedItem.ToString() + Environment.NewLine;
+            }
+        }
     }
 }

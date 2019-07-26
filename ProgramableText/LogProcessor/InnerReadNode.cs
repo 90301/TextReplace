@@ -30,7 +30,14 @@ namespace ProgramableText.LogProcessor
         }
         public override string calculate(string input)
         {
-            return coreFilter(input).Aggregate((x, y) => x + Environment.NewLine + y);
+            List<String> core = coreFilter(input);
+            if (core.Count >= 1)
+            {
+                return core.Aggregate((x, y) => x + Environment.NewLine + y);
+            } else
+            {
+                return "NO RESULTS FOUND FOR : " + ToString();
+            }
         }
 
         public string[] getArrayResults(string input)
