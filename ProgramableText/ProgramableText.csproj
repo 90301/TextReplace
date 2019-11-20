@@ -100,6 +100,7 @@
     <Compile Include="LogProcessorWindow.xaml.cs">
       <DependentUpon>LogProcessorWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="LogProcessor\WordSearch.cs" />
     <Compile Include="LogProcessor\FilterNode.cs" />
     <Compile Include="LogProcessor\InnerReadNode.cs" />
     <Compile Include="LogProcessor\ProgramNode.cs" />
