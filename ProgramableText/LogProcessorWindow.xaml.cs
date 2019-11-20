@@ -11,80 +11,35 @@ namespace ProgramableText
     /// </summary>
     public partial class LogProcessorWindow : Window
 	{
-        private readonly String[] OP_SPLIT = { Environment.NewLine };
-        private readonly String[] NAME_SPLIT = { "(" };
-        private readonly String[] ARG_SPLIT = { "," };
-
-        /// <summary>
-        /// Lookup data structure
-        /// </summary>
-        Dictionary<String, ProgramNode> allNodes;
-
-        List<ProgramNode> nodes ;
-
-        InnerReadNode argReader = new InnerReadNode();
-
+        
         public LogProcessorWindow()
 		{
 			InitializeComponent();
 
             InnerReadNode.setupEscapeChars();
 
-            argReader.parseArgs(new String[] { "(", ")" });
-
-            allNodes = new Dictionary<string, ProgramNode>();
-            addAllNode(new InnerReadNode());
-            addAllNode(new FilterNode());
-            addAllNode(new WordSearch());
-
-            this.AllOpList.ItemsSource = allNodes.Values;
+            this.AllOpList.ItemsSource = LogProcessor.LogProcessor.allNodes.Values;
 
         }
 
-        public void addAllNode(ProgramNode node)
-        {
-            allNodes.Add(node.getOpName(), node);
-        } 
-
         private void ProcessBtn_Click(object sender, RoutedEventArgs e)
         {
-            nodes = new List<LogProcessor.ProgramNode>();
+            LogProcessor.LogProcessor.loadProgram(this.FilterProgram.Text);
 
+            LogProcessor.LogProcessor.loadInputText(this.LogText.Text);
 
-            string[] lines = this.FilterProgram.Text.Split(OP_SPLIT,StringSplitOptions.RemoveEmptyEntries);
-            foreach (String line in lines) {
-                String lineClean = line.Trim();
+            //LogProcessor.LogProcessor.processProgram();
 
-                String op = lineClean.Split(NAME_SPLIT,StringSplitOptions.RemoveEmptyEntries)[0];
-                ProgramNode node;
-
-                if (allNodes.ContainsKey(op))
-                {
-                    node = (allNodes[op]).createInstance();
-                } else
-                {
-                    this.OutputBox.Text = "Failed to find OP: " + op;
-                    return;
-                }
-
-                //Load the arguments of the method, comma seperated (arg1,arg2)
-                node.parseArgs(
-                    argReader.getArrayResults(lineClean)[0].Split(ARG_SPLIT,StringSplitOptions.RemoveEmptyEntries)
-                    );
-                nodes.Add(node);
-            }
-            // Process Text
-            String processedText = this.LogText.Text;
-            String nodeToString = "";
-            foreach (ProgramNode node in nodes)
+            if (LogProcessor.LogProcessor.errors.Length > 1)
             {
-                processedText = node.calculate(processedText);
-                nodeToString += node.ToString() + Environment.NewLine;
+                this.OutputBox.Text = LogProcessor.LogProcessor.errors;
+                return;
             }
+            LogProcessor.LogProcessor.process();
 
-            this.ProgramReader.Text = nodeToString;
+            this.ProgramReader.Text = LogProcessor.LogProcessor.nodeToString;
 
-            this.OutputBox.Text = processedText;
+            this.OutputBox.Text = LogProcessor.LogProcessor.output;
         }
 
         public void AllOpsClick(object sender, RoutedEventArgs e)
