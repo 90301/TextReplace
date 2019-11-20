@@ -35,6 +35,7 @@ namespace ProgramableText
             allNodes = new Dictionary<string, ProgramNode>();
             addAllNode(new InnerReadNode());
             addAllNode(new FilterNode());
+            addAllNode(new WordSearch());
 
             this.AllOpList.ItemsSource = allNodes.Values;
 
@@ -90,7 +91,7 @@ namespace ProgramableText
         {
             if (AllOpList.SelectedItem != null)
             {
-                this.FilterProgram.Text += AllOpList.SelectedItem.ToString() + Environment.NewLine;
+                this.FilterProgram.Text += AllOpList.SelectedItem.ToString().Replace(" ","") + Environment.NewLine;
             }
         }
     }
