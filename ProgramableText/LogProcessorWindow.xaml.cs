@@ -18,7 +18,7 @@ namespace ProgramableText
 
             InnerReadNode.setupEscapeChars();
 
-            this.AllOpList.ItemsSource = LogProcessor.LogProcessor.allNodes.Values;
+            this.AllOpList.ItemsSource = LogProcessor.LogProcessor.allProgramNodeInterfaces;
 
         }
 
@@ -46,7 +46,7 @@ namespace ProgramableText
         {
             if (AllOpList.SelectedItem != null)
             {
-                this.FilterProgram.Text += AllOpList.SelectedItem.ToString().Replace(" ","") + Environment.NewLine;
+                this.FilterProgram.Text += ((ProgramNodeInterface)AllOpList.SelectedItem).createExample() + Environment.NewLine;
             }
         }
     }

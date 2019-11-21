@@ -56,6 +56,8 @@ namespace ProgramableText
             {
                 templateComboBox.Items.Add(templateName);
             }
+
+            this.LanguageComboBox.ItemsSource = CyberiaPreProcessor.LANGUAGES;
             
             // replacementIteration.ItemsSource = ilstMultiReplacement;
             // replacementIteration.DisplayMemberPath = "replaceText";
@@ -280,7 +282,7 @@ namespace ProgramableText
         private void cyberiaPreProcessBtn_Click(object sender, RoutedEventArgs e)
         {
             CyberiaPreProcessor cyberia = new CyberiaPreProcessor();
-            cyberia.LanguageUsing = CyberiaPreProcessor.LANGUAGE_SQL;
+            cyberia.LanguageUsing = this.LanguageComboBox.Text;
             String input = textBox.Text;
 
             

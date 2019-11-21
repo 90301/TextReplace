@@ -26,8 +26,11 @@ namespace ProgramableText
         public const String LANGUAGE_JAVA = "JAVA";
         public const String LANGUAGE_C_SHARP = "CSHARP";
         public const String LANGUAGE_SQL = "SQL";
+        public const String LANGUAGE_XML = "XML";
 
         #region Directives
+
+        public static List<String> LANGUAGES = new List<String>();
 
         public static List<String> DIRECTIVES = new List<String>();
 
@@ -92,6 +95,11 @@ namespace ProgramableText
             VARIABLE_TYPES.Add("boolean");
             VARIABLE_TYPES.Add("long");
             VARIABLE_TYPES.Add("datetime");
+
+            LANGUAGES.Add(LANGUAGE_C_SHARP);
+            LANGUAGES.Add(LANGUAGE_JAVA);
+            LANGUAGES.Add(LANGUAGE_SQL);
+            LANGUAGES.Add(LANGUAGE_XML);
         }
 
         /// <summary>
@@ -624,7 +632,17 @@ namespace ProgramableText
 
         public String codeComment(String strToComment)
         {
-            return "/*" + Environment.NewLine + strToComment + Environment.NewLine + "*/" + Environment.NewLine;
+            String commentStart = "", commentEnd = "";
+            if (LanguageUsing.Equals(LANGUAGE_C_SHARP) || LanguageUsing.Equals(LANGUAGE_JAVA) || LanguageUsing.Equals(LANGUAGE_SQL))
+            {
+                commentStart = "/*";
+                commentEnd = "*/";
+            } else if (LanguageUsing.Equals(LANGUAGE_XML))
+            {
+                commentStart = "<!--";
+                commentEnd = "-->";
+            }
+            return commentStart + Environment.NewLine + strToComment + Environment.NewLine + commentEnd + Environment.NewLine;
         }
         public String codeCommentLine(String strToComment)
         {
@@ -633,10 +651,15 @@ namespace ProgramableText
                 //SQL support
                 return "--" + strToComment;
             }
-            else
+            else if (LanguageUsing.Equals(LANGUAGE_C_SHARP) || LanguageUsing.Equals(LANGUAGE_JAVA))
             {
                 //Java / C# support
                 return "//" + strToComment;
+            }
+            else
+            {
+                //XML support
+                return "<!-- " + strToComment + " -->";
             }
         }
     }

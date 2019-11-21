@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 /// </summary>
 namespace ProgramableText.LogProcessor
 {
-	public abstract class ProgramNode
+	public abstract class ProgramNode : ProgramNodeInterface
 	{
 		public static readonly String[] NEWLINE = new string[] { Environment.NewLine };
         public static readonly String[] WORDS = new string[] { Environment.NewLine, " ", "=" , ">" ,"<","/","'","\"" };
@@ -49,6 +49,11 @@ namespace ProgramableText.LogProcessor
 			//TODO have a version of this that only takes
 			return lines.Select(x => x).Where(x => x.Length >= 1).ToList();
 		}
-	}
+
+        public string createExample()
+        {
+            return this.ToString();
+        }
+    }
 
 }
