@@ -102,6 +102,7 @@
     <Compile Include="LogProcessorWindow.xaml.cs">
       <DependentUpon>LogProcessorWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="LogProcessor\DirectoryLoad.cs" />
     <Compile Include="LogProcessor\ExtraPass.cs" />
     <Compile Include="LogProcessor\ExtraPassNow.cs" />
     <Compile Include="LogProcessor\LogProcessor.cs" />

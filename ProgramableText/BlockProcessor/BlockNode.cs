@@ -42,9 +42,12 @@ namespace ProgramableText.BlockProcessor
         {
             String start = blockName + START;
             String end = blockName + END;
-            int startLocation = inputText.IndexOf(start) + start.Length;
-            int endLocation = inputText.IndexOf(end);
+            int startLocation = inputText.IndexOf(start) + (start + Environment.NewLine).Length;
+            int endLocation = inputText.IndexOf(end) - (Environment.NewLine).Length;
             int length = endLocation - startLocation;
+
+            if (length <= 0)
+                return "";
 
             return inputText.Substring(startLocation, length);
         }

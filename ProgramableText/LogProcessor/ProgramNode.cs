@@ -13,6 +13,8 @@ namespace ProgramableText.LogProcessor
 	{
 		public static readonly String[] NEWLINE = new string[] { Environment.NewLine };
         public static readonly String[] WORDS = new string[] { Environment.NewLine, " ", "=" , ">" ,"<","/","'","\"" };
+        public static readonly String[] TRUE = new string[] { "true", "t", "1" };
+        public static readonly String[] FALSE = new string[] { "false", "f", "0" };
         /// <summary>
         /// Calculates a given functional node
         /// Null or an Empty String outputs will be removed automatically.
@@ -53,6 +55,21 @@ namespace ProgramableText.LogProcessor
         public string createExample()
         {
             return this.ToString();
+        }
+
+        public static Boolean loadBoolean(String str)
+        {
+            String processed = str.Trim().ToLower();
+            if (TRUE.Contains(processed))
+            {
+                return true;
+            } else if (FALSE.Contains(processed))
+            {
+                return false;
+            } else
+            {
+                return false;
+            }
         }
     }
 

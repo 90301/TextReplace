@@ -29,9 +29,9 @@ namespace ProgramableText.LogProcessor
 
         public static InnerReadNode argReader = new InnerReadNode();
 
-        public static String[] lines;
+        //public static String[] lines;
 
-        public static String errors, output, inputText, nodeToString;
+        public static String errors, output, inputText, nodeToString, programText;
 
         public static List<String> outputSteps;
         static LogProcessor()
@@ -63,11 +63,81 @@ namespace ProgramableText.LogProcessor
 
         public static void loadProgram(String program)
         {
-            String programLines = loadBlocks(program);
-            lines = programLines.Split(OP_SPLIT, StringSplitOptions.RemoveEmptyEntries);
+            programText = program;
+            //String programLines = loadBlocks(program);
+            //lines = programLines.Split(OP_SPLIT, StringSplitOptions.RemoveEmptyEntries);
             processProgram();
             processNodeToString();
         }
+
+
+        public static void processNodeToString()
+        {
+            nodeToString = "";
+            foreach (ProgramNodeInterface node in nodes)
+            {
+                nodeToString += node.ToString() + Environment.NewLine;
+            }
+        }
+
+        public static void processProgram()
+        {
+            nodes = new List<ProgramNodeInterface>();
+            extraPassNodes = new List<ExtraPass>();
+
+            errors = "";
+            output = "";
+
+            //TODO: Update to "Remaining Program" model
+            String textLeft = programText;
+
+            //Split into lines
+            String[] linesLeft = textLeft.Split(OP_SPLIT, StringSplitOptions.RemoveEmptyEntries);
+            
+            while (textLeft.Length >=1 && linesLeft.Length >= 1)
+            {
+
+                if (linesLeft[0].Contains(BlockNode.START))
+                {
+                    textLeft = parseFirstBlockNode(textLeft);
+                    linesLeft = textLeft.Split(OP_SPLIT, StringSplitOptions.RemoveEmptyEntries);
+                } else
+                {
+                    //TODO move this code into a method
+                    String line = linesLeft[0];
+                    String lineClean = line.Trim();
+
+                    String op = lineClean.Split(NAME_SPLIT, StringSplitOptions.RemoveEmptyEntries)[0];
+                    ProgramNode node;
+
+                    if (allNodes.ContainsKey(op))
+                    {
+                        node = (allNodes[op]).createInstance();
+                    }
+                    else
+                    {
+                        errors = "Failed to find OP: " + op;
+                        textLeft = textLeft.Substring(textLeft.IndexOf(Environment.NewLine));
+                        linesLeft = textLeft.Split(OP_SPLIT, StringSplitOptions.RemoveEmptyEntries);
+                        continue;
+                    }
+
+                    //Load the arguments of the method, comma seperated (arg1,arg2)
+                    node.parseArgs(
+                        argReader.getArrayResults(lineClean)[0].Split(ARG_SPLIT, StringSplitOptions.RemoveEmptyEntries)
+                        );
+                    nodes.Add(node);
+
+                    if (node.GetType().IsInstanceOfType(typeof(ExtraPass)))
+                    {
+                        extraPassNodes.Add((ExtraPass)node);
+                    }
+                }
+
+            }
+
+        }
+
         /// <summary>
         /// Returns remaining program lines (removes blocks)
         /// </summary>
@@ -77,7 +147,8 @@ namespace ProgramableText.LogProcessor
         {
             String rtrn = program;
             while (allBlockNodes.Select(x => x)
-                .Any(x => rtrn.Contains(x.Value.getStartBlock()))) {
+                .Any(x => rtrn.Contains(x.Value.getStartBlock())))
+            {
                 rtrn = parseFirstBlockNode(rtrn);
             }
             return rtrn;
@@ -89,10 +160,11 @@ namespace ProgramableText.LogProcessor
             int firstBlockEnd = int.MaxValue;
             String firstBlock = "";
             foreach (BlockNode node in allBlockNodes.Values)
-            { int startLocation, endLocation;
+            {
+                int startLocation, endLocation;
                 String block =
                 BlockNode.getFullStartAndEndLocations
-                    (program, node.getOpName(),out startLocation,out endLocation);
+                    (program, node.getOpName(), out startLocation, out endLocation);
                 if (firstBlockStart > startLocation)
                 {
                     firstBlockStart = startLocation;
@@ -108,16 +180,19 @@ namespace ProgramableText.LogProcessor
         public static void loadBlockProgram(String parsedBlock)
         {
             //TODO search for nested programs.
-            String firstLine = parsedBlock.Split(lines,StringSplitOptions.RemoveEmptyEntries)[0];
+            String firstLine = parsedBlock.Split(OP_SPLIT, StringSplitOptions.RemoveEmptyEntries)[0];
             String nodeName = firstLine.Replace(BlockNode.START, "").Trim();
             BlockNode node;
-            if (allBlockNodes.TryGetValue(nodeName,out node))
+            if (allBlockNodes.TryGetValue(nodeName, out node))
             {
+                
                 BlockNode createdNode = node.createInstance();
-                createdNode.parseBlocks(parsedBlock);
+                String internalBlock = BlockNode.getInternalBlockText(createdNode.getOpName(), parsedBlock);
+                createdNode.parseBlocks(internalBlock);
                 nodes.Add(createdNode);
 
-            } else
+            }
+            else
             {
                 //Throw Error
                 errors += "Failed to parse line: " + firstLine;
@@ -136,57 +211,9 @@ namespace ProgramableText.LogProcessor
         }
 
 
-        public static void processNodeToString()
-        {
-            nodeToString = "";
-            foreach (ProgramNode node in nodes)
-            {
-                nodeToString += node.ToString() + Environment.NewLine;
-            }
-        }
-
-        public static void processProgram()
-        {
-            nodes = new List<ProgramNodeInterface>();
-            extraPassNodes = new List<ExtraPass>();
-            
-
-            errors = "";
-            output = "";
-
-            //TODO: Update to "Remaining Program" model
-
-            foreach (String line in lines)
-            {
-
-                String lineClean = line.Trim();
-
-                String op = lineClean.Split(NAME_SPLIT, StringSplitOptions.RemoveEmptyEntries)[0];
-                ProgramNode node;
-
-                if (allNodes.ContainsKey(op))
-                {
-                    node = (allNodes[op]).createInstance();
-                }
-                else
-                {
-                    errors = "Failed to find OP: " + op;
-                    return;
-                }
-
-                //Load the arguments of the method, comma seperated (arg1,arg2)
-                node.parseArgs(
-                    argReader.getArrayResults(lineClean)[0].Split(ARG_SPLIT, StringSplitOptions.RemoveEmptyEntries)
-                    );
-                nodes.Add(node);
-
-                if (node.GetType().IsInstanceOfType(typeof(ExtraPass)))
-                {
-                    extraPassNodes.Add((ExtraPass)node);
-                }
-            }
-        }
-
+        /// <summary>
+        /// Process text
+        /// </summary>
         public static void process()
         {
             processedExtraPassNodes = new List<ExtraPass>();
@@ -197,7 +224,7 @@ namespace ProgramableText.LogProcessor
 
             // Process Text
             String processedText = inputText;
-            foreach (ProgramNode node in nodes)
+            foreach (ProgramNodeInterface node in nodes)
             {
 
                 processedText = node.calculate(processedText);
