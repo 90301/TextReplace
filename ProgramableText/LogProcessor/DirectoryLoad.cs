@@ -27,7 +27,7 @@ namespace ProgramableText.LogProcessor
             }
             List<String> files = Directory.GetFiles(fileLocation, filter, serarchOptions).ToList();
 
-            return files.Select(x => x).Aggregate((x, y) => x + y);
+            return files.Select(x => x).Aggregate((x, y) => x + Environment.NewLine + y);
 
         }
 
@@ -43,15 +43,25 @@ namespace ProgramableText.LogProcessor
 
         public override void parseArgs(string[] args)
         {
-            fileLocation = args[0];
-            if (args.Length >= 1)
+            fileLocation = args[0].Trim();
+            if (args.Length >= 2)
             {
                 subDirectories = ProgramNode.loadBoolean(args[1]);
             }
-            if (args.Length >= 2)
+            if (args.Length >= 3)
             {
-                filterBy = args[2];
+                filterBy = args[2].Trim();
             }
+        }
+
+        public override string ToString()
+        {
+            return generateToString(3);
+        }
+
+        public override String createExample()
+        {
+            return this.getOpName() + "( DIRECTORY , SUBDIRECTORIES , FILTER )";
         }
     }
 }

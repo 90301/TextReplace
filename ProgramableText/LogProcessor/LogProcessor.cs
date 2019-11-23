@@ -46,6 +46,7 @@ namespace ProgramableText.LogProcessor
             addAllNode(new WordSearch());
             addAllNode(new PlusBase());
             addAllNode(new ExtraPassNow());
+            addAllNode(new DirectoryLoad());
 
             addAllNode(new MultilineFindAndReplace());
         }
@@ -132,6 +133,9 @@ namespace ProgramableText.LogProcessor
                     {
                         extraPassNodes.Add((ExtraPass)node);
                     }
+
+                    textLeft = textLeft.Substring(textLeft.IndexOf(Environment.NewLine));
+                    linesLeft = textLeft.Split(OP_SPLIT, StringSplitOptions.RemoveEmptyEntries);
                 }
 
             }

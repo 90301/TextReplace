@@ -15,6 +15,7 @@ namespace ProgramableText.LogProcessor
         public static readonly String[] WORDS = new string[] { Environment.NewLine, " ", "=" , ">" ,"<","/","'","\"" };
         public static readonly String[] TRUE = new string[] { "true", "t", "1" };
         public static readonly String[] FALSE = new string[] { "false", "f", "0" };
+
         /// <summary>
         /// Calculates a given functional node
         /// Null or an Empty String outputs will be removed automatically.
@@ -52,9 +53,25 @@ namespace ProgramableText.LogProcessor
 			return lines.Select(x => x).Where(x => x.Length >= 1).ToList();
 		}
 
-        public string createExample()
+        public virtual string createExample()
         {
             return this.ToString();
+        }
+
+        public override string ToString()
+        {
+            return generateToString(0);
+        }
+
+        public String generateToString(int argCount)
+        {
+            String commas = "";
+            for (int i=1;i<argCount;i++)
+            {
+                commas += " ,";
+            }
+            commas += " ";
+            return this.getOpName() + "(" + commas + ")";
         }
 
         public static Boolean loadBoolean(String str)
