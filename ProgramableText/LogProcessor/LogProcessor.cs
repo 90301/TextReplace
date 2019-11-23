@@ -21,7 +21,9 @@ namespace ProgramableText.LogProcessor
         public static Dictionary<String, ProgramNode> allNodes;
         public static Dictionary<String, BlockNode> allBlockNodes;
 
-        public static List<ProgramNodeInterface> allProgramNodeInterfaces; 
+        public static List<ProgramNodeInterface> allProgramNodeInterfaces;
+
+
 
         public static List<ProgramNodeInterface> nodes;
         public static List<ExtraPass> extraPassNodes;
@@ -30,6 +32,8 @@ namespace ProgramableText.LogProcessor
         public static List<String> filesToProcess;
         public static int step;
         public static List<ProgramNodeInterface> subQueue;
+
+        public static String fileProcessing;
 
         public static InnerReadNode argReader = new InnerReadNode();
 
@@ -52,6 +56,7 @@ namespace ProgramableText.LogProcessor
             addAllNode(new ExtraPassNow());
             addAllNode(new DirectoryLoad());
             addAllNode(new LoadFiles());
+            addAllNode(new ProcessFiles());
 
             addAllNode(new MultilineFindAndReplace());
         }
@@ -85,7 +90,7 @@ namespace ProgramableText.LogProcessor
                 nodeToString += node.ToString() + Environment.NewLine;
             }
         }
-
+        #region Compile
         public static void compileProgram()
         {
             nodes = new List<ProgramNodeInterface>();
@@ -126,8 +131,7 @@ namespace ProgramableText.LogProcessor
                     else
                     {
                         errors = "Failed to find OP: " + op;
-                        textLeft = textLeft.Substring(textLeft.IndexOf(Environment.NewLine));
-                        linesLeft = textLeft.Split(OP_SPLIT, StringSplitOptions.RemoveEmptyEntries);
+                        textLeft = nextLine(textLeft, out linesLeft);
                         continue;
                     }
 
@@ -141,13 +145,25 @@ namespace ProgramableText.LogProcessor
                     {
                         extraPassNodes.Add((ExtraPass)node);
                     }
-
-                    textLeft = textLeft.Substring(textLeft.IndexOf(Environment.NewLine));
-                    linesLeft = textLeft.Split(OP_SPLIT, StringSplitOptions.RemoveEmptyEntries);
+                    textLeft = nextLine(textLeft, out linesLeft);
                 }
 
             }
 
+        }
+        public static String nextLine(String textLeft, out String[] linesLeft)
+        {
+            int index;
+            if (textLeft.Contains(Environment.NewLine))
+            {
+                index = textLeft.IndexOf(Environment.NewLine);
+            } else
+            {
+                index = textLeft.Length;
+            }
+            textLeft = textLeft.Substring(index);
+            linesLeft = textLeft.Split(OP_SPLIT, StringSplitOptions.RemoveEmptyEntries);
+            return textLeft;
         }
 
         /// <summary>
@@ -222,7 +238,7 @@ namespace ProgramableText.LogProcessor
             processedExtraPassNodes.Add(item);
         }
 
-
+        #endregion
         /// <summary>
         /// Process text
         /// </summary>
@@ -238,11 +254,12 @@ namespace ProgramableText.LogProcessor
 
             // Process Text
             String processedText = inputText;
-            foreach (ProgramNodeInterface node in nodes)
-            {
+            while (nodes.Count >= 1) {
+                ProgramNodeInterface node = nodes[0];
                 step++;
                 processedText = node.calculate(processedText);
                 outputSteps.Add(processedText);
+                nodes.RemoveAt(0);
                 
             }
 
@@ -262,6 +279,22 @@ namespace ProgramableText.LogProcessor
             }
             processedExtraPassNodes.Clear();
             return processedText;
+        }
+
+        public static String processNextFile()
+        {
+            String fileLocation = filesToProcess[0];
+            string text = System.IO.File.ReadAllText(fileLocation);
+            fileProcessing = fileLocation;
+            filesToProcess.RemoveAt(0);
+            nodes = new List<ProgramNodeInterface>(subQueue);
+            return text;
+        }
+
+        public static void saveChanges(String text)
+        {
+            System.IO.File.WriteAllText(fileProcessing,text);
+
         }
 
     }

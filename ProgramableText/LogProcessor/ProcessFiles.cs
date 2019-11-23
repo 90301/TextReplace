@@ -10,22 +10,29 @@ namespace ProgramableText.LogProcessor
     {
         public override string calculate(string input)
         {
-            throw new NotImplementedException();
+            LogProcessor.saveChanges(input);
+            if (LogProcessor.filesToProcess.Count >= 1)
+            {
+                String text = LogProcessor.processNextFile();
+                return text;
+            }
+
+            return "Files finished processing";
         }
 
         public override ProgramNode createInstance()
         {
-            throw new NotImplementedException();
+            return new ProcessFiles();
         }
 
         public override string getOpName()
         {
-            throw new NotImplementedException();
+            return "processFiles";
         }
 
         public override void parseArgs(string[] args)
         {
-            throw new NotImplementedException();
+            //no args
         }
     }
 }
