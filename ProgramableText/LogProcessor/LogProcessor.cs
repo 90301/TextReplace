@@ -27,6 +27,10 @@ namespace ProgramableText.LogProcessor
         public static List<ExtraPass> extraPassNodes;
         public static List<ExtraPass> processedExtraPassNodes;
 
+        public static List<String> filesToProcess;
+        public static int step;
+        public static List<ProgramNodeInterface> subQueue;
+
         public static InnerReadNode argReader = new InnerReadNode();
 
         //public static String[] lines;
@@ -47,6 +51,7 @@ namespace ProgramableText.LogProcessor
             addAllNode(new PlusBase());
             addAllNode(new ExtraPassNow());
             addAllNode(new DirectoryLoad());
+            addAllNode(new LoadFiles());
 
             addAllNode(new MultilineFindAndReplace());
         }
@@ -67,7 +72,7 @@ namespace ProgramableText.LogProcessor
             programText = program;
             //String programLines = loadBlocks(program);
             //lines = programLines.Split(OP_SPLIT, StringSplitOptions.RemoveEmptyEntries);
-            processProgram();
+            compileProgram();
             processNodeToString();
         }
 
@@ -81,7 +86,7 @@ namespace ProgramableText.LogProcessor
             }
         }
 
-        public static void processProgram()
+        public static void compileProgram()
         {
             nodes = new List<ProgramNodeInterface>();
             extraPassNodes = new List<ExtraPass>();
@@ -97,6 +102,9 @@ namespace ProgramableText.LogProcessor
             
             while (textLeft.Length >=1 && linesLeft.Length >= 1)
             {
+                textLeft = textLeft.TrimStart(Environment.NewLine.ToCharArray());
+                
+                linesLeft = textLeft.Split(OP_SPLIT, StringSplitOptions.RemoveEmptyEntries);
 
                 if (linesLeft[0].Contains(BlockNode.START))
                 {
@@ -222,6 +230,8 @@ namespace ProgramableText.LogProcessor
         {
             processedExtraPassNodes = new List<ExtraPass>();
 
+            step = 0;
+
             outputSteps = new List<string>();
             errors = "";
             output = "";
@@ -230,7 +240,7 @@ namespace ProgramableText.LogProcessor
             String processedText = inputText;
             foreach (ProgramNodeInterface node in nodes)
             {
-
+                step++;
                 processedText = node.calculate(processedText);
                 outputSteps.Add(processedText);
                 
