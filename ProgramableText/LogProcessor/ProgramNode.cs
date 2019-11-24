@@ -9,10 +9,13 @@ using System.Threading.Tasks;
 /// </summary>
 namespace ProgramableText.LogProcessor
 {
-	public abstract class ProgramNode
+	public abstract class ProgramNode : ProgramNodeInterface
 	{
 		public static readonly String[] NEWLINE = new string[] { Environment.NewLine };
         public static readonly String[] WORDS = new string[] { Environment.NewLine, " ", "=" , ">" ,"<","/","'","\"" };
+        public static readonly String[] TRUE = new string[] { "true", "t", "1" };
+        public static readonly String[] FALSE = new string[] { "false", "f", "0" };
+
         /// <summary>
         /// Calculates a given functional node
         /// Null or an Empty String outputs will be removed automatically.
@@ -49,6 +52,42 @@ namespace ProgramableText.LogProcessor
 			//TODO have a version of this that only takes
 			return lines.Select(x => x).Where(x => x.Length >= 1).ToList();
 		}
-	}
+
+        public virtual string createExample()
+        {
+            return this.ToString();
+        }
+
+        public override string ToString()
+        {
+            return generateToString(0);
+        }
+
+        public String generateToString(int argCount)
+        {
+            String commas = "";
+            for (int i=1;i<argCount;i++)
+            {
+                commas += " ,";
+            }
+            commas += " ";
+            return this.getOpName() + "(" + commas + ")";
+        }
+
+        public static Boolean loadBoolean(String str)
+        {
+            String processed = str.Trim().ToLower();
+            if (TRUE.Contains(processed))
+            {
+                return true;
+            } else if (FALSE.Contains(processed))
+            {
+                return false;
+            } else
+            {
+                return false;
+            }
+        }
+    }
 
 }

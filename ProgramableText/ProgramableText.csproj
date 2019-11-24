@@ -93,6 +93,8 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="BlockProcessor\BlockNode.cs" />
+    <Compile Include="BlockProcessor\MultilineFindAndReplace.cs" />
     <Compile Include="CyberiaPreProcessor.cs" />
     <Compile Include="FlatFileReader.xaml.cs">
       <DependentUpon>FlatFileReader.xaml</DependentUpon>
@@ -100,10 +102,14 @@
     <Compile Include="LogProcessorWindow.xaml.cs">
       <DependentUpon>LogProcessorWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="LogProcessor\DirectoryLoad.cs" />
     <Compile Include="LogProcessor\ExtraPass.cs" />
     <Compile Include="LogProcessor\ExtraPassNow.cs" />
+    <Compile Include="LogProcessor\LoadFiles.cs" />
     <Compile Include="LogProcessor\LogProcessor.cs" />
     <Compile Include="LogProcessor\PlusBase.cs" />
+    <Compile Include="LogProcessor\ProcessFiles.cs" />
+    <Compile Include="LogProcessor\ProgramNodeInterface.cs" />
     <Compile Include="LogProcessor\WordSearch.cs" />
     <Compile Include="LogProcessor\FilterNode.cs" />
     <Compile Include="LogProcessor\InnerReadNode.cs" />
