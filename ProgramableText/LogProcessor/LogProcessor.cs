@@ -278,7 +278,7 @@ namespace ProgramableText.LogProcessor
 
             } catch (Exception e)
             {
-                errors = e.Message;
+                errors = e.Message + Environment.NewLine + e.StackTrace;
             }
 
         }
