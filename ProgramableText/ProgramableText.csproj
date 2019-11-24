@@ -107,13 +107,16 @@
     <Compile Include="LogProcessor\ExtraPassNow.cs" />
     <Compile Include="LogProcessor\LoadFiles.cs" />
     <Compile Include="LogProcessor\LogProcessor.cs" />
+    <Compile Include="LogProcessor\NextFile.cs" />
     <Compile Include="LogProcessor\PlusBase.cs" />
     <Compile Include="LogProcessor\ProcessFiles.cs" />
     <Compile Include="LogProcessor\ProgramNodeInterface.cs" />
+    <Compile Include="LogProcessor\ReadFromRegister.cs" />
     <Compile Include="LogProcessor\WordSearch.cs" />
     <Compile Include="LogProcessor\FilterNode.cs" />
     <Compile Include="LogProcessor\InnerReadNode.cs" />
     <Compile Include="LogProcessor\ProgramNode.cs" />
+    <Compile Include="LogProcessor\WriteToRegister.cs" />
     <Compile Include="QueryPermuter.xaml.cs">
       <DependentUpon>QueryPermuter.xaml</DependentUpon>
     </Compile>

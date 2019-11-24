@@ -26,18 +26,17 @@ namespace ProgramableText
         {
             LogProcessor.LogProcessor.loadProgram(this.FilterProgram.Text);
 
+            this.ProgramReader.Text = LogProcessor.LogProcessor.nodeToString;
+
             LogProcessor.LogProcessor.loadInputText(this.LogText.Text);
 
-            //LogProcessor.LogProcessor.processProgram();
-
+            LogProcessor.LogProcessor.process();
+            
             if (LogProcessor.LogProcessor.errors.Length > 1)
             {
                 this.OutputBox.Text = LogProcessor.LogProcessor.errors;
                 return;
             }
-            LogProcessor.LogProcessor.process();
-
-            this.ProgramReader.Text = LogProcessor.LogProcessor.nodeToString;
 
             this.OutputBox.Text = LogProcessor.LogProcessor.output;
         }
