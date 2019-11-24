@@ -33,6 +33,8 @@ namespace ProgramableText.LogProcessor
         public static int step;
         public static List<ProgramNodeInterface> subQueue;
 
+        public static List<String> registers;
+
         public static String fileProcessing;
 
         public static InnerReadNode argReader = new InnerReadNode();
@@ -57,6 +59,9 @@ namespace ProgramableText.LogProcessor
             addAllNode(new DirectoryLoad());
             addAllNode(new LoadFiles());
             addAllNode(new ProcessFiles());
+            addAllNode(new NextFile());
+            addAllNode(new ReadFromRegister());
+            addAllNode(new WriteToRegister());
 
             addAllNode(new MultilineFindAndReplace());
         }
@@ -245,6 +250,7 @@ namespace ProgramableText.LogProcessor
         public static void process()
         {
             processedExtraPassNodes = new List<ExtraPass>();
+            registers = new List<string>();
 
             step = 0;
 
@@ -253,19 +259,27 @@ namespace ProgramableText.LogProcessor
             output = "";
 
             // Process Text
-            String processedText = inputText;
-            while (nodes.Count >= 1) {
-                ProgramNodeInterface node = nodes[0];
-                step++;
-                processedText = node.calculate(processedText);
-                outputSteps.Add(processedText);
-                nodes.RemoveAt(0);
-                
+            try
+            {
+                String processedText = inputText;
+                while (nodes.Count >= 1)
+                {
+                    ProgramNodeInterface node = nodes[0];
+                    step++;
+                    processedText = node.calculate(processedText);
+                    outputSteps.Add(processedText);
+                    nodes.RemoveAt(0);
+
+                }
+
+                processedText = processExtraPass(processedText);
+
+                output = processedText;
+
+            } catch (Exception e)
+            {
+                errors = e.Message;
             }
-
-            processedText = processExtraPass(processedText);
-
-            output = processedText;
 
         }
 
