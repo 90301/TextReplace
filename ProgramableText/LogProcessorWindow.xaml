@@ -7,13 +7,14 @@
         mc:Ignorable="d"
         Title="LogProcessor" Height="450" Width="800">
     <Grid>
-        <TextBox x:Name="ProgramReader" HorizontalAlignment="Left" Height="399" Margin="10,10,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="147" AcceptsReturn="True" />
-        <TextBox x:Name="FilterProgram" HorizontalAlignment="Left" Height="76" Margin="162,94,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="421" AcceptsReturn="True" FontSize="14"/>
-        <TextBox x:Name="LogText" HorizontalAlignment="Left" Height="90" Margin="162,175,0,0" TextWrapping="Wrap" Text="Log" VerticalAlignment="Top" Width="421" AcceptsReturn="True"/>
-        <TextBox x:Name="OutputBox" HorizontalAlignment="Left" Height="139" Margin="162,270,0,0" TextWrapping="Wrap" Text="Output" VerticalAlignment="Top" Width="421" AcceptsReturn="True"/>
+        <TextBox x:Name="ProgramReader" HorizontalAlignment="Left" Margin="10,10,0,10" TextWrapping="Wrap" Text="TextBox" Width="147" AcceptsReturn="True" />
+        <TextBox x:Name="FilterProgram" Margin="162,94,209,249" TextWrapping="Wrap" Text="" AcceptsReturn="True" FontSize="14"/>
+        <TextBox x:Name="LogText" Margin="162,0,209,154" TextWrapping="Wrap" Text="Log" AcceptsReturn="True" Height="90" VerticalAlignment="Bottom"/>
+        <TextBox x:Name="OutputBox" Height="139" Margin="162,0,209,10" TextWrapping="Wrap" Text="Output" VerticalAlignment="Bottom" AcceptsReturn="True"/>
 
         <Button x:Name="ProcessBtn" Content="Process" HorizontalAlignment="Left" Margin="508,69,0,0" VerticalAlignment="Top" Width="75" Click="ProcessBtn_Click"/>
-        <ListBox x:Name="AllOpList" HorizontalAlignment="Left" Height="315" Margin="588,94,0,0" VerticalAlignment="Top" Width="194" MouseDoubleClick="AllOpsClick"/>
+        <ListBox x:Name="AllOpList" Margin="0,94,10,10" MouseDoubleClick="AllOpsClick" HorizontalAlignment="Right" Width="194"/>
+        <Button Content="Debug" HorizontalAlignment="Left" Height="20" Margin="428,69,0,0" VerticalAlignment="Top" Width="75" Click="Button_Click"/>
 
     </Grid>
 </Window>

@@ -99,6 +99,9 @@
     <Compile Include="FlatFileReader.xaml.cs">
       <DependentUpon>FlatFileReader.xaml</DependentUpon>
     </Compile>
+    <Compile Include="LogProcessorDebug.xaml.cs">
+      <DependentUpon>LogProcessorDebug.xaml</DependentUpon>
+    </Compile>
     <Compile Include="LogProcessorWindow.xaml.cs">
       <DependentUpon>LogProcessorWindow.xaml</DependentUpon>
     </Compile>
@@ -125,6 +128,10 @@
     <Compile Include="Utils\CyberiaPreProcessorTemplate.cs" />
     <Compile Include="Utils\TextUtils.cs" />
     <Page Include="FlatFileReader.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="LogProcessorDebug.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
