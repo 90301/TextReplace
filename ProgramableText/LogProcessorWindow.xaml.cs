@@ -48,5 +48,11 @@ namespace ProgramableText
                 this.FilterProgram.Text += ((ProgramNodeInterface)AllOpList.SelectedItem).createExample() + Environment.NewLine;
             }
         }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            LogProcessorDebug debug = new LogProcessorDebug();
+            debug.Show();
+        }
     }
 }
