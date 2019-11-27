@@ -115,6 +115,7 @@
     <Compile Include="LogProcessor\ProcessFiles.cs" />
     <Compile Include="LogProcessor\ProgramNodeInterface.cs" />
     <Compile Include="LogProcessor\ReadFromRegister.cs" />
+    <Compile Include="LogProcessor\VariableTransform.cs" />
     <Compile Include="LogProcessor\WordSearch.cs" />
     <Compile Include="LogProcessor\FilterNode.cs" />
     <Compile Include="LogProcessor\InnerReadNode.cs" />

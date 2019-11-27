@@ -42,8 +42,9 @@ namespace ProgramableText.LogProcessor
         //public static String[] lines;
 
         public static String errors, output, inputText, nodeToString, programText;
-
+        // --- --- --- Debug --- --- ---
         public static List<String> outputSteps;
+        public static List<String> opSteps;
         static LogProcessor()
         {
             argReader.parseArgs(new String[] { "(", ")" });
@@ -62,6 +63,7 @@ namespace ProgramableText.LogProcessor
             addAllNode(new NextFile());
             addAllNode(new ReadFromRegister());
             addAllNode(new WriteToRegister());
+            addAllNode(new VariableTransform());
 
             addAllNode(new MultilineFindAndReplace());
         }
@@ -254,6 +256,7 @@ namespace ProgramableText.LogProcessor
 
             step = 0;
 
+            opSteps = new List<string>();
             outputSteps = new List<string>();
             errors = "";
             output = "";
@@ -268,6 +271,7 @@ namespace ProgramableText.LogProcessor
                     step++;
                     processedText = node.calculate(processedText);
                     outputSteps.Add(processedText);
+                    opSteps.Add(nodes[0].ToString());
                     nodes.RemoveAt(0);
 
                 }

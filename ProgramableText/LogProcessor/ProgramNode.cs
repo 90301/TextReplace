@@ -13,6 +13,7 @@ namespace ProgramableText.LogProcessor
 	{
 		public static readonly String[] NEWLINE = new string[] { Environment.NewLine };
         public static readonly String[] WORDS = new string[] { Environment.NewLine, " ", "=" , ">" ,"<","/","'","\"" };
+        public static readonly String[] ATTRIBUTES = new string[] { Environment.NewLine, " " };
         public static readonly String[] TRUE = new string[] { "true", "t", "1" };
         public static readonly String[] FALSE = new string[] { "false", "f", "0" };
 
@@ -40,6 +41,16 @@ namespace ProgramableText.LogProcessor
         public static List<String> splitTextToWords(String text)
         {
             return text.Split(WORDS, StringSplitOptions.RemoveEmptyEntries).ToList();
+        }
+
+        public static List<String> splitTextToAttributes(String text)
+        {
+            return text.Split(ATTRIBUTES, StringSplitOptions.RemoveEmptyEntries).ToList();
+        }
+
+        public static String getAttribute(List<String> attributes, String attribute)
+        {
+            return attributes.Select(x => x).Where(x => x.Contains(attribute)).First();
         }
 
         /// <summary>

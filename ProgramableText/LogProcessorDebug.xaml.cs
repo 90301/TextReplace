@@ -43,6 +43,8 @@ namespace ProgramableText
             if (StepListBox.SelectedItem != null)
             {
                 this.StepOutputTextBox.Text = StepListBox.SelectedItem.ToString();
+
+                this.RegisterOutputTextBox.Text = LogProcessor.LogProcessor.opSteps[StepListBox.SelectedIndex];
             }
         }
 
