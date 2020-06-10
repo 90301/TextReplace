@@ -118,6 +118,8 @@
     <Compile Include="LogProcessor\ProcessFiles.cs" />
     <Compile Include="LogProcessor\ProgramNodeInterface.cs" />
     <Compile Include="LogProcessor\ReadFromRegister.cs" />
+    <Compile Include="LogProcessor\GetFileName.cs" />
+    <Compile Include="LogProcessor\SetOutput.cs" />
     <Compile Include="LogProcessor\VariableTransform.cs" />
     <Compile Include="LogProcessor\WordSearch.cs" />
     <Compile Include="LogProcessor\FilterNode.cs" />
@@ -126,6 +128,9 @@
     <Compile Include="LogProcessor\WriteToRegister.cs" />
     <Compile Include="QueryPermuter.xaml.cs">
       <DependentUpon>QueryPermuter.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="SpecialCharactersWindow.xaml.cs">
+      <DependentUpon>SpecialCharactersWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Structures\FlatFileSection.cs" />
     <Compile Include="Structures\SQL_Variable.cs" />
@@ -157,6 +162,10 @@
       <SubType>Code</SubType>
     </Compile>
     <Page Include="QueryPermuter.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="SpecialCharactersWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

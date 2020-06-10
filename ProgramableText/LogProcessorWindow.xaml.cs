@@ -61,5 +61,11 @@ namespace ProgramableText
             LogProcessorDebug debug = new LogProcessorDebug();
             debug.Show();
         }
+
+        private void Button_Click_1(object sender, RoutedEventArgs e)
+        {
+            SpecialCharactersWindow spCharWindow = new SpecialCharactersWindow();
+            spCharWindow.Show();
+        }
     }
 }

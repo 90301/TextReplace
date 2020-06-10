@@ -16,6 +16,9 @@ namespace ProgramableText.LogProcessor
         private static readonly String[] ARG_SPLIT = { "," };
         private static readonly String[] BLOCK_NAME_SPLIT = { BlockNode.START };
 
+        public const String CLOSING_PARENTHSES = "SPC_CODE_CP";
+        public const String COMMA = "SPC_CODE_COMMA";
+
         /// <summary>
         /// Lookup data structure
         /// </summary>
@@ -26,6 +29,7 @@ namespace ProgramableText.LogProcessor
 
         public static Dictionary<String,Condition> allConditions;
 
+        public static Dictionary<String, String> specialCharacters;
 
         public static List<ProgramNodeInterface> nodes;
         public static List<ExtraPass> extraPassNodes;
@@ -55,6 +59,8 @@ namespace ProgramableText.LogProcessor
             allBlockNodes = new Dictionary<string, BlockNode>();
             allProgramNodeInterfaces = new List<ProgramNodeInterface>();
             allConditions = new Dictionary<string, Condition>();
+            specialCharacters = new Dictionary<string, string>();
+
             addAllNode(new InnerReadNode());
             addAllNode(new FilterNode());
             addAllNode(new WordSearch());
@@ -67,12 +73,18 @@ namespace ProgramableText.LogProcessor
             addAllNode(new ReadFromRegister());
             addAllNode(new WriteToRegister());
             addAllNode(new VariableTransform());
+            addAllNode(new SetOutput());
+            addAllNode(new GetFileName());
 
             addAllNode(new MultilineFindAndReplace());
             addAllNode(new IfStatement());
 
             //conditions
             addCondition(new Contains());
+
+            //special characters
+            specialCharacters.Add(CLOSING_PARENTHSES, ")");
+            specialCharacters.Add(COMMA, ",");
         }
 
         public static void addAllNode(ProgramNode node)
@@ -371,10 +383,15 @@ namespace ProgramableText.LogProcessor
         }
 
         //Maybe move this to another location?
-        public const String CLOSING_PARENTHSES = "SPC_CODE_CP";
+
         public static string specialCharacterReplacement(String input)
         {
-            input = input.Replace(CLOSING_PARENTHSES, ")");
+            //input = input.Replace(CLOSING_PARENTHSES, ")");
+            //input = input.Replace(COMMA, ",");
+            foreach (String key in specialCharacters.Keys)
+            {
+                input = input.Replace(key, specialCharacters[key]);
+            }
 
             return input;
         }
