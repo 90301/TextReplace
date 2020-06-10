@@ -94,6 +94,9 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="BlockProcessor\BlockNode.cs" />
+    <Compile Include="BlockProcessor\Conditions\Condition.cs" />
+    <Compile Include="BlockProcessor\Conditions\Contains.cs" />
+    <Compile Include="BlockProcessor\IfStatement.cs" />
     <Compile Include="BlockProcessor\MultilineFindAndReplace.cs" />
     <Compile Include="CyberiaPreProcessor.cs" />
     <Compile Include="FlatFileReader.xaml.cs">
@@ -115,6 +118,8 @@
     <Compile Include="LogProcessor\ProcessFiles.cs" />
     <Compile Include="LogProcessor\ProgramNodeInterface.cs" />
     <Compile Include="LogProcessor\ReadFromRegister.cs" />
+    <Compile Include="LogProcessor\GetFileName.cs" />
+    <Compile Include="LogProcessor\SetOutput.cs" />
     <Compile Include="LogProcessor\VariableTransform.cs" />
     <Compile Include="LogProcessor\WordSearch.cs" />
     <Compile Include="LogProcessor\FilterNode.cs" />
@@ -124,8 +129,12 @@
     <Compile Include="QueryPermuter.xaml.cs">
       <DependentUpon>QueryPermuter.xaml</DependentUpon>
     </Compile>
+    <Compile Include="SpecialCharactersWindow.xaml.cs">
+      <DependentUpon>SpecialCharactersWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Structures\FlatFileSection.cs" />
     <Compile Include="Structures\SQL_Variable.cs" />
+    <Compile Include="Utils\ConfigFile.cs" />
     <Compile Include="Utils\CyberiaPreProcessorTemplate.cs" />
     <Compile Include="Utils\TextUtils.cs" />
     <Page Include="FlatFileReader.xaml">
@@ -153,6 +162,10 @@
       <SubType>Code</SubType>
     </Compile>
     <Page Include="QueryPermuter.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="SpecialCharactersWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -198,6 +211,9 @@
       <ProductName>.NET Framework 3.5 SP1</ProductName>
       <Install>false</Install>
     </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Search\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

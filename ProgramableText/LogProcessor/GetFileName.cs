@@ -6,37 +6,33 @@ using System.Threading.Tasks;
 
 namespace ProgramableText.LogProcessor
 {
-    class ReadFromRegister : ProgramNode
+    class GetFileName : ProgramNode
     {
-        int registerNumber = 0;
+        public const string GET_FILE_NAME = "GetFileName";
+
         public override string calculate(string input)
         {
-            return LogProcessor.registers[registerNumber];
+            return LogProcessor.fileProcessing;
         }
 
         public override ProgramNode createInstance()
         {
-            return new ReadFromRegister();
+            return new GetFileName();
         }
 
         public override string getOpName()
         {
-            return "readFromRegister";
+            return GET_FILE_NAME;
         }
 
         public override void parseArgs(string[] args)
         {
-            registerNumber = int.Parse(args[0].Trim());
-
-            if (registerNumber < 0)
-            {
-                registerNumber = 0;
-            }
+            
         }
 
         public override string ToString()
         {
-            return getOpName() + "(" + registerNumber + ")";
+            return getOpName() + "()";
         }
     }
 }

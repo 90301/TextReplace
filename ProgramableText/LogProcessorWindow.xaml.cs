@@ -30,7 +30,7 @@ namespace ProgramableText
 
             LogProcessor.LogProcessor.loadInputText(this.LogText.Text);
 
-            LogProcessor.LogProcessor.process();
+            LogProcessor.LogProcessor.process(LogProcessor.LogProcessor.nodes,true);
             
             if (LogProcessor.LogProcessor.errors.Length > 1)
             {
@@ -45,7 +45,14 @@ namespace ProgramableText
         {
             if (AllOpList.SelectedItem != null)
             {
-                this.FilterProgram.Text += ((ProgramNodeInterface)AllOpList.SelectedItem).createExample() + Environment.NewLine;
+                this.FilterProgram.Focus();
+                if (this.FilterProgram.SelectionStart != 0)
+                {
+                    this.FilterProgram.Text = this.FilterProgram.Text.Insert(this.FilterProgram.SelectionStart, ((ProgramNodeInterface)AllOpList.SelectedItem).createExample() + Environment.NewLine);
+                } else
+                {
+                    this.FilterProgram.Text += ((ProgramNodeInterface)AllOpList.SelectedItem).createExample() + Environment.NewLine;
+                }
             }
         }
 
@@ -53,6 +60,12 @@ namespace ProgramableText
         {
             LogProcessorDebug debug = new LogProcessorDebug();
             debug.Show();
+        }
+
+        private void Button_Click_1(object sender, RoutedEventArgs e)
+        {
+            SpecialCharactersWindow spCharWindow = new SpecialCharactersWindow();
+            spCharWindow.Show();
         }
     }
 }
