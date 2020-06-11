@@ -110,17 +110,15 @@
       <DependentUpon>LogProcessorWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="LogProcessor\DirectoryLoad.cs" />
-    <Compile Include="LogProcessor\ExtraPass.cs" />
-    <Compile Include="LogProcessor\ExtraPassNow.cs" />
     <Compile Include="LogProcessor\FilterExclude.cs" />
     <Compile Include="LogProcessor\LoadFiles.cs" />
     <Compile Include="LogProcessor\LogProcessor.cs" />
     <Compile Include="LogProcessor\NextFile.cs" />
-    <Compile Include="LogProcessor\PlusBase.cs" />
     <Compile Include="LogProcessor\ProcessFiles.cs" />
     <Compile Include="LogProcessor\ProgramNodeInterface.cs" />
     <Compile Include="LogProcessor\ReadFromRegister.cs" />
     <Compile Include="LogProcessor\GetFileName.cs" />
+    <Compile Include="LogProcessor\RemoveDuplicates.cs" />
     <Compile Include="LogProcessor\SetOutput.cs" />
     <Compile Include="LogProcessor\VariableTransform.cs" />
     <Compile Include="LogProcessor\WordSearch.cs" />

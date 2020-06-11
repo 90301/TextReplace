@@ -58,6 +58,7 @@ namespace ProgramableText
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
+            LogProcessor.LogProcessor.debugMode = true;
             LogProcessorDebug debug = new LogProcessorDebug();
             debug.Show();
         }

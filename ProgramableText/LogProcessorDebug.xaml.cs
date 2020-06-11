@@ -58,5 +58,20 @@ namespace ProgramableText
                 this.RegisterOutputTextBox.Text = RegisterListBox.SelectedItem.ToString();
             }
         }
+
+        private void DebugToggleBtn_Click(object sender, RoutedEventArgs e)
+        {
+            LogProcessor.LogProcessor.debugMode = !LogProcessor.LogProcessor.debugMode;
+            if (LogProcessor.LogProcessor.debugMode)
+            {
+                debugToggleBtn.Content = "Debug ON";
+                debugToggleBtn.Foreground = Brushes.Green;
+            }
+            if (LogProcessor.LogProcessor.debugMode)
+            {
+                debugToggleBtn.Content = "Debug OFF";
+                debugToggleBtn.Foreground = Brushes.Red;
+            }
+        }
     }
 }

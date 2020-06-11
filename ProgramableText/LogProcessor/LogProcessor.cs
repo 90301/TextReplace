@@ -18,6 +18,7 @@ namespace ProgramableText.LogProcessor
 
         public const String CLOSING_PARENTHSES = "SPC_CODE_CP";
         public const String COMMA = "SPC_CODE_COMMA";
+        public const String SPACE = "SPC_CODE_SPACE";
 
         /// <summary>
         /// Lookup data structure
@@ -32,8 +33,6 @@ namespace ProgramableText.LogProcessor
         public static Dictionary<String, String> specialCharacters;
 
         public static List<ProgramNodeInterface> nodes;
-        public static List<ExtraPass> extraPassNodes;
-        public static List<ExtraPass> processedExtraPassNodes;
 
         public static List<String> filesToProcess;
         //public static int step;
@@ -52,6 +51,8 @@ namespace ProgramableText.LogProcessor
         // --- --- --- Debug --- --- ---
         public static List<String> outputSteps;
         public static List<String> opSteps;
+
+        public static Boolean debugMode = false;
         static LogProcessor()
         {
             argReader.parseArgs(new String[] { "(", ")" });
@@ -66,8 +67,6 @@ namespace ProgramableText.LogProcessor
             addAllNode(new FilterNode());
             addAllNode(new FilterExclude());
             addAllNode(new WordSearch());
-            addAllNode(new PlusBase());
-            addAllNode(new ExtraPassNow());
             addAllNode(new DirectoryLoad());
             addAllNode(new LoadFiles());
             addAllNode(new ProcessFiles());
@@ -77,6 +76,7 @@ namespace ProgramableText.LogProcessor
             addAllNode(new VariableTransform());
             addAllNode(new SetOutput());
             addAllNode(new GetFileName());
+            addAllNode(new RemoveDuplicates());
 
             addAllNode(new MultilineFindAndReplace());
             addAllNode(new IfStatement());
@@ -87,6 +87,7 @@ namespace ProgramableText.LogProcessor
             //special characters
             specialCharacters.Add(CLOSING_PARENTHSES, ")");
             specialCharacters.Add(COMMA, ",");
+            specialCharacters.Add(SPACE, " ");
         }
 
         public static void addAllNode(ProgramNode node)
@@ -128,7 +129,6 @@ namespace ProgramableText.LogProcessor
         public static void compileProgram(String programText, out List<ProgramNodeInterface> nodes)
         {
             nodes = new List<ProgramNodeInterface>();
-            extraPassNodes = new List<ExtraPass>();
 
             errors = "";
             output = "";
@@ -170,10 +170,6 @@ namespace ProgramableText.LogProcessor
                     );
                     nodes.Add(node);
 
-                    if (node.GetType().IsInstanceOfType(typeof(ExtraPass)))
-                    {
-                        extraPassNodes.Add((ExtraPass)node);
-                    }
                     textLeft = nextLine(textLeft, out linesLeft);
                 }
 
@@ -306,11 +302,6 @@ namespace ProgramableText.LogProcessor
             inputText = input;
         }
 
-        public static void addProcessedExtraPass(ExtraPass item)
-        {
-            processedExtraPassNodes.Add(item);
-        }
-
         #endregion
         /// <summary>
         /// Process text
@@ -319,7 +310,6 @@ namespace ProgramableText.LogProcessor
         {
             if (reset)
             {
-                processedExtraPassNodes = new List<ExtraPass>();
                 registers = new List<string>();
                 opSteps = new List<string>();
                 outputSteps = new List<string>();
@@ -350,14 +340,15 @@ namespace ProgramableText.LogProcessor
                     ProgramNodeInterface node = nodes[step];
                     
                     processedText = node.calculate(processedText);
-                    outputSteps.Add(processedText);
-                    opSteps.Add(nodes[step].ToString());
-                    //nodes.RemoveAt(0);
+                    if (debugMode)
+                    {
+                        outputSteps.Add(processedText);
+                        opSteps.Add(nodes[step].ToString());
+                    }
+
                     step++;
 
                 }
-
-                processedText = processExtraPass(processedText);
 
                 output = processedText;
 
@@ -366,18 +357,6 @@ namespace ProgramableText.LogProcessor
                 errors += e.Message + Environment.NewLine + e.StackTrace;
             }
 
-        }
-
-        public static String processExtraPass(String input)
-        {
-            string processedText = input;
-            foreach (ExtraPass node in processedExtraPassNodes)
-            {
-                processedText = node.extraPass(processedText);
-                outputSteps.Add(processedText);
-            }
-            processedExtraPassNodes.Clear();
-            return processedText;
         }
 
         public static String processNextFile(Boolean loopback)
