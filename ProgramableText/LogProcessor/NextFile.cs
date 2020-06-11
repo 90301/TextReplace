@@ -15,7 +15,7 @@ namespace ProgramableText.LogProcessor
         {
             if (LogProcessor.filesToProcess != null && LogProcessor.filesToProcess.Count >= 1)
             {
-                String text = LogProcessor.processNextFile();
+                String text = LogProcessor.processNextFile(true);
                 return text;
             }
             return "Files Finished Processing";

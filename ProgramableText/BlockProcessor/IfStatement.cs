@@ -26,9 +26,7 @@ namespace ProgramableText.BlockProcessor
             {
                 if (nodesThen.Count >= 1)
                 {
-                    int stepCache = LogProcessor.LogProcessor.step;
                     LogProcessor.LogProcessor.process(nodesThen, false);
-                    LogProcessor.LogProcessor.step = stepCache;
                     return LogProcessor.LogProcessor.output;
                 } else
                 {
@@ -38,9 +36,7 @@ namespace ProgramableText.BlockProcessor
             {
                 if (nodesElse.Count >= 1)
                 {
-                    int stepCache = LogProcessor.LogProcessor.step;
                     LogProcessor.LogProcessor.process(nodesElse, false);
-                    LogProcessor.LogProcessor.step = stepCache;
                     return LogProcessor.LogProcessor.output;
                 } else
                 {

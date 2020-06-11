@@ -11,6 +11,10 @@ namespace ProgramableText.LogProcessor
         int registerNumber = 0;
         public override string calculate(string input)
         {
+            while (LogProcessor.registers.Count <= registerNumber)
+            {
+                LogProcessor.registers.Add("");
+            }
             return LogProcessor.registers[registerNumber];
         }
 

@@ -10,11 +10,11 @@ namespace ProgramableText.LogProcessor
 {
     static class LogProcessor
     {
-
-        private static readonly String[] OP_SPLIT = { Environment.NewLine };
-        private static readonly String[] NAME_SPLIT = { "(" };
-        private static readonly String[] ARG_SPLIT = { "," };
-        private static readonly String[] BLOCK_NAME_SPLIT = { BlockNode.START };
+        public static readonly String[] LINE_SPLIT = { Environment.NewLine };
+        public static readonly String[] OP_SPLIT = { Environment.NewLine };
+        public static readonly String[] NAME_SPLIT = { "(" };
+        public static readonly String[] ARG_SPLIT = { "," };
+        public static readonly String[] BLOCK_NAME_SPLIT = { BlockNode.START };
 
         public const String CLOSING_PARENTHSES = "SPC_CODE_CP";
         public const String COMMA = "SPC_CODE_COMMA";
@@ -36,8 +36,9 @@ namespace ProgramableText.LogProcessor
         public static List<ExtraPass> processedExtraPassNodes;
 
         public static List<String> filesToProcess;
-        public static int step;
-        public static List<ProgramNodeInterface> subQueue;
+        //public static int step;
+        //public static List<ProgramNodeInterface> subQueue;
+        public static Boolean loopback = false;
 
         public static List<String> registers;
 
@@ -63,6 +64,7 @@ namespace ProgramableText.LogProcessor
 
             addAllNode(new InnerReadNode());
             addAllNode(new FilterNode());
+            addAllNode(new FilterExclude());
             addAllNode(new WordSearch());
             addAllNode(new PlusBase());
             addAllNode(new ExtraPassNow());
@@ -157,7 +159,7 @@ namespace ProgramableText.LogProcessor
 
                     if (node == null)
                     {
-                        errors = "Failed to find OP: " + op;
+                        errors += "Failed to find OP: " + op;
                         textLeft = nextLine(textLeft, out linesLeft);
                         continue;
                     }
@@ -216,7 +218,7 @@ namespace ProgramableText.LogProcessor
             }
             else
             {
-                errors = "Failed to find OP: " + op;
+                errors += "Failed to find OP: " + op;
                 return null;
             }
         }
@@ -230,7 +232,7 @@ namespace ProgramableText.LogProcessor
             }
             else
             {
-                errors = "Failed to find Condition OP: " + op;
+                errors += "Failed to find Condition OP: " + op;
                 return null;
             }
         }
@@ -324,22 +326,34 @@ namespace ProgramableText.LogProcessor
                 errors = "";
                 output = "";
             }
-            step = 0;
-
+            int step = 0;
+            int lastLoadFilesStep = 0;
             
 
             // Process Text
             try
             {
                 String processedText = inputText;
-                while (nodes.Count >= 1)
+                while (step < nodes.Count || loopback)
                 {
-                    ProgramNodeInterface node = nodes[0];
-                    step++;
+                    if (loopback)
+                    {
+                        loopback = false;
+                        step = lastLoadFilesStep;
+                    } else
+                    {
+                        if (nodes[step] is LoadFiles)
+                        {
+                            lastLoadFilesStep = step + 1;
+                        }
+                    }
+                    ProgramNodeInterface node = nodes[step];
+                    
                     processedText = node.calculate(processedText);
                     outputSteps.Add(processedText);
-                    opSteps.Add(nodes[0].ToString());
-                    nodes.RemoveAt(0);
+                    opSteps.Add(nodes[step].ToString());
+                    //nodes.RemoveAt(0);
+                    step++;
 
                 }
 
@@ -349,7 +363,7 @@ namespace ProgramableText.LogProcessor
 
             } catch (Exception e)
             {
-                errors = e.Message + Environment.NewLine + e.StackTrace;
+                errors += e.Message + Environment.NewLine + e.StackTrace;
             }
 
         }
@@ -366,14 +380,23 @@ namespace ProgramableText.LogProcessor
             return processedText;
         }
 
-        public static String processNextFile()
+        public static String processNextFile(Boolean loopback)
         {
             String fileLocation = filesToProcess[0];
-            string text = System.IO.File.ReadAllText(fileLocation);
-            fileProcessing = fileLocation;
-            filesToProcess.RemoveAt(0);
-            nodes = new List<ProgramNodeInterface>(subQueue);
-            return text;
+            try
+            {
+                string text = System.IO.File.ReadAllText(fileLocation);
+                fileProcessing = fileLocation;
+                filesToProcess.RemoveAt(0);
+                LogProcessor.loopback = loopback;
+                return text;
+            } catch (Exception e)
+            {
+                addError("Failed to open file: " + fileLocation);
+                addError(e.Message);
+                addError(e.StackTrace);
+            }
+            return "";
         }
 
         public static void saveChanges(String text)
@@ -394,6 +417,11 @@ namespace ProgramableText.LogProcessor
             }
 
             return input;
+        }
+
+        public static void addError(String err)
+        {
+            errors += err + Environment.NewLine;
         }
 
     }

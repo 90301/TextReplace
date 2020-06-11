@@ -16,8 +16,8 @@ namespace ProgramableText.LogProcessor
         public override string calculate(string input)
         {
             LogProcessor.filesToProcess = ProgramNode.splitTextToLines(input);
-            LogProcessor.subQueue = LogProcessor.nodes.Skip(0).ToList();
-            return LogProcessor.processNextFile();
+            //LogProcessor.subQueue = LogProcessor.nodes.Skip(0).ToList();
+            return LogProcessor.processNextFile(false);
         }
 
         public override ProgramNode createInstance()

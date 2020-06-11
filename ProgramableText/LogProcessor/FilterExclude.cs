@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ProgramableText.LogProcessor
 {
-    class FilterNode : ProgramNode
+    class FilterExclude : ProgramNode
     {
 
         String[] filterText;
@@ -16,7 +16,7 @@ namespace ProgramableText.LogProcessor
             String output = "";
             foreach (String line in input.Split(ProgramNode.NEWLINE, StringSplitOptions.RemoveEmptyEntries))
             {
-                if (filterText.Any(x => line.ToLower().Contains(x.ToLower())))
+                if (!filterText.Any(x => line.ToLower().Contains(x.ToLower())))
                 {
                     output += line + Environment.NewLine;
                 }
@@ -28,18 +28,18 @@ namespace ProgramableText.LogProcessor
 
         public override ProgramNode createInstance()
         {
-            return new FilterNode();
+            return new FilterExclude();
         }
 
         public override string getOpName()
         {
-            return "filter";
+            return "filterExclude";
         }
 
         public override void parseArgs(string[] args)
         {
             this.filterText = args;
-            for (int i = 0; i < this.filterText.Length; i++)
+            for (int i=0;i<this.filterText.Length;i++)
             {
                 this.filterText[i] = LogProcessor.specialCharacterReplacement(this.filterText[i]);
             }

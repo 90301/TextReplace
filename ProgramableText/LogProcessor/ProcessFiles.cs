@@ -13,7 +13,7 @@ namespace ProgramableText.LogProcessor
             LogProcessor.saveChanges(input);
             if (LogProcessor.filesToProcess.Count >= 1)
             {
-                String text = LogProcessor.processNextFile();
+                String text = LogProcessor.processNextFile(true);
                 return text;
             }
 

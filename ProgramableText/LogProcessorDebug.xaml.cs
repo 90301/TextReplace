@@ -28,7 +28,10 @@ namespace ProgramableText
         public void refresh()
         {
             //TODO: name output steps
-            this.StepListBox.ItemsSource = LogProcessor.LogProcessor.outputSteps;
+            //List<String> outputPreviews = LogProcessor.LogProcessor.outputSteps.Select(x => x.Split(LogProcessor.LogProcessor.LINE_SPLIT,StringSplitOptions.None)[0]).ToList();
+
+
+            this.StepListBox.ItemsSource = LogProcessor.LogProcessor.opSteps;
 
             this.RegisterListBox.ItemsSource = LogProcessor.LogProcessor.registers;
         }
@@ -42,7 +45,7 @@ namespace ProgramableText
         {
             if (StepListBox.SelectedItem != null)
             {
-                this.StepOutputTextBox.Text = StepListBox.SelectedItem.ToString();
+                this.StepOutputTextBox.Text = LogProcessor.LogProcessor.outputSteps[StepListBox.SelectedIndex];
 
                 this.RegisterOutputTextBox.Text = LogProcessor.LogProcessor.opSteps[StepListBox.SelectedIndex];
             }
