@@ -167,7 +167,7 @@ namespace ProgramableText
         {
             string scratchpad = input;
             devCode = "" + devMessage();
-            prodCode = "" + devMessage();
+            prodCode = "";// + devMessage();
 
             //line by line pre-processing
             String devByLines, prodByLines;
@@ -180,7 +180,8 @@ namespace ProgramableText
             {
                 //for each content is nested in each foreach varlist
                 String listResult = foreachVarList(scratchpad, block);
-                scratchpad += listResult;
+                string fullDirective = getFullDirective(scratchpad, FOR_EACH_VARLIST);
+                scratchpad = scratchpad.Replace(fullDirective, listResult);
 
             }
             foreach (String block in getBlocksForDirective(scratchpad, SQL_VARLIST_GEN))
@@ -191,6 +192,7 @@ namespace ProgramableText
 
             }
 
+            //scratchpad = removeDirectives(scratchpad, FOR_EACH_VARLIST);
 
             lineByLinePreProcess(scratchpad, out devByLines, out prodByLines);
 
@@ -577,6 +579,29 @@ namespace ProgramableText
 
             rtrn = rtrn.Replace(directiveStart, "");
             rtrn = rtrn.Replace(directiveEnd, "");
+
+            return rtrn;
+        }
+
+        /// <summary>
+        /// Used for find and replace
+        /// </summary>
+        /// <param name="str"></param>
+        /// <param name="directive"></param>
+        /// <returns></returns>
+        public string getFullDirective(String str, String directive)
+        {
+
+            String rtrn = "";
+
+            String directiveStart = directive + " " + BLOCK_START;
+            String directiveEnd = directive + " " + BLOCK_END;
+
+            int start = str.IndexOf(directiveStart);
+            int end = str.IndexOf(directiveEnd) + directiveEnd.Length;
+            int len = end - start;
+
+            rtrn = str.Substring(start, len);
 
             return rtrn;
         }

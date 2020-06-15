@@ -141,36 +141,45 @@ namespace ProgramableText.LogProcessor
             
             while (textLeft.Length >=1 && linesLeft.Length >= 1)
             {
-                textLeft = textLeft.TrimStart(Environment.NewLine.ToCharArray());
-                
-                linesLeft = textLeft.Split(OP_SPLIT, StringSplitOptions.RemoveEmptyEntries);
-
-                if (linesLeft[0].Contains(BlockNode.START))
+                try
                 {
-                    textLeft = parseFirstBlockNode(textLeft);
+                    textLeft = textLeft.TrimStart(Environment.NewLine.ToCharArray());
+
                     linesLeft = textLeft.Split(OP_SPLIT, StringSplitOptions.RemoveEmptyEntries);
-                } else
-                {
-                    //TODO move this code into a method
-                    String line = linesLeft[0].Trim();
-                    String op = getOpName(line);
 
-                    ProgramNode node = getOpByName(op,allNodes);
-
-                    if (node == null)
+                    if (linesLeft[0].Contains(BlockNode.START))
                     {
-                        errors += "Failed to find OP: " + op;
+                        textLeft = parseFirstBlockNode(textLeft);
+                        linesLeft = textLeft.Split(OP_SPLIT, StringSplitOptions.RemoveEmptyEntries);
+                    }
+                    else
+                    {
+                        //TODO move this code into a method
+                        String line = linesLeft[0].Trim();
+                        String op = getOpName(line);
+
+                        ProgramNode node = getOpByName(op, allNodes);
+
+                        if (node == null)
+                        {
+                            errors += "Failed to find OP: " + op;
+                            textLeft = nextLine(textLeft, out linesLeft);
+                            continue;
+                        }
+
+                        //Load the arguments of the method, comma seperated (arg1,arg2)
+                        node.parseArgs(
+                            splitArgString(getArgString(line))
+                        );
+                        nodes.Add(node);
+
                         textLeft = nextLine(textLeft, out linesLeft);
-                        continue;
                     }
 
-                    //Load the arguments of the method, comma seperated (arg1,arg2)
-                    node.parseArgs(
-                        splitArgString(getArgString(line))
-                    );
-                    nodes.Add(node);
-
-                    textLeft = nextLine(textLeft, out linesLeft);
+                } catch (Exception e)
+                {
+                    addError(e.Message);
+                    addError(e.StackTrace);
                 }
 
             }
@@ -268,9 +277,13 @@ namespace ProgramableText.LogProcessor
                     firstBlockEnd = endLocation;
                     firstBlock = block;
                 }
+                //store the program in the list
+                loadBlockProgram(firstBlock);
+            } else
+            {
+                addError("Could not find block node with Op Name: " + opName);
             }
-            //store the program in the list
-            loadBlockProgram(firstBlock);
+            
             String strippedProgram = program.Substring(firstBlockEnd);
             return strippedProgram;
         }

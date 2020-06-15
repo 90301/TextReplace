@@ -10,6 +10,7 @@ namespace ProgramableText.LogProcessor
     {
         int registerNumber = 0;
         Boolean overwrite = true;
+        Boolean addNewline = true;
         public override string calculate(string input)
         {
             while (LogProcessor.registers.Count <= registerNumber)
@@ -18,10 +19,23 @@ namespace ProgramableText.LogProcessor
             }
             if (overwrite)
             {
-                LogProcessor.registers[registerNumber] = input;
+                if (input.Contains(Environment.NewLine))
+                {
+                    LogProcessor.registers[registerNumber] = input;
+                }
+                else
+                {
+                    LogProcessor.registers[registerNumber] = input + Environment.NewLine;
+                }
             } else
             {
-                LogProcessor.registers[registerNumber] += input;
+                if (input.Contains(Environment.NewLine))
+                {
+                    LogProcessor.registers[registerNumber] += input;
+                } else
+                {
+                    LogProcessor.registers[registerNumber] += input + Environment.NewLine;
+                }
             }
             return input;
         }
