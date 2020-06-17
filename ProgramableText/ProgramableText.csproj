@@ -118,6 +118,7 @@
     <Compile Include="LogProcessor\ProgramNodeInterface.cs" />
     <Compile Include="LogProcessor\ReadFromRegister.cs" />
     <Compile Include="LogProcessor\GetFileName.cs" />
+    <Compile Include="LogProcessor\RegisterFindAndReplace.cs" />
     <Compile Include="LogProcessor\RemoveDuplicates.cs" />
     <Compile Include="LogProcessor\SetOutput.cs" />
     <Compile Include="LogProcessor\VariableTransform.cs" />

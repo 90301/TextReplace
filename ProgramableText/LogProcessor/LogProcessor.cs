@@ -77,6 +77,7 @@ namespace ProgramableText.LogProcessor
             addAllNode(new SetOutput());
             addAllNode(new GetFileName());
             addAllNode(new RemoveDuplicates());
+            addAllNode(new RegisterFindAndReplace());
 
             addAllNode(new MultilineFindAndReplace());
             addAllNode(new IfStatement());
