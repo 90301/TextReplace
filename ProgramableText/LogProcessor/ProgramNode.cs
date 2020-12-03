@@ -85,6 +85,10 @@ namespace ProgramableText.LogProcessor
             return this.getOpName() + "(" + commas + ")";
         }
 
+        public static int loadInt(String str)
+        {
+            return int.Parse(str.Trim());
+        }
         public static Boolean loadBoolean(String str)
         {
             String processed = str.Trim().ToLower();
