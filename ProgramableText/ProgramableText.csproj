@@ -111,6 +111,7 @@
     </Compile>
     <Compile Include="LogProcessor\DirectoryLoad.cs" />
     <Compile Include="LogProcessor\FilterExclude.cs" />
+    <Compile Include="LogProcessor\LineInstanceCount.cs" />
     <Compile Include="LogProcessor\FindPlusLines.cs" />
     <Compile Include="LogProcessor\LoadFiles.cs" />
     <Compile Include="LogProcessor\LogProcessor.cs" />
