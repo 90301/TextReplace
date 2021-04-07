@@ -80,6 +80,11 @@ namespace ProgramableText.LogProcessor
             addAllNode(new RegisterFindAndReplace());
             addAllNode(new FindPlusLines());
             addAllNode(new LineInstanceCount());
+            addAllNode(new ReplaceCount());
+            addAllNode(new ReplaceIn());
+            addAllNode(new StartLineWith());
+            addAllNode(new EndLineWith());
+            addAllNode(new LineTrim());
 
             addAllNode(new MultilineFindAndReplace());
             addAllNode(new IfStatement());

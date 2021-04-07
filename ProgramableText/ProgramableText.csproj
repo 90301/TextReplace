@@ -110,7 +110,12 @@
       <DependentUpon>LogProcessorWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="LogProcessor\DirectoryLoad.cs" />
+    <Compile Include="LogProcessor\LineTrim.cs" />
     <Compile Include="LogProcessor\FilterExclude.cs" />
+    <Compile Include="LogProcessor\ReplaceCount.cs" />
+    <Compile Include="LogProcessor\EndLineWith.cs" />
+    <Compile Include="LogProcessor\StartLineWith.cs" />
+    <Compile Include="LogProcessor\ReplaceIn.cs" />
     <Compile Include="LogProcessor\LineInstanceCount.cs" />
     <Compile Include="LogProcessor\FindPlusLines.cs" />
     <Compile Include="LogProcessor\LoadFiles.cs" />
