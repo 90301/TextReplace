@@ -11,7 +11,7 @@ namespace ProgramableText.LogProcessor
 {
 	public abstract class ProgramNode : ProgramNodeInterface
 	{
-		public static readonly String[] NEWLINE = new string[] { Environment.NewLine };
+		public static readonly String[] NEWLINE = new string[] { Environment.NewLine , "\r\n", "\r", "\n" };
         public static readonly String[] WORDS = new string[] { Environment.NewLine, " ", "=" , ">" ,"<","/","'","\"" };
         public static readonly String[] ATTRIBUTES = new string[] { Environment.NewLine, " " };
         public static readonly String[] TRUE = new string[] { "true", "t", "1" };
@@ -101,6 +101,20 @@ namespace ProgramableText.LogProcessor
             } else
             {
                 return false;
+            }
+        }
+
+        public static String loadFileOrRegister(String input)
+        {
+            if (input.Contains("/") || input.Contains("\\"))
+            {
+                //file input
+                return System.IO.File.ReadAllText(input);
+            }
+            else
+            {
+                int register = loadInt(input);
+                return LogProcessor.registers[register];
             }
         }
     }

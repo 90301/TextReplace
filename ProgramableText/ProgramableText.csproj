@@ -110,6 +110,7 @@
       <DependentUpon>LogProcessorWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="LogProcessor\DirectoryLoad.cs" />
+    <Compile Include="LogProcessor\CSVCombine.cs" />
     <Compile Include="LogProcessor\LineTrim.cs" />
     <Compile Include="LogProcessor\FilterExclude.cs" />
     <Compile Include="LogProcessor\ReplaceCount.cs" />

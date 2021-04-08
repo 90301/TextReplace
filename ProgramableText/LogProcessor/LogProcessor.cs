@@ -19,6 +19,7 @@ namespace ProgramableText.LogProcessor
         public const String CLOSING_PARENTHSES = "SPC_CODE_CP";
         public const String COMMA = "SPC_CODE_COMMA";
         public const String SPACE = "SPC_CODE_SPACE";
+        public const String TAB = "SPC_CODE_TAB";
 
         /// <summary>
         /// Lookup data structure
@@ -85,6 +86,7 @@ namespace ProgramableText.LogProcessor
             addAllNode(new StartLineWith());
             addAllNode(new EndLineWith());
             addAllNode(new LineTrim());
+            addAllNode(new CSVCombine());
 
             addAllNode(new MultilineFindAndReplace());
             addAllNode(new IfStatement());
@@ -96,6 +98,7 @@ namespace ProgramableText.LogProcessor
             specialCharacters.Add(CLOSING_PARENTHSES, ")");
             specialCharacters.Add(COMMA, ",");
             specialCharacters.Add(SPACE, " ");
+            specialCharacters.Add(TAB, "\t");
         }
 
         public static void addAllNode(ProgramNode node)
