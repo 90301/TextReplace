@@ -17,7 +17,7 @@ namespace ProgramableText.LogProcessor
         {
             LogProcessor.filesToProcess = ProgramNode.splitTextToLines(input);
             //LogProcessor.subQueue = LogProcessor.nodes.Skip(0).ToList();
-            return LogProcessor.processNextFile(false);
+            return LogProcessor.processNextFile(false,true);
         }
 
         public override ProgramNode createInstance()

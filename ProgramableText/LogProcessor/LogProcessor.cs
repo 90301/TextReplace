@@ -383,11 +383,20 @@ namespace ProgramableText.LogProcessor
 
         }
 
-        public static String processNextFile(Boolean loopback)
+        public static String processNextFile(Boolean loopback, Boolean createFile = false)
         {
             String fileLocation = filesToProcess[0];
             try
             {
+                //IF file doesn't exist, create it?
+                if (createFile)
+                {
+                    if (!System.IO.File.Exists(fileLocation))
+                    {
+                        var fileStream = System.IO.File.CreateText(fileLocation);
+                        fileStream.Close();
+                    }
+                }
                 string text = System.IO.File.ReadAllText(fileLocation);
                 fileProcessing = fileLocation;
                 filesToProcess.RemoveAt(0);
