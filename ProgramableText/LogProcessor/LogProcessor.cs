@@ -33,6 +33,8 @@ namespace ProgramableText.LogProcessor
 
         public static Dictionary<String, String> specialCharacters;
 
+        public static Dictionary<String, FunctionalBlock> functionalBlocks = new Dictionary<string, FunctionalBlock>();
+
         public static List<ProgramNodeInterface> nodes;
 
         public static List<String> filesToProcess;
@@ -87,9 +89,11 @@ namespace ProgramableText.LogProcessor
             addAllNode(new EndLineWith());
             addAllNode(new LineTrim());
             addAllNode(new CSVCombine());
+            addAllNode(new CallFunctionBlock());
 
             addAllNode(new MultilineFindAndReplace());
             addAllNode(new IfStatement());
+            addAllNode(new FunctionalBlock());
 
             //conditions
             addCondition(new Contains());
@@ -337,6 +341,7 @@ namespace ProgramableText.LogProcessor
                 registers = new List<string>();
                 opSteps = new List<string>();
                 outputSteps = new List<string>();
+                functionalBlocks = new Dictionary<string, FunctionalBlock>();
                 errors = "";
                 output = "";
             }
