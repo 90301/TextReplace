@@ -42,11 +42,11 @@ namespace ProgramableText.LogProcessor
             }
             else
             {
-                output = LogProcessor.specialCharacterReplacement(args[0]);
+                output = loadString(args[0]);
             }
             if (args.Length >= 2)
             {
-                concat = ProgramNode.loadBoolean(args[1]);
+                concat = loadBoolean(args[1]);
             }
         }
 

@@ -62,7 +62,7 @@ namespace ProgramableText.LogProcessor
 
         public override void parseArgs(string[] args)
         {
-            findText = LogProcessor.specialCharacterReplacement(args[0].Trim());
+            findText = loadString(args[0].Trim());
             nextLineCount = loadInt(args[1]);
         }
     }

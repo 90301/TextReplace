@@ -17,7 +17,8 @@ namespace ProgramableText.LogProcessor
     public class InnerReadNode : ProgramNode
     {
         string start, end;
-        Boolean multiMatch;
+        Boolean nonRegex = true;
+        Boolean singleLine = false;
 
         static List<String> escapeChars = new List<string>();
 
@@ -30,21 +31,66 @@ namespace ProgramableText.LogProcessor
         }
         public override string calculate(string input)
         {
-            List<String> core = coreFilter(input);
-            if (core.Count >= 1)
+            if (nonRegex)
             {
-                return core.Aggregate((x, y) => x + Environment.NewLine + y);
-            } else
-            {
-                return "NO RESULTS FOUND FOR : " + ToString();
+                if (singleLine)
+                {
+                    //split string into lines, then attempt to parse
+                }
+                else
+                {
+                    List<String> matches = coreFilter2(input);
+                    if (matches.Count >= 1)
+                    {
+                        return coreFilter2(input).Aggregate((x, y) => x + Environment.NewLine + y);
+                    } else {
+                        return "";
+                    }
+                }
+
+            } else {
+                List<String> core = coreFilter(input);
+                if (core.Count >= 1)
+                {
+                    return core.Aggregate((x, y) => x + Environment.NewLine + y);
+                } else
+                {
+                    return "NO RESULTS FOUND FOR : " + ToString();
+                }
             }
+            return "";
         }
 
         public string[] getArrayResults(string input)
         {
-            return coreFilter(input).ToArray();
+            return calculate(input).Split(LogProcessor.LINE_SPLIT, StringSplitOptions.RemoveEmptyEntries);
         }
+        public List<String> coreFilter2(String input)
+        {
+            String textRemaining = input;
+            List<String> matches = new List<string>();
+            while (textRemaining.Contains(start) && textRemaining.Contains(end))
+            {
+                int startIndex = textRemaining.IndexOf(start) + start.Length;
+                String subString = textRemaining.Substring(startIndex);
+                if (!subString.Contains(end))
+                {
+                    break;
+                }
+                int relEndIndex = subString.IndexOf(end);
 
+                String match = subString.Substring(0, relEndIndex);
+                matches.Add(match);
+
+                int endIndex = startIndex + relEndIndex + end.Length;
+                if (textRemaining.Length <= endIndex)
+                {
+                    break;
+                }
+                textRemaining = textRemaining.Substring(endIndex);
+            }
+            return matches;
+        }
         public List<String> coreFilter(String input)
         {
             List<String> matches = new List<string>();
@@ -78,22 +124,27 @@ namespace ProgramableText.LogProcessor
 
         public override void parseArgs(string[] args)
         {
-            if (args.Length >=2) {
-            start = Escape(args[0]);
-            end = Escape(args[1]);
-            } else
+            if (nonRegex)
             {
-                if (args[0].Equals("("))
-                {
-                    start = Escape("(");
-                    end = Escape(")");
-                }
+                //Load Args
+                start = loadString(args[0]);
+                end = loadString(args[1]);
             }
-
-
-            if (args.Length > 2)
+            else
             {
-                Boolean.TryParse(args[2],out multiMatch);
+                if (args.Length >= 2)
+                {
+                    start = Escape(args[0]);
+                    end = Escape(args[1]);
+                }
+                else
+                {
+                    if (args[0].Equals("("))
+                    {
+                        start = Escape("(");
+                        end = Escape(")");
+                    }
+                }
             }
         }
 

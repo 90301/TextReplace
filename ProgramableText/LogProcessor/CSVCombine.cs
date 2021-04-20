@@ -72,11 +72,11 @@ namespace ProgramableText.LogProcessor
 
         public override void parseArgs(string[] args)
         {
-            delimiter = LogProcessor.specialCharacterReplacement(args[0].Trim());
+            delimiter = loadString(args[0].Trim());
             int i = 1;
             while (i < args.Length)
             {
-                arguments.Add (LogProcessor.specialCharacterReplacement(args[i].Trim()));
+                arguments.Add (loadString(args[i].Trim()));
                 i++;
             }
         }

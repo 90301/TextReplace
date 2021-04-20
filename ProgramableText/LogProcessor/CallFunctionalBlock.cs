@@ -39,7 +39,7 @@ namespace ProgramableText.LogProcessor
 
         public override void parseArgs(string[] args)
         {
-            functionName = LogProcessor.specialCharacterReplacement(args[0].Trim());
+            functionName = loadString(args[0].Trim());
         }
 
         public override string ToString()

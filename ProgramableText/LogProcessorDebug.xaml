@@ -17,6 +17,7 @@
         <TextBox x:Name="RegisterOutputTextBox" Margin="215,10" TextWrapping="Wrap" AcceptsTab="True" AcceptsReturn="True" Grid.Row="1"/>
         <Button x:Name="refreshBtn" Content="Refresh" Margin="0,10,215,0" VerticalAlignment="Top" Click="RefreshBtn_Click" HorizontalAlignment="Right" Width="75"/>
         <Button x:Name="debugToggleBtn" Content="Debug ON" Margin="0,10,295,0" VerticalAlignment="Top" HorizontalAlignment="Right" Width="75" Click="DebugToggleBtn_Click"/>
+        <Label x:Name="TopLabel"  Content="TopLabel" Margin="215,4,375,0" VerticalAlignment="Top"/>
 
     </Grid>
 </Window>

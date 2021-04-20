@@ -26,7 +26,7 @@ namespace ProgramableText.BlockProcessor
             {
                 if (nodesThen.Count >= 1)
                 {
-                    LogProcessor.LogProcessor.process(nodesThen, false);
+                    LogProcessor.LogProcessor.process(nodesThen, false , input);
                     return LogProcessor.LogProcessor.output;
                 } else
                 {
@@ -36,7 +36,7 @@ namespace ProgramableText.BlockProcessor
             {
                 if (nodesElse.Count >= 1)
                 {
-                    LogProcessor.LogProcessor.process(nodesElse, false);
+                    LogProcessor.LogProcessor.process(nodesElse, false, input);
                     return LogProcessor.LogProcessor.output;
                 } else
                 {

@@ -41,7 +41,7 @@ namespace ProgramableText.LogProcessor
             this.filterText = args;
             for (int i=0;i<this.filterText.Length;i++)
             {
-                this.filterText[i] = LogProcessor.specialCharacterReplacement(this.filterText[i]);
+                this.filterText[i] = loadString(this.filterText[i]);
             }
         }
 

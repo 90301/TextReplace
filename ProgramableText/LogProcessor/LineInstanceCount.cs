@@ -85,10 +85,10 @@ namespace ProgramableText.LogProcessor
 
         public override void parseArgs(string[] args)
         {
-            findText = LogProcessor.specialCharacterReplacement(args[0].Trim());
+            findText = loadString(args[0]);
             countRequirement = loadInt(args[1]);
-            compareSymbol = LogProcessor.specialCharacterReplacement(args[2].Trim());
-            outputStyle = LogProcessor.specialCharacterReplacement(args[3].Trim()).ToLower();
+            compareSymbol = loadString(args[2]);
+            outputStyle = loadString(args[3]).ToLower();
         }
     }
 }

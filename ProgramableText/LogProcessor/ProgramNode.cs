@@ -85,6 +85,10 @@ namespace ProgramableText.LogProcessor
             return this.getOpName() + "(" + commas + ")";
         }
 
+        public static String loadString(String str)
+        {
+            return LogProcessor.specialCharacterReplacement(str.Trim());
+        }
         public static int loadInt(String str)
         {
             return int.Parse(str.Trim());

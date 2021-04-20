@@ -56,6 +56,7 @@ namespace ProgramableText
             if (RegisterListBox.SelectedItem != null)
             {
                 this.RegisterOutputTextBox.Text = RegisterListBox.SelectedItem.ToString();
+                this.TopLabel.Content = "Register: " + RegisterListBox.SelectedIndex + " Size: " + RegisterListBox.SelectedItem.ToString().Length;
             }
         }
 

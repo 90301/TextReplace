@@ -83,10 +83,10 @@ namespace ProgramableText.LogProcessor
 
         public override void parseArgs(string[] args)
         {
-            findText = LogProcessor.specialCharacterReplacement(args[0].Trim());
-            replaceText = LogProcessor.specialCharacterReplacement(args[1].Trim());
-            startText = LogProcessor.specialCharacterReplacement(args[2].Trim());
-            endText = LogProcessor.specialCharacterReplacement(args[3].Trim());
+            findText = loadString(args[0]);
+            replaceText = loadString(args[1]);
+            startText = loadString(args[2]);
+            endText = loadString(args[3]);
         }
     }
 }

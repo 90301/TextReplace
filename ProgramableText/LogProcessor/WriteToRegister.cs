@@ -55,6 +55,11 @@ namespace ProgramableText.LogProcessor
             return getOpName() + "( REGISTER , OVERWRITE )"; 
         }
 
+        public override string ToString()
+        {
+            return getOpName() + "( " + registerNumber + " , " +overwrite +" )";
+        }
+
         public override void parseArgs(string[] args)
         {
             registerNumber = int.Parse(args[0].Trim());

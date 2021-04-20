@@ -101,9 +101,9 @@ namespace ProgramableText.LogProcessor
 
         public override void parseArgs(string[] args)
         {
-            findText = LogProcessor.specialCharacterReplacement(args[0].Trim());
-            replaceText = LogProcessor.specialCharacterReplacement(args[1].Trim());
-            countType = LogProcessor.specialCharacterReplacement(args[2].Trim());
+            findText = loadString(args[0].Trim());
+            replaceText = loadString(args[1].Trim());
+            countType = loadString(args[2].Trim());
             if (countType.Any(char.IsDigit)) {
                 countRequirement = loadInt(countType);
                 countIsNumber = true;

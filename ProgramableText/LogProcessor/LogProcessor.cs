@@ -22,7 +22,10 @@ namespace ProgramableText.LogProcessor
         public const String COMMA = "SPC_CODE_COMMA";
         public const String SPACE = "SPC_CODE_SPACE";
         public const String TAB = "SPC_CODE_TAB";
+        public const String SINGLE_QUOTE = "SPC_CODE_SQ";
 
+
+        public const String DEFAULT_INPUT_TEXT = "_DEFAULT_INPUT_TEXT_";
         /// <summary>
         /// Lookup data structure
         /// </summary>
@@ -33,7 +36,7 @@ namespace ProgramableText.LogProcessor
 
         public static Dictionary<String,Condition> allConditions;
 
-        public static Dictionary<String, String> specialCharacters;
+        public static Dictionary<String, String> specialCharacters = new Dictionary<string, string>();
 
         public static Dictionary<String, FunctionalBlock> functionalBlocks = new Dictionary<string, FunctionalBlock>();
 
@@ -105,6 +108,7 @@ namespace ProgramableText.LogProcessor
             specialCharacters.Add(COMMA, ",");
             specialCharacters.Add(SPACE, " ");
             specialCharacters.Add(TAB, "\t");
+            specialCharacters.Add(SINGLE_QUOTE, "'");
         }
 
         public static void addAllNode(ProgramNode node)
@@ -164,7 +168,7 @@ namespace ProgramableText.LogProcessor
 
                     linesLeft = textLeft.Split(OP_SPLIT, StringSplitOptions.RemoveEmptyEntries);
 
-                    if (linesLeft[0].Contains(BlockNode.START))
+                    if (linesLeft[0].Contains(BlockNode.START) && !linesLeft[0].Contains("("))
                     {
                         textLeft = parseFirstBlockNode(textLeft);
                         linesLeft = textLeft.Split(OP_SPLIT, StringSplitOptions.RemoveEmptyEntries);
@@ -224,7 +228,7 @@ namespace ProgramableText.LogProcessor
         /// <returns></returns>
         public static String getArgString(String line)
         {
-            return argReader.getArrayResults(line)[0];
+            return argReader.calculate(line);
         }
         /// <summary>
         /// Splits the arg string into an array of args
@@ -351,7 +355,7 @@ namespace ProgramableText.LogProcessor
         /// <summary>
         /// Process text
         /// </summary>
-        public static void process(List<ProgramNodeInterface> nodes,Boolean reset)
+        public static void process(List<ProgramNodeInterface> nodes,Boolean reset, String startInput = DEFAULT_INPUT_TEXT)
         {
             if (reset)
             {
@@ -369,7 +373,11 @@ namespace ProgramableText.LogProcessor
             // Process Text
             try
             {
-                String processedText = inputText;
+                if (startInput.Equals(DEFAULT_INPUT_TEXT))
+                {
+                    startInput = inputText;
+                }
+                String processedText = startInput;
                 while (step < nodes.Count || loopback)
                 {
                     if (loopback)
@@ -443,8 +451,6 @@ namespace ProgramableText.LogProcessor
 
         public static string specialCharacterReplacement(String input)
         {
-            //input = input.Replace(CLOSING_PARENTHSES, ")");
-            //input = input.Replace(COMMA, ",");
             foreach (String key in specialCharacters.Keys)
             {
                 input = input.Replace(key, specialCharacters[key]);

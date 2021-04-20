@@ -51,7 +51,7 @@ namespace ProgramableText.LogProcessor
 
         public override void parseArgs(string[] args)
         {
-            startText = LogProcessor.specialCharacterReplacement(args[0].Trim());
+            startText = loadString(args[0]);
         }
     }
 }
