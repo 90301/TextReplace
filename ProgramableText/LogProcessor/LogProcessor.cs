@@ -16,6 +16,8 @@ namespace ProgramableText.LogProcessor
         public static readonly String[] ARG_SPLIT = { "," };
         public static readonly String[] BLOCK_NAME_SPLIT = { BlockNode.START };
 
+        public const String COMMENT_START = "//";
+
         public const String CLOSING_PARENTHSES = "SPC_CODE_CP";
         public const String COMMA = "SPC_CODE_COMMA";
         public const String SPACE = "SPC_CODE_SPACE";
@@ -149,7 +151,7 @@ namespace ProgramableText.LogProcessor
             output = "";
 
             //TODO: Update to "Remaining Program" model
-            String textLeft = programText;
+            String textLeft = removeComments(programText);
 
             //Split into lines
             String[] linesLeft = textLeft.Split(OP_SPLIT, StringSplitOptions.RemoveEmptyEntries);
@@ -200,6 +202,21 @@ namespace ProgramableText.LogProcessor
             }
 
         }
+
+        public static string removeComments(string programText)
+        {
+            var split = programText.Split(OP_SPLIT, StringSplitOptions.RemoveEmptyEntries);
+            String processed = "";
+            foreach(String line in split)
+            {
+                if (!line.Trim().StartsWith(COMMENT_START))
+                {
+                    processed += line + System.Environment.NewLine;
+                }
+            }
+            return processed;
+        }
+
         /// <summary>
         /// Returns non seperated arg string
         /// </summary>
