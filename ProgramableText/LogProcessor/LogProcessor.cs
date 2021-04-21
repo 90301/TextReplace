@@ -201,6 +201,8 @@ namespace ProgramableText.LogProcessor
                 {
                     addError(e.Message);
                     addError(e.StackTrace);
+                    addError(textLeft);
+                    break;
                 }
 
             }
