@@ -55,6 +55,9 @@ namespace ProgramableText.LogProcessor
                     replacedLine += line.Substring(endIndex, line.Length - endIndex);
 
                     rtrn += replacedLine + Environment.NewLine;
+                } else
+                {
+                    rtrn += line + Environment.NewLine;
                 }
             }
 

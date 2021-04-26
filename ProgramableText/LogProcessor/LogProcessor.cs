@@ -168,9 +168,14 @@ namespace ProgramableText.LogProcessor
 
                     linesLeft = textLeft.Split(OP_SPLIT, StringSplitOptions.RemoveEmptyEntries);
 
-                    if (linesLeft[0].Contains(BlockNode.START) && !linesLeft[0].Contains("("))
+                    if (linesLeft[0].Contains(BlockNode.START) && !linesLeft[0].Contains(")"))
                     {
-                        textLeft = parseFirstBlockNode(textLeft);
+                        BlockNode node;
+                        textLeft = parseFirstBlockNode(textLeft, out node);
+                        if (node != null)
+                        {
+                            nodes.Add(node);
+                        }
                         linesLeft = textLeft.Split(OP_SPLIT, StringSplitOptions.RemoveEmptyEntries);
                     }
                     else
@@ -294,7 +299,7 @@ namespace ProgramableText.LogProcessor
             return textLeft;
         }
 
-        public static string parseFirstBlockNode(string program)
+        public static string parseFirstBlockNode(string program, out BlockNode node)
         {
             int firstBlockStart = int.MaxValue;
             int firstBlockEnd = int.MaxValue;
@@ -303,12 +308,12 @@ namespace ProgramableText.LogProcessor
             String opName = program.Trim().Split(BLOCK_NAME_SPLIT, StringSplitOptions.RemoveEmptyEntries)[0].Trim();
             if (allBlockNodes.ContainsKey(opName))
             {
-                BlockNode node = allBlockNodes[opName];
+                BlockNode foundNode = allBlockNodes[opName];
 
                 int startLocation, endLocation;
                 String block =
                 BlockNode.getFullStartAndEndLocations
-                    (program, node.getOpName(), out startLocation, out endLocation);
+                    (program, foundNode.getOpName(), out startLocation, out endLocation);
                 if (firstBlockStart > startLocation)
                 {
                     firstBlockStart = startLocation;
@@ -316,16 +321,17 @@ namespace ProgramableText.LogProcessor
                     firstBlock = block;
                 }
                 //store the program in the list
-                loadBlockProgram(firstBlock);
+                node = loadBlockProgram(firstBlock);
             } else
             {
+                node = null;
                 addError("Could not find block node with Op Name: " + opName);
             }
             
             String strippedProgram = program.Substring(firstBlockEnd);
             return strippedProgram;
         }
-        public static void loadBlockProgram(String parsedBlock)
+        public static BlockNode loadBlockProgram(String parsedBlock)
         {
             //TODO search for nested programs.
             String firstLine = parsedBlock.Split(OP_SPLIT, StringSplitOptions.RemoveEmptyEntries)[0];
@@ -337,14 +343,14 @@ namespace ProgramableText.LogProcessor
                 BlockNode createdNode = node.createInstance();
                 String internalBlock = BlockNode.getInternalBlockText(createdNode.getOpName(), parsedBlock);
                 createdNode.parseBlocks(internalBlock);
-                nodes.Add(createdNode);
-
+                //nodes.Add(createdNode);
+                return createdNode;
             }
             else
             {
                 //Throw Error
                 errors += "Failed to parse line: " + firstLine;
-                return;
+                return null;
             }
         }
 
