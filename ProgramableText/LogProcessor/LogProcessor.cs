@@ -421,6 +421,7 @@ namespace ProgramableText.LogProcessor
 
         }
 
+        public static String cachedFileText = "";
         public static String processNextFile(Boolean loopback, Boolean createFile = false)
         {
             String fileLocation = filesToProcess[0];
@@ -436,6 +437,7 @@ namespace ProgramableText.LogProcessor
                     }
                 }
                 string text = System.IO.File.ReadAllText(fileLocation);
+                cachedFileText = text;
                 fileProcessing = fileLocation;
                 filesToProcess.RemoveAt(0);
                 LogProcessor.loopback = loopback;
@@ -451,7 +453,10 @@ namespace ProgramableText.LogProcessor
 
         public static void saveChanges(String text)
         {
-            System.IO.File.WriteAllText(fileProcessing,text);
+            if (!text.Equals(cachedFileText))
+            {
+                System.IO.File.WriteAllText(fileProcessing, text);
+            }
 
         }
 
