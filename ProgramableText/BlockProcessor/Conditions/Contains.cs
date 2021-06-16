@@ -34,13 +34,13 @@ namespace ProgramableText.BlockProcessor.Conditions
 
         public override void paseCondition(string input)
         {
-            searchStr = LogProcessor.LogProcessor.specialCharacterReplacement(input);
+            searchStr = LogProcessor.LogProcessor.specialCharacterReplacement(input.Trim());
             
         }
 
         public override string ToString()
         {
-            return getOpName();
+            return getOpName() + " ( " + searchStr  + " ) ";
         }
     }
 }

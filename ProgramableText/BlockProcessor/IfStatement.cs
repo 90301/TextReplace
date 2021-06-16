@@ -81,7 +81,14 @@ namespace ProgramableText.BlockProcessor
 
         public override string ToString()
         {
-            return getOpName();
+            String rtrn = getOpName();
+            if (condition!=null)
+                rtrn += " " + condition.ToString();
+            if (nodesThen != null)
+                rtrn += " THEN " + nodesThen.Count;
+            if (nodesElse != null)
+                rtrn += " ELSE " + nodesElse.Count;
+            return rtrn;
         }
     }
 }
