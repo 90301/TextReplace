@@ -95,6 +95,7 @@ namespace ProgramableText.LogProcessor
             addAllNode(new LineTrim());
             addAllNode(new CSVCombine());
             addAllNode(new CallFunctionBlock());
+            addAllNode(new GetWordInLine());
 
             addAllNode(new MultilineFindAndReplace());
             addAllNode(new IfStatement());
