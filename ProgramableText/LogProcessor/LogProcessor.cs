@@ -100,6 +100,7 @@ namespace ProgramableText.LogProcessor
             addAllNode(new MultilineFindAndReplace());
             addAllNode(new IfStatement());
             addAllNode(new FunctionalBlock());
+            addAllNode(new SimpleForeachReplace());
 
             //conditions
             addCondition(new Contains());
