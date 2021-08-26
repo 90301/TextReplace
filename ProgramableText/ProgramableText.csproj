@@ -99,6 +99,7 @@
     <Compile Include="BlockProcessor\Conditions\Contains.cs" />
     <Compile Include="BlockProcessor\FunctionalBlock.cs" />
     <Compile Include="BlockProcessor\IfStatement.cs" />
+    <Compile Include="BlockProcessor\ConditionalForeachReplace.cs" />
     <Compile Include="BlockProcessor\SimpleForeachReplace.cs" />
     <Compile Include="BlockProcessor\MultilineFindAndReplace.cs" />
     <Compile Include="CyberiaPreProcessor.cs" />

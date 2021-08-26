@@ -16,6 +16,7 @@ namespace ProgramableText.LogProcessor
         public static readonly String[] ATTRIBUTES = new string[] { Environment.NewLine, " " };
         public static readonly String[] TRUE = new string[] { "true", "t", "1" };
         public static readonly String[] FALSE = new string[] { "false", "f", "0" };
+        public static readonly String[] BAR = new string[] { "|" };
 
         /// <summary>
         /// Calculates a given functional node

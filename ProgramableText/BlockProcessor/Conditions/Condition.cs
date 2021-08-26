@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace ProgramableText.BlockProcessor.Conditions
 {
-    abstract class Condition : ProgramNodeInterface
+    public abstract class Condition : ProgramNodeInterface
     {
         public abstract Boolean calculate(string input);
 

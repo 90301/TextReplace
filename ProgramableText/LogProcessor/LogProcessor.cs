@@ -101,6 +101,7 @@ namespace ProgramableText.LogProcessor
             addAllNode(new IfStatement());
             addAllNode(new FunctionalBlock());
             addAllNode(new SimpleForeachReplace());
+            addAllNode(new ConditionalForeachReplace());
 
             //conditions
             addCondition(new Contains());
