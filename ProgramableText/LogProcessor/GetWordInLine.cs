@@ -43,6 +43,13 @@ namespace ProgramableText.LogProcessor
                 String[] dLine = line.Split(Delimiter, StringSplitOptions.RemoveEmptyEntries);
                 String rtrnLine = "";
                 int start, end, change;
+                
+                if (dLine.Length==1)
+                {
+                    rtrn += dLine[0] + Environment.NewLine;
+                    continue;
+                }
+
                 if (Direction == DIRECTION_FIRST)
                 {
                     start = 0;
@@ -55,6 +62,7 @@ namespace ProgramableText.LogProcessor
                     change = -1;
                 }
                 int count = 0;
+                
                 for (int e=start;e!=end;e+=change)
                 {
                     count++;

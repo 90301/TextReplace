@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ProgramableText.LogProcessor;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -39,8 +40,8 @@ namespace ProgramableText.BlockProcessor
 
         public override void parseBlocks(string input)
         {
-            findText = getInternalBlockText(FIND, input);
-            replaceText = getInternalBlockText(REPLACE, input);
+            findText = ProgramNode.loadString(getInternalBlockText(FIND, input));
+            replaceText = ProgramNode.loadString(getInternalBlockText(REPLACE, input));
         }
 
         public override string ToString()
