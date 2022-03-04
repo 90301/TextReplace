@@ -75,6 +75,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
@@ -148,6 +149,7 @@
     </Compile>
     <Compile Include="Structures\FlatFileSection.cs" />
     <Compile Include="Structures\SQL_Variable.cs" />
+    <Compile Include="Utils\AutoSave.cs" />
     <Compile Include="Utils\ConfigFile.cs" />
     <Compile Include="Utils\CyberiaPreProcessorTemplate.cs" />
     <Compile Include="Utils\TextUtils.cs" />

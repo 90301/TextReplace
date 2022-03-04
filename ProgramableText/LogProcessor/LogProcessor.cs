@@ -1,5 +1,6 @@
 ﻿using ProgramableText.BlockProcessor;
 using ProgramableText.BlockProcessor.Conditions;
+using ProgramableText.Utils;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -63,6 +64,8 @@ namespace ProgramableText.LogProcessor
         public static Boolean debugMode = false;
         static LogProcessor()
         {
+            ConfigFile.loadConfig();
+
             argReader.parseArgs(new String[] { "(", ")" });
 
             allNodes = new Dictionary<string, ProgramNode>();
@@ -376,6 +379,7 @@ namespace ProgramableText.LogProcessor
                 functionalBlocks = new Dictionary<string, FunctionalBlock>();
                 errors = "";
                 output = "";
+                AutoSave.saveLogProcessor(programText, inputText);
             }
             int step = 0;
             int lastLoadFilesStep = 0;
