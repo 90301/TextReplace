@@ -42,7 +42,6 @@ namespace ProgramableText.LogProcessor
                 //None
                 foreach (String line in splitLines)
                 {
-                    string[] searchStrings = TextUtils.splitOnNewLine(LogProcessor.registers[register]);
                     Boolean lineFound = true;
                     foreach (String search in searchStrings)
                     {
