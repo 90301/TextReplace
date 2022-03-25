@@ -1,5 +1,6 @@
 ﻿using ProgramableText.BlockProcessor;
 using ProgramableText.BlockProcessor.Conditions;
+using ProgramableText.LogProcessor.XMLProcessor;
 using ProgramableText.Utils;
 using System;
 using System.Collections.Generic;
@@ -49,6 +50,7 @@ namespace ProgramableText.LogProcessor
         public static Boolean loopback = false;
 
         public static List<String> registers;
+        public static Dictionary<String,LogVar> variables;
 
         public static String fileProcessing;
 
@@ -82,13 +84,17 @@ namespace ProgramableText.LogProcessor
             addAllNode(new LoadFiles());
             addAllNode(new ProcessFiles());
             addAllNode(new NextFile());
-            addAllNode(new ReadFromRegister());
-            addAllNode(new WriteToRegister());
-            addAllNode(new VariableTransform());
+
             addAllNode(new SetOutput());
             addAllNode(new GetFileName());
             addAllNode(new RemoveDuplicates());
+            //Register Code
+            addAllNode(new ReadFromRegister());
+            addAllNode(new WriteToRegister());
+            addAllNode(new VariableTransform());
             addAllNode(new RegisterFindAndReplace());
+            addAllNode(new RegisterFilter());
+
             addAllNode(new FindPlusLines());
             addAllNode(new LineInstanceCount());
             addAllNode(new ReplaceCount());
@@ -100,14 +106,24 @@ namespace ProgramableText.LogProcessor
             addAllNode(new CallFunctionBlock());
             addAllNode(new GetWordInLine());
 
+            //xml
+            addAllNode(new ReadXML());
+            addAllNode(new GetAllElements());
+            addAllNode(new GetParentNode());
+
+            //Code
+
             addAllNode(new MultilineFindAndReplace());
             addAllNode(new IfStatement());
             addAllNode(new FunctionalBlock());
             addAllNode(new SimpleForeachReplace());
             addAllNode(new ConditionalForeachReplace());
 
+
             //conditions
             addCondition(new Contains());
+            addCondition(new ContainsAny());
+
 
             //special characters
             specialCharacters.Add(CLOSING_PARENTHSES, ")");
@@ -374,6 +390,7 @@ namespace ProgramableText.LogProcessor
             if (reset)
             {
                 registers = new List<string>();
+                variables = new Dictionary<string, LogVar>();
                 opSteps = new List<string>();
                 outputSteps = new List<string>();
                 functionalBlocks = new Dictionary<string, FunctionalBlock>();

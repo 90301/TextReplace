@@ -98,6 +98,7 @@
     <Compile Include="BlockProcessor\BlockNode.cs" />
     <Compile Include="BlockProcessor\Conditions\Condition.cs" />
     <Compile Include="BlockProcessor\Conditions\Contains.cs" />
+    <Compile Include="BlockProcessor\Conditions\ContainsAny.cs" />
     <Compile Include="BlockProcessor\FunctionalBlock.cs" />
     <Compile Include="BlockProcessor\IfStatement.cs" />
     <Compile Include="BlockProcessor\ConditionalForeachReplace.cs" />
@@ -119,6 +120,11 @@
     <Compile Include="LogProcessor\LineTrim.cs" />
     <Compile Include="LogProcessor\FilterExclude.cs" />
     <Compile Include="LogProcessor\CallFunctionalBlock.cs" />
+    <Compile Include="LogProcessor\LogVar.cs" />
+    <Compile Include="LogProcessor\RegisterFilter.cs" />
+    <Compile Include="LogProcessor\XMLProcessor\GetAllElements.cs" />
+    <Compile Include="LogProcessor\XMLProcessor\GetParentNode.cs" />
+    <Compile Include="LogProcessor\XMLProcessor\ReadXML.cs" />
     <Compile Include="LogProcessor\ReplaceCount.cs" />
     <Compile Include="LogProcessor\EndLineWith.cs" />
     <Compile Include="LogProcessor\StartLineWith.cs" />
@@ -141,6 +147,7 @@
     <Compile Include="LogProcessor\InnerReadNode.cs" />
     <Compile Include="LogProcessor\ProgramNode.cs" />
     <Compile Include="LogProcessor\WriteToRegister.cs" />
+    <Compile Include="LogProcessor\XMLProcessor\XmlLog.cs" />
     <Compile Include="QueryPermuter.xaml.cs">
       <DependentUpon>QueryPermuter.xaml</DependentUpon>
     </Compile>
