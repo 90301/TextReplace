@@ -42,16 +42,16 @@ namespace ProgramableText.LogProcessor
                 //None
                 foreach (String line in splitLines)
                 {
-                    Boolean lineFound = true;
+                    Boolean matchNotFound = true;
                     foreach (String search in searchStrings)
                     {
                         if (line.Contains(search))
                         {
-                            lineFound = false;
+                            matchNotFound = false;
                             break;
                         }
                     }
-                    if (lineFound)
+                    if (matchNotFound)
                     {
                         rtrn += line + Environment.NewLine;
                     }
@@ -70,6 +70,11 @@ namespace ProgramableText.LogProcessor
         public override string getOpName()
         {
             return "RegisterFilter";
+        }
+
+        public override string createExample()
+        {
+            return getOpName() + "( REGISTER , TRUE )";
         }
 
         public override void parseArgs(string[] args)

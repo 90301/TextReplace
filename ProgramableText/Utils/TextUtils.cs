@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace ProgramableText.Utils
 {
-    public class TextUtils
+    public static class TextUtils
     {
         public static String removeMultiSpaces(String str)
         {
@@ -43,6 +43,19 @@ namespace ProgramableText.Utils
         public static String[] splitOnComma(string astrInput)
         {
             return astrInput.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
+        }
+        public static List<int> AllIndexesOf(this string str, string value)
+        {
+            if (String.IsNullOrEmpty(value))
+                throw new ArgumentException("the string to find may not be empty", "value");
+            List<int> indexes = new List<int>();
+            for (int index = 0; ; index += value.Length)
+            {
+                index = str.IndexOf(value, index);
+                if (index == -1)
+                    return indexes;
+                indexes.Add(index);
+            }
         }
     }
 }

@@ -105,6 +105,7 @@ namespace ProgramableText.LogProcessor
             addAllNode(new CSVCombine());
             addAllNode(new CallFunctionBlock());
             addAllNode(new GetWordInLine());
+            addAllNode(new SyntaxParse());
 
             //xml
             addAllNode(new ReadXML());

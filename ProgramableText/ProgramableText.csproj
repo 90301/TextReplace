@@ -120,8 +120,10 @@
     <Compile Include="LogProcessor\LineTrim.cs" />
     <Compile Include="LogProcessor\FilterExclude.cs" />
     <Compile Include="LogProcessor\CallFunctionalBlock.cs" />
-    <Compile Include="LogProcessor\LogVar.cs" />
+    <Compile Include="LogProcessor\Variables\LogVar.cs" />
     <Compile Include="LogProcessor\RegisterFilter.cs" />
+    <Compile Include="LogProcessor\SyntaxParse.cs" />
+    <Compile Include="LogProcessor\Variables\ListVar.cs" />
     <Compile Include="LogProcessor\XMLProcessor\GetAllElements.cs" />
     <Compile Include="LogProcessor\XMLProcessor\GetParentNode.cs" />
     <Compile Include="LogProcessor\XMLProcessor\ReadXML.cs" />
@@ -147,7 +149,7 @@
     <Compile Include="LogProcessor\InnerReadNode.cs" />
     <Compile Include="LogProcessor\ProgramNode.cs" />
     <Compile Include="LogProcessor\WriteToRegister.cs" />
-    <Compile Include="LogProcessor\XMLProcessor\XmlLog.cs" />
+    <Compile Include="LogProcessor\Variables\XmlLog.cs" />
     <Compile Include="QueryPermuter.xaml.cs">
       <DependentUpon>QueryPermuter.xaml</DependentUpon>
     </Compile>
