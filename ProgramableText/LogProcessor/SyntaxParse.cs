@@ -20,11 +20,12 @@ namespace ProgramableText.LogProcessor
         String last;
 
         //optionally dump the matches into a list
-        String listToPopulate;
+        String listToPopulate,listFirstLines;
 
         public override string calculate(string input)
         {
             List<String> blocksParsed = new List<String>();
+            List<String> firstLines = new List<String>();
             String[] lines = input.Split(ProgramNode.NEWLINE, StringSplitOptions.None);
 
             //Start out by finding all indexes for matches for up and down counts
@@ -44,7 +45,8 @@ namespace ProgramableText.LogProcessor
             {
                 int upCharLocation = indexsUp[upCounter];
                 int lineNumUp = getLine(indexsLine, upCharLocation);
-                if (lines[lineNumUp].Contains(first))
+                String firstLine = lines[lineNumUp];
+                if (firstLine.Contains(first))
                 {
                     //start parsing down counting
                     count++;
@@ -70,6 +72,10 @@ namespace ProgramableText.LogProcessor
                             {
                                 int length = nextDownCharLocation - upCharLocation - first.Length;
                                 blocksParsed.Add(input.Substring(upCharLocation+first.Length, length));
+                                if (listFirstLines!= null && listFirstLines.Length>=1)
+                                {
+                                    firstLines.Add(firstLine);
+                                }
                             }
                         }
                         else
@@ -93,6 +99,7 @@ namespace ProgramableText.LogProcessor
                 listVar.list = blocksParsed;
                 LogProcessor.variables[listVar.varName] = listVar;
             }
+            
             return blocksParsed.Select(x => x.ToString()).Aggregate((x,y) => x + Environment.NewLine + y);
         }
 
@@ -128,6 +135,8 @@ namespace ProgramableText.LogProcessor
             last = ProgramNode.loadString(args[1].Trim());
             filterFirst = ProgramNode.loadString(args[2].Trim());
             listToPopulate = ProgramNode.loadString(args[3].Trim());
+            if (args.Length>=5)
+                listFirstLines = ProgramNode.loadString(args[4].Trim());
         }
     }
 }

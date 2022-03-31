@@ -25,7 +25,7 @@ namespace ProgramableText.LogProcessor
         public const String SPACE = "SPC_CODE_SPACE";
         public const String TAB = "SPC_CODE_TAB";
         public const String SINGLE_QUOTE = "SPC_CODE_SQ";
-
+        public const String NEWLINE = "SPC_CODE_NL";
 
         public const String DEFAULT_INPUT_TEXT = "_DEFAULT_INPUT_TEXT_";
         /// <summary>
@@ -106,6 +106,7 @@ namespace ProgramableText.LogProcessor
             addAllNode(new CallFunctionBlock());
             addAllNode(new GetWordInLine());
             addAllNode(new SyntaxParse());
+            addAllNode(new LoadProgram());
 
             //xml
             addAllNode(new ReadXML());
@@ -132,6 +133,7 @@ namespace ProgramableText.LogProcessor
             specialCharacters.Add(SPACE, " ");
             specialCharacters.Add(TAB, "\t");
             specialCharacters.Add(SINGLE_QUOTE, "'");
+            specialCharacters.Add(NEWLINE, Environment.NewLine);
         }
 
         public static void addAllNode(ProgramNode node)
@@ -154,8 +156,6 @@ namespace ProgramableText.LogProcessor
         public static void loadProgram(String program)
         {
             programText = program;
-            //String programLines = loadBlocks(program);
-            //lines = programLines.Split(OP_SPLIT, StringSplitOptions.RemoveEmptyEntries);
             compileProgram(programText,out nodes);
             processNodeToString();
         }

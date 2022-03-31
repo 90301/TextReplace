@@ -120,6 +120,7 @@
     <Compile Include="LogProcessor\LineTrim.cs" />
     <Compile Include="LogProcessor\FilterExclude.cs" />
     <Compile Include="LogProcessor\CallFunctionalBlock.cs" />
+    <Compile Include="LogProcessor\LoadProgram.cs" />
     <Compile Include="LogProcessor\Variables\LogVar.cs" />
     <Compile Include="LogProcessor\RegisterFilter.cs" />
     <Compile Include="LogProcessor\SyntaxParse.cs" />

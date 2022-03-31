@@ -160,6 +160,29 @@ namespace ProgramableText.LogProcessor
             xmlLog.xmlDocument = doc;
             return xmlLog;
         }
+
+        public static ListVar getOrCreateListVar(String listVarName)
+        {
+            if (LogProcessor.variables[listVarName] != null)
+            {
+                return (ListVar)LogProcessor.variables[listVarName];
+            }  else
+            {
+                ListVar listVar = new ListVar();
+                listVar.varName = listVarName;
+                listVar.list = new List<string>();
+                LogProcessor.variables[listVar.varName] = listVar;
+                return listVar;
+            }
+        }
+        public static ListVar getOrCreateListVar(String listVarName, List<String> list)
+        {
+            ListVar listVar = new ListVar();
+            listVar.varName = listVarName;
+            listVar.list = list;
+            LogProcessor.variables[listVar.varName] = listVar;
+            return listVar;
+        }
     }
 
 }
